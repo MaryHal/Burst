@@ -4,12 +4,13 @@ import android.app.Activity;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 
-public class BasicActivity extends Activity {
-
+public class BasicActivity extends Activity 
+{
     private GLSurfaceView mGLView;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) 
+    {
         super.onCreate(savedInstanceState);
 
         // Create a GLSurfaceView instance and set it
@@ -19,7 +20,8 @@ public class BasicActivity extends Activity {
     }
 
     @Override
-    protected void onPause() {
+    protected void onPause() 
+    {
         super.onPause();
         // The following call pauses the rendering thread.
         // If your OpenGL application is memory intensive,
@@ -29,7 +31,8 @@ public class BasicActivity extends Activity {
     }
 
     @Override
-    protected void onResume() {
+    protected void onResume() 
+    {
         super.onResume();
         // The following call resumes a paused rendering thread.
         // If you de-allocated graphic objects for onPause()
