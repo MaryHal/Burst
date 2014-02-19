@@ -1,11 +1,12 @@
-package fp.infiniteset.burst;
+package fp.infiniteset.particle;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
-
+import java.nio.;
 import java.util.Random;
 
+import fp.infiniteset.burst.BasicRenderer;
 import android.opengl.GLES20;
 
 public class PointCloud
@@ -36,6 +37,8 @@ public class PointCloud
 
     private final int mProgram;
     private FloatBuffer vertexBuffer;
+    private FloatBuffer velocityBuffer;
+    private IntBuffer
 
     private final int vertexCount;
     private final int vertexStride;
@@ -43,7 +46,6 @@ public class PointCloud
     private int mPositionHandle;
     private int mColorHandle;
     private int mMVPMatrixHandle;
-    /* private FloatBuffer velocityBuffer; */
 
     public PointCloud(int pointCount)
     {

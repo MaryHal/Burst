@@ -3,6 +3,7 @@ package fp.infiniteset.burst;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
+import fp.infiniteset.particle.PointCloud;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
@@ -98,6 +99,11 @@ public class BasicRenderer implements GLSurfaceView.Renderer {
             Log.e(TAG, glOperation + ": glError " + error);
             throw new RuntimeException(glOperation + ": glError " + error);
         }
+    }
+
+    public static float[] createOrthogonalMatrix(float top, float left, float right, float bottom)
+    {
+        return null;
     }
 }
 
