@@ -27,7 +27,7 @@ public class BasicRenderer implements GLSurfaceView.Renderer {
         // Set the background frame color
         GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
-        cloud = new PointCloud(100);
+        cloud = new PointCloud(300, 300, 100);
     }
 
     @Override

@@ -3,7 +3,7 @@ package fp.infiniteset.particle;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
-import java.nio.;
+import java.nio.IntBuffer;
 import java.util.Random;
 
 import fp.infiniteset.burst.BasicRenderer;
@@ -38,7 +38,7 @@ public class PointCloud
     private final int mProgram;
     private FloatBuffer vertexBuffer;
     private FloatBuffer velocityBuffer;
-    private IntBuffer
+    private IntBuffer lifeBuffer;
 
     private final int vertexCount;
     private final int vertexStride;
@@ -47,7 +47,7 @@ public class PointCloud
     private int mColorHandle;
     private int mMVPMatrixHandle;
 
-    public PointCloud(int pointCount)
+    public PointCloud(float x, float y, int pointCount)
     {
         vertexCount = pointCount;
         vertexStride = COORDS_PER_VERTEX * 4;
@@ -79,9 +79,20 @@ public class PointCloud
 
     public void update()
     {
+        vertexBuffer.position(0);
+        lifeBuffer.position(0);
+        for (int i = 0; i < vertexCount; i++)
+        {
+            vertexBuffer.put(vertexBuffer.get(2*i) + velocityBuffer.get(2*i));
+            vertexBuffer.put(vertexBuffer.get(2*i + 1) + velocityBuffer.get(2*i + 1));
+            lifeBuffer.put(lifeBuffer.get(i) - 1);
+        }
+
+        vertexBuffer.position(0);
+        lifeBuffer.position(0);
     }
 
-    public void draw(float[] mvpMatrix) 
+    public void draw(float[] mvpMatrix)
     {
         // Add program to OpenGL environment
         GLES20.glUseProgram(mProgram);
@@ -119,4 +130,3 @@ public class PointCloud
         GLES20.glDisableVertexAttribArray(mPositionHandle);
     }
 }
-

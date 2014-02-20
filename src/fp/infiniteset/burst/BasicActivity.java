@@ -40,3 +40,4 @@ public class BasicActivity extends Activity
         mGLView.onResume();
     }
 }
+
