@@ -4,7 +4,6 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
-import java.util.Random;
 
 import fp.infiniteset.burst.BasicRenderer;
 import android.opengl.GLES20;
@@ -36,9 +35,10 @@ public class PointCloud
     float color[] = { 0.63671875f, 0.76953125f, 0.22265625f, 0.0f };
 
     private final int mProgram;
-    private FloatBuffer vertexBuffer;
-    private FloatBuffer velocityBuffer;
-    private IntBuffer lifeBuffer;
+    public FloatBuffer vertexBuffer;
+    public FloatBuffer velocityBuffer;
+    public IntBuffer lifeBuffer;
+    public boolean alive;
 
     private final int vertexCount;
     private final int vertexStride;
@@ -52,18 +52,20 @@ public class PointCloud
         vertexCount = pointCount;
         vertexStride = COORDS_PER_VERTEX * 4;
 
-        ByteBuffer bb = ByteBuffer.allocateDirect(vertexCount * vertexStride);
-        bb.order(ByteOrder.nativeOrder());
+        // Prepare Buffers
+        ByteBuffer bb1 = ByteBuffer.allocateDirect(vertexCount * vertexStride);
+        bb1.order(ByteOrder.nativeOrder());
+        vertexBuffer = bb1.asFloatBuffer();
 
-        // Just add random points for now
-        vertexBuffer = bb.asFloatBuffer();
-        Random rng = new Random();
-        for (int i = 0; i < vertexCount; i++)
-        {
-            vertexBuffer.put(rng.nextFloat() * 2.0f - 1.0f);
-            vertexBuffer.put(rng.nextFloat() * 2.0f - 1.0f);
-        }
-        vertexBuffer.position(0);
+        ByteBuffer bb2 = ByteBuffer.allocateDirect(vertexCount * vertexStride);
+        bb2.order(ByteOrder.nativeOrder());
+        velocityBuffer = bb2.asFloatBuffer();
+
+        ByteBuffer bb3 = ByteBuffer.allocateDirect(vertexCount * vertexStride);
+        bb3.order(ByteOrder.nativeOrder());
+        lifeBuffer = bb3.asIntBuffer();
+
+        alive = false;
 
         // Prepare shaders and OpenGL program
         int vertexShader = BasicRenderer.loadShader(
@@ -79,6 +81,9 @@ public class PointCloud
 
     public void update()
     {
+        if (!alive)
+            return;
+
         vertexBuffer.position(0);
         lifeBuffer.position(0);
         for (int i = 0; i < vertexCount; i++)
@@ -94,6 +99,9 @@ public class PointCloud
 
     public void draw(float[] mvpMatrix)
     {
+        if (!alive)
+            return;
+
         // Add program to OpenGL environment
         GLES20.glUseProgram(mProgram);
 

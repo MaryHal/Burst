@@ -1,22 +1,56 @@
 package fp.infiniteset.particle;
 
-import java.util.Stack;
-import android.opengl.GLES20;
+import java.util.ArrayDeque;
+/* import android.opengl.GLES20; */
 
 public class Emitter
 {
     public static final int MAX_SETS = 16;
+
     private PointCloud[] particleSets;
-    private Stack<PointCloud> freeStack;
+    private ArrayDeque<PointCloud> freeStack;
 
     public Emitter()
     {
         particleSets = new PointCloud[MAX_SETS];
-        freeStack = new Stack<PointCloud>();
+        freeStack = new ArrayDeque<PointCloud>(MAX_SETS);
+
+        for (PointCloud p : particleSets)
+        {
+            freeStack.push(p);
+        }
     }
 
-    public void addSet(PointCloud p)
+    public void add(ParticleInitializer initializer)
     {
+        if (freeStack.isEmpty())
+        {
+            throw new ArrayStoreException("No more free slots available in Emitter");
+        }
+        PointCloud p = freeStack.pop();
+        initializer.setParticle(p);
+    }
+
+    public void destroy(PointCloud p)
+    {
+        p.alive = false;
+        freeStack.push(p);
+    }
+
+    public void update()
+    {
+        for (PointCloud p : particleSets)
+        {
+            p.update();
+        }
+    }
+
+    public void draw(float[] mvpMatrix)
+    {
+        for (PointCloud p : particleSets)
+        {
+            p.draw(mvpMatrix);
+        }
     }
 }
 
