@@ -40,7 +40,7 @@ public class PointCloud
     public IntBuffer lifeBuffer;
     public boolean alive;
 
-    private final int vertexCount;
+    public final int vertexCount;
     private final int vertexStride;
 
     private int mPositionHandle;
@@ -75,6 +75,13 @@ public class PointCloud
         GLES20.glAttachShader(mProgram, vertexShader);   // add the vertex shader to program
         GLES20.glAttachShader(mProgram, fragmentShader); // add the fragment shader to program
         GLES20.glLinkProgram(mProgram);                  // create OpenGL program executables
+    }
+
+    public void resetBufferPosition()
+    {
+        vertexBuffer.position(0);
+        velocityBuffer.position(0);
+        lifeBuffer.position(0);
     }
 
     public int loadShader(int type, String shaderCode)
@@ -149,3 +156,4 @@ public class PointCloud
         GLES20.glDisableVertexAttribArray(mPositionHandle);
     }
 }
+

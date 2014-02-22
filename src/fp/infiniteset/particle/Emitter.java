@@ -29,6 +29,7 @@ public class Emitter
         }
         PointCloud p = freeStack.pop();
         initializer.setParticle(p);
+        p.alive = true;
     }
 
     public void destroy(PointCloud p)
