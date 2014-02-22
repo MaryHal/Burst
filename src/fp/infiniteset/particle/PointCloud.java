@@ -32,7 +32,7 @@ public class PointCloud
         "  gl_FragColor = vColor;" +
         "}";
 
-    float color[] = { 0.63671875f, 0.76953125f, 0.22265625f, 0.0f };
+    float color[] = { 1.0f, 1.0f, 1.0f, 1.0f };
 
     private final int mProgram;
     public FloatBuffer vertexBuffer;
@@ -47,7 +47,7 @@ public class PointCloud
     private int mColorHandle;
     private int mMVPMatrixHandle;
 
-    public PointCloud(float x, float y, int pointCount)
+    public PointCloud(int pointCount)
     {
         vertexCount = pointCount;
         vertexStride = COORDS_PER_VERTEX * 4;
@@ -68,15 +68,26 @@ public class PointCloud
         alive = false;
 
         // Prepare shaders and OpenGL program
-        int vertexShader = BasicRenderer.loadShader(
-                GLES20.GL_VERTEX_SHADER, vertexShaderCode);
-        int fragmentShader = BasicRenderer.loadShader(
-                GLES20.GL_FRAGMENT_SHADER, fragmentShaderCode);
+        int vertexShader = loadShader(GLES20.GL_VERTEX_SHADER, vertexShaderCode);
+        int fragmentShader = loadShader(GLES20.GL_FRAGMENT_SHADER, fragmentShaderCode);
 
         mProgram = GLES20.glCreateProgram();             // create empty OpenGL Program
         GLES20.glAttachShader(mProgram, vertexShader);   // add the vertex shader to program
         GLES20.glAttachShader(mProgram, fragmentShader); // add the fragment shader to program
         GLES20.glLinkProgram(mProgram);                  // create OpenGL program executables
+    }
+
+    public int loadShader(int type, String shaderCode)
+    {
+        // create a vertex shader type (GLES20.GL_VERTEX_SHADER)
+        // or a fragment shader type (GLES20.GL_FRAGMENT_SHADER)
+        int shader = GLES20.glCreateShader(type);
+
+        // add the source code to the shader and compile it
+        GLES20.glShaderSource(shader, shaderCode);
+        GLES20.glCompileShader(shader);
+
+        return shader;
     }
 
     public void update()
