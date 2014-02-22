@@ -27,3 +27,5 @@ proguard/
 *.ipr
 *.iws
 .idea/
+
+ext_libs/
