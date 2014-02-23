@@ -1,7 +1,7 @@
 package fp.infiniteset.Burst;
 
+import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
@@ -35,15 +35,7 @@ public class TestScreen implements Screen
         Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        if (Gdx.input.isKeyPressed(Keys.A))
-        {
-            PooledEffect effect = pool.obtain();
-            effect.setPosition(240, 150);
-            effects.add(effect);
-            System.out.println("Boom!@");
-        }
-
-        /* batch.setProjectionMatrix(camera.combined); */
+        // batch.setProjectionMatrix(camera.combined);
         batch.begin();
         for(PooledEffect effect : effects) {
             effect.draw(batch, delta);
@@ -65,11 +57,12 @@ public class TestScreen implements Screen
     {
         // Called when this screen is set as the screen with game.setScreen();
         System.out.println("Opengl ES 2.0: " + (Gdx.graphics.isGL20Available() ? "Supported!" : "Unsupported."));
-        float w = Gdx.graphics.getWidth();
-        float h = Gdx.graphics.getHeight();
-        camera = new OrthographicCamera(1, h/w);
+        camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        camera.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        camera.update();
 
-        batch = new SpriteBatch();
+        batch = new SpriteBatch(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        batch.setProjectionMatrix(camera.combined);
 
         prototype = new ParticleEffect();
         prototype.load(Gdx.files.internal("effects/test.p"), Gdx.files.internal("effects"));
@@ -78,6 +71,32 @@ public class TestScreen implements Screen
 
         pool = new ParticleEffectPool(prototype, 0, 70);
         effects = new Array<PooledEffect>();
+
+        Gdx.input.setInputProcessor(new InputAdapter()
+        {
+                public boolean keyUp(int keycode)
+                {
+                    if (keycode == Keys.A)
+                    {
+                        PooledEffect effect = pool.obtain();
+                        effect.setPosition(240, 150);
+                        effects.add(effect);
+                        System.out.println("Boom!@");
+
+                        return true;
+                    }
+                    return false;
+                }
+                public boolean touchUp(int x, int y, int pointer, int button)
+                {
+                    PooledEffect effect = pool.obtain();
+                    effect.setPosition(x, y);
+                    effects.add(effect);
+                    System.out.println("Boom!@");
+
+                    return true;
+                }
+        });
 
         System.out.println("All Set!");
     }
@@ -105,6 +124,4 @@ public class TestScreen implements Screen
         batch.dispose();
         prototype.dispose();
     }
-
 }
-
