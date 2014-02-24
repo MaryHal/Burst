@@ -72,31 +72,30 @@ public class TestScreen implements Screen
         pool = new ParticleEffectPool(prototype, 0, 70);
         effects = new Array<PooledEffect>();
 
-        Gdx.input.setInputProcessor(new InputAdapter()
+        InputAdapter adapter = new InputAdapter()
         {
-                public boolean keyUp(int keycode)
-                {
-                    if (keycode == Keys.A)
-                    {
-                        PooledEffect effect = pool.obtain();
-                        effect.setPosition(240, 150);
-                        effects.add(effect);
-                        System.out.println("Boom!@");
-
-                        return true;
-                    }
-                    return false;
-                }
-                public boolean touchUp(int x, int y, int pointer, int button)
+            public boolean keyUp(int keycode)
+            {
+                if (keycode == Keys.A)
                 {
                     PooledEffect effect = pool.obtain();
-                    effect.setPosition(x, y);
+                    effect.setPosition(240, 150);
                     effects.add(effect);
-                    System.out.println("Boom!@");
 
                     return true;
                 }
-        });
+                return false;
+            }
+            public boolean touchUp(int x, int y, int pointer, int button)
+            {
+                PooledEffect effect = pool.obtain();
+                effect.setPosition(x, y);
+                effects.add(effect);
+
+                return true;
+            }
+        };
+        Gdx.input.setInputProcessor(adapter);
 
         System.out.println("All Set!");
     }
