@@ -66,7 +66,6 @@ public class TestScreen implements Screen
 
         prototype = new ParticleEffect();
         prototype.load(Gdx.files.internal("effects/test.p"), Gdx.files.internal("effects"));
-        prototype.setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
         prototype.start();
 
         pool = new ParticleEffectPool(prototype, 0, 70);
@@ -79,7 +78,7 @@ public class TestScreen implements Screen
                 if (keycode == Keys.A)
                 {
                     PooledEffect effect = pool.obtain();
-                    effect.setPosition(240, 150);
+                    effect.setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
                     effects.add(effect);
 
                     return true;
