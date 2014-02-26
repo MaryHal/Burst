@@ -2,16 +2,16 @@ Main
 - Delay -
 active: false
 - Duration - 
-lowMin: 200.0
-lowMax: 200.0
+lowMin: 2000.0
+lowMax: 2000.0
 - Count - 
-min: 0
-max: 100
+min: 10
+max: 40
 - Emission - 
-lowMin: 0.0
-lowMax: 0.0
-highMin: 2000.0
-highMax: 2000.0
+lowMin: 5.0
+lowMax: 5.0
+highMin: 10.0
+highMax: 10.0
 relative: false
 scalingCount: 1
 scaling0: 1.0
@@ -93,8 +93,8 @@ timeline0: 0.0
 active: true
 lowMin: 0.0
 lowMax: 0.0
-highMin: 0.0
-highMax: 360.0
+highMin: -80.0
+highMax: -100.0
 relative: false
 scalingCount: 1
 scaling0: 1.0
@@ -117,9 +117,9 @@ timelineCount: 1
 timeline0: 0.0
 - Tint - 
 colorsCount: 3
-colors0: 1.0
-colors1: 0.03137255
-colors2: 0.03137255
+colors0: 0.30588236
+colors1: 0.30588236
+colors2: 0.30588236
 timelineCount: 1
 timeline0: 0.0
 - Transparency - 
@@ -143,4 +143,4 @@ aligned: true
 additive: true
 behind: false
 - Image Path -
-line.png
+/home/sanford/code/current/Burst/Burst-android/assets/effects/line.png
