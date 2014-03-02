@@ -1,5 +1,7 @@
 package fp.infiniteset.Burst;
 
+import com.badlogic.gdx.math.Vector2;
+
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Gdx;
@@ -22,6 +24,8 @@ public class TestScreen implements Screen
     private ParticleEffectPool pool;
     private Array<PooledEffect> effects;
 
+    private Firework f;
+
     // constructor to keep a reference to the main Game class
     public TestScreen(BurstGame game)
     {
@@ -35,11 +39,16 @@ public class TestScreen implements Screen
         Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        // batch.setProjectionMatrix(camera.combined);
+        f.update(delta);
+        f.draw(camera);
+
+        batch.setProjectionMatrix(camera.combined);
         batch.begin();
-        for(PooledEffect effect : effects) {
+        for (PooledEffect effect : effects)
+        {
             effect.draw(batch, delta);
-            if(effect.isComplete()) {
+            if(effect.isComplete())
+            {
                 effects.removeValue(effect, true);
                 effect.free();
             }
@@ -95,6 +104,8 @@ public class TestScreen implements Screen
             }
         };
         Gdx.input.setInputProcessor(adapter);
+
+        f = new Firework(new Vector2(0, 0), new Vector2(300, 300));
 
         System.out.println("All Set!");
     }
