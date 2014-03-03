@@ -12,6 +12,8 @@ import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.ParticleEffectPool;
 import com.badlogic.gdx.graphics.g2d.ParticleEffectPool.PooledEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
+import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.Array;
 
 public class TestScreen implements Screen
@@ -20,11 +22,13 @@ public class TestScreen implements Screen
 
     private OrthographicCamera camera;
     private SpriteBatch batch;
+
     private ParticleEffect prototype;
-    private ParticleEffectPool pool;
+    private ParticleEffectPool effectPool;
     private Array<PooledEffect> effects;
 
-    private Firework f;
+    private FireworkPool fireworkPool;
+    private Array<Firework> fireworks;
 
     // constructor to keep a reference to the main Game class
     public TestScreen(BurstGame game)
@@ -39,8 +43,8 @@ public class TestScreen implements Screen
         Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        f.update(delta);
-        f.draw(camera);
+        /* f.update(delta); */
+        /* f.draw(camera); */
 
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
@@ -77,8 +81,11 @@ public class TestScreen implements Screen
         prototype.load(Gdx.files.internal("effects/test.p"), Gdx.files.internal("effects"));
         prototype.start();
 
-        pool = new ParticleEffectPool(prototype, 0, 70);
+        effectPool = new ParticleEffectPool(prototype, 0, 70);
         effects = new Array<PooledEffect>();
+
+        fireworkPool = new FireworkPool(64, 128);
+        fireworks = new Array<Firework>();
 
         InputAdapter adapter = new InputAdapter()
         {
@@ -86,7 +93,7 @@ public class TestScreen implements Screen
             {
                 if (keycode == Keys.A)
                 {
-                    PooledEffect effect = pool.obtain();
+                    PooledEffect effect = effectPool.obtain();
                     effect.setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
                     effects.add(effect);
 
@@ -96,7 +103,7 @@ public class TestScreen implements Screen
             }
             public boolean touchUp(int x, int y, int pointer, int button)
             {
-                PooledEffect effect = pool.obtain();
+                PooledEffect effect = effectPool.obtain();
                 effect.setPosition(x, y);
                 effects.add(effect);
 
@@ -105,7 +112,7 @@ public class TestScreen implements Screen
         };
         Gdx.input.setInputProcessor(adapter);
 
-        f = new Firework(new Vector2(0, 0), new Vector2(300, 300));
+        /* f = new Firework(new Vector2(0, 0), new Vector2(300, 300)); */
 
         System.out.println("All Set!");
     }

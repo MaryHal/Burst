@@ -5,12 +5,19 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
-public class Firework
+import com.badlogic.gdx.utils.Pool;
+
+public class Firework implements Pool.Poolable
 {
     private Vector2 position;
     /* private Vector2 destination; */
     private Vector2 velocity;
     private ShapeRenderer sprite;
+
+    public Firework()
+    {
+        this(Vector2.Zero, Vector2.Zero);
+    }
 
     public Firework(Vector2 position, Vector2 destination)
     {
@@ -21,10 +28,15 @@ public class Firework
         sprite = new ShapeRenderer();
     }
 
+    public void reset()
+    {
+        position = Vector2.Zero;
+        velocity = Vector2.Zero;
+    }
+
     public void update(float delta)
     {
         position.add(velocity.cpy().scl(delta));
-        System.out.println(velocity);
     }
 
     public void draw(Camera camera)
