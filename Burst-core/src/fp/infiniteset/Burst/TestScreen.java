@@ -34,7 +34,7 @@ public class TestScreen implements Screen
     private float[][] fireworkColors;
     private Random rng;
 
-    private Music music;
+    /* private Music music; */
 
     // constructor to keep a reference to the main Game class
     public TestScreen(BurstGame game)
@@ -51,6 +51,15 @@ public class TestScreen implements Screen
 
         /* f.update(delta); */
         /* f.draw(camera); */
+
+        if (rng.nextInt(20) == 0)
+        {
+            PooledEffect effect = effectPool.obtain();
+            float[] color = fireworkColors[rng.nextInt(fireworkColors.length)];
+            effect.getEmitters().peek().getTint().setColors(color);
+            effect.setPosition(rng.nextInt(300) + 90, rng.nextInt(200) + 50);
+            effects.add(effect);
+        }
 
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
@@ -105,7 +114,7 @@ public class TestScreen implements Screen
 
         rng = new Random();
 
-        music = Gdx.audio.newMusic(Gdx.files.internal("music/Melodica.mp3"));
+        /* music = Gdx.audio.newMusic(Gdx.files.internal("music/Melodica.mp3")); */
 
         InputAdapter adapter = new InputAdapter()
         {
@@ -114,7 +123,8 @@ public class TestScreen implements Screen
                 if (keycode == Keys.A)
                 {
                     PooledEffect effect = effectPool.obtain();
-                    effect.setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
+                    effect.setPosition(Gdx.graphics.getWidth()  / 2,
+                                       Gdx.graphics.getHeight() / 2);
                     effects.add(effect);
 
                     return true;
@@ -162,6 +172,6 @@ public class TestScreen implements Screen
         // never called automatically
         batch.dispose();
         prototype.dispose();
-        music.dispose();
+        /* music.dispose(); */
     }
 }
