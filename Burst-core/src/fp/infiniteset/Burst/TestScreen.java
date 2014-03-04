@@ -1,7 +1,5 @@
 package fp.infiniteset.Burst;
 
-import com.badlogic.gdx.math.Vector2;
-
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Gdx;
@@ -13,8 +11,11 @@ import com.badlogic.gdx.graphics.g2d.ParticleEffectPool;
 import com.badlogic.gdx.graphics.g2d.ParticleEffectPool.PooledEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-import com.badlogic.gdx.utils.Pool;
+import com.badlogic.gdx.audio.*;
+
 import com.badlogic.gdx.utils.Array;
+
+import java.util.Random;
 
 public class TestScreen implements Screen
 {
@@ -29,6 +30,11 @@ public class TestScreen implements Screen
 
     private FireworkPool fireworkPool;
     private Array<Firework> fireworks;
+
+    private float[][] fireworkColors;
+    private Random rng;
+
+    private Music music;
 
     // constructor to keep a reference to the main Game class
     public TestScreen(BurstGame game)
@@ -87,6 +93,20 @@ public class TestScreen implements Screen
         fireworkPool = new FireworkPool(64, 128);
         fireworks = new Array<Firework>();
 
+        fireworkColors = new float[][] {
+            {1.0f, 0.3f, 0.3f, 1.0f},
+            {0.3f, 1.0f, 0.3f, 1.0f},
+            {0.3f, 0.3f, 1.0f, 1.0f},
+
+            {0.3f, 1.0f, 1.0f, 1.0f},
+            {1.0f, 0.3f, 1.0f, 1.0f},
+            {1.0f, 1.0f, 0.3f, 1.0f},
+        };
+
+        rng = new Random();
+
+        music = Gdx.audio.newMusic(Gdx.files.internal("music/Melodica.mp3"));
+
         InputAdapter adapter = new InputAdapter()
         {
             public boolean keyUp(int keycode)
@@ -101,9 +121,12 @@ public class TestScreen implements Screen
                 }
                 return false;
             }
+
             public boolean touchUp(int x, int y, int pointer, int button)
             {
                 PooledEffect effect = effectPool.obtain();
+                float[] color = fireworkColors[rng.nextInt(fireworkColors.length)];
+                effect.getEmitters().peek().getTint().setColors(color);
                 effect.setPosition(x, y);
                 effects.add(effect);
 
@@ -139,5 +162,6 @@ public class TestScreen implements Screen
         // never called automatically
         batch.dispose();
         prototype.dispose();
+        music.dispose();
     }
 }
