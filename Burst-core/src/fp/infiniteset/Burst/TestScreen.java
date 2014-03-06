@@ -36,21 +36,11 @@ public class TestScreen implements Screen
         Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        /* f.update(delta); */
-        /* f.draw(camera); */
-
-        /* if (rng.nextInt(20) == 0) */
-        /* { */
-        /*     PooledEffect effect = effectPool.obtain(); */
-        /*     float[] color = fireworkColors[rng.nextInt(fireworkColors.length)]; */
-        /*     effect.getEmitters().peek().getTint().setColors(color); */
-        /*     effect.setPosition(rng.nextInt(300) + 90, rng.nextInt(200) + 50); */
-        /*     effects.add(effect); */
-        /* } */
-
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
-        launcher.draw(batch, delta);
+        {
+            launcher.draw(batch, delta);
+        }
         batch.end();
     }
 
@@ -97,8 +87,6 @@ public class TestScreen implements Screen
         };
         Gdx.input.setInputProcessor(adapter);
 
-        /* f = new Firework(new Vector2(0, 0), new Vector2(300, 300)); */
-
         System.out.println("All Set!");
     }
 
@@ -121,7 +109,7 @@ public class TestScreen implements Screen
     @Override
     public void dispose()
     {
-        // never called automatically
-        /* music.dispose(); */
+        batch.dispose();
+        launcher.dispose();
     }
 }

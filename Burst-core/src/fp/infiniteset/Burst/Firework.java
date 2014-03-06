@@ -10,7 +10,7 @@ import com.badlogic.gdx.utils.Pool;
 public class Firework implements Pool.Poolable
 {
     private Vector2 position;
-    /* private Vector2 destination; */
+    private Vector2 destination;
     private Vector2 velocity;
     private ShapeRenderer sprite;
 
@@ -22,16 +22,29 @@ public class Firework implements Pool.Poolable
     public Firework(Vector2 position, Vector2 destination)
     {
         this.position = position;
-        /* this.destination = destination; */
+        this.destination = destination;
         this.velocity = position.cpy().lerp(destination, 0.05f);
 
         sprite = new ShapeRenderer();
     }
 
+    public void set(Vector2 position, Vector2 destination)
+    {
+        this.position = position;
+        this.destination = destination;
+        this.velocity = position.cpy().lerp(destination, 0.05f);
+    }
+
     public void reset()
     {
         position = Vector2.Zero;
+        destination = Vector2.Zero;
         velocity = Vector2.Zero;
+    }
+
+    public float getDistance2()
+    {
+        return position.dst2(destination);
     }
 
     public void update(float delta)

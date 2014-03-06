@@ -56,6 +56,8 @@ public class FireworkLauncher
 
     public void fire(Vector2 position)
     {
+        /* Firework f = fireworkPool.obtain(); */
+
         PooledEffect effect = effectPool.obtain();
         float[] color = fireworkColors[rng.nextInt(fireworkColors.length)];
         effect.getEmitters().peek().getTint().setColors(color);
