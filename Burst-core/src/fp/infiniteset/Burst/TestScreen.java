@@ -17,8 +17,6 @@ public class TestScreen implements Screen
     private BurstGame game;
 
     private OrthographicCamera camera;
-    private SpriteBatch batch;
-
     private FireworkLauncher launcher;
 
     /* private Music music; */
@@ -36,12 +34,7 @@ public class TestScreen implements Screen
         Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        batch.setProjectionMatrix(camera.combined);
-        batch.begin();
-        {
-            launcher.draw(batch, delta);
-        }
-        batch.end();
+        launcher.draw(delta);
     }
 
     @Override
@@ -58,10 +51,7 @@ public class TestScreen implements Screen
         camera.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.update();
 
-        batch = new SpriteBatch(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        batch.setProjectionMatrix(camera.combined);
-
-        launcher = new FireworkLauncher();
+        launcher = new FireworkLauncher(camera);
 
         /* music = Gdx.audio.newMusic(Gdx.files.internal("music/Melodica.mp3")); */
 
@@ -109,7 +99,6 @@ public class TestScreen implements Screen
     @Override
     public void dispose()
     {
-        batch.dispose();
         launcher.dispose();
     }
 }

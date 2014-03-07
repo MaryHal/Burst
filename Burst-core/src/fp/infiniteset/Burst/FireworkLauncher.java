@@ -5,6 +5,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.ParticleEffectPool;
 import com.badlogic.gdx.graphics.g2d.ParticleEffectPool.PooledEffect;
+
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import com.badlogic.gdx.math.Vector2;
@@ -24,7 +26,10 @@ public class FireworkLauncher
     private float[][] fireworkColors;
     private Random rng;
 
-    public FireworkLauncher()
+    private SpriteBatch particleBatch;
+    private SpriteBatch fireworkBatch;
+
+    public FireworkLauncher(Camera camera)
     {
         prototype = new ParticleEffect();
         prototype.load(Gdx.files.internal("effects/test.p"), Gdx.files.internal("effects"));
@@ -47,38 +52,66 @@ public class FireworkLauncher
         };
 
         rng = new Random();
+
+        particleBatch = new SpriteBatch(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        particleBatch.setProjectionMatrix(camera.combined);
+
+        fireworkBatch = new SpriteBatch(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        fireworkBatch.setProjectionMatrix(camera.combined);
     }
 
     public void dispose()
     {
         prototype.dispose();
+        particleBatch.dispose();
+        fireworkBatch.dispose();
     }
 
     public void fire(Vector2 position)
     {
-        /* Firework f = fireworkPool.obtain(); */
+        Firework f = fireworkPool.obtain();
+        f.set(new Vector2(0, 0), position);
+        fireworks.add(f);
 
-        PooledEffect effect = effectPool.obtain();
-        float[] color = fireworkColors[rng.nextInt(fireworkColors.length)];
-        effect.getEmitters().peek().getTint().setColors(color);
-        effect.setPosition(position.x, position.y);
-        effects.add(effect);
     }
 
     public void update()
     {
     }
 
-    public void draw(SpriteBatch batch, float delta)
+    public void draw(float delta)
     {
+        fireworkBatch.begin();
+        {
+            for (Firework f : fireworks)
+            {
+                f.update(delta);
+                f.draw(fireworkBatch);
+                if (!f.isAlive())
+                {
+                    fireworks.removeValue(f, true);
+
+                    PooledEffect effect = effectPool.obtain();
+                    float[] color = fireworkColors[rng.nextInt(fireworkColors.length)];
+                    effect.getEmitters().peek().getTint().setColors(color);
+                    Vector2 destination = f.getDestination();
+                    effect.setPosition(destination.x, destination.y);
+                    effects.add(effect);
+                }
+            }
+        }
+        fireworkBatch.end();
+
+        particleBatch.begin();
         for (PooledEffect effect : effects)
         {
-            effect.draw(batch, delta);
+            effect.draw(particleBatch, delta);
             if(effect.isComplete())
             {
                 effects.removeValue(effect, true);
                 effect.free();
             }
         }
+        particleBatch.end();
     }
 }
