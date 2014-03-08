@@ -7,7 +7,9 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Input.Keys;
+
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 
 import java.util.Random;
 
@@ -16,6 +18,7 @@ public class TestScreen implements Screen
     private BurstGame game;
 
     private OrthographicCamera camera;
+
     private FireworkLauncher launcher;
     private MusicController musicController;
 
@@ -34,6 +37,8 @@ public class TestScreen implements Screen
     @Override
     public void render(float delta)
     {
+        camera.update();
+
         // update and draw stuff
         Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -42,9 +47,13 @@ public class TestScreen implements Screen
         {
             if (timer.getTime() > beatMap.getNextBeat().time - 2.0f)
             {
+                /* Vector2 position    = new Vector2(rng.nextFloat() * 200 + 140, 320.0f); */
+                Vector2 position    = new Vector2(0.0f, 0.0f);
+                Vector2 destination = new Vector2(rng.nextFloat() * 200 + 140,
+                                                  rng.nextFloat() *  80 + 120);
+
+                launcher.fire(position, destination);
                 beatMap.popBeat();
-                launcher.fire(new Vector2(rng.nextFloat() * 200 + 140,
-                                          rng.nextFloat() *  80 + 120));
             }
         }
         launcher.draw(delta);
@@ -60,8 +69,8 @@ public class TestScreen implements Screen
     {
         // Called when this screen is set as the screen with game.setScreen();
         // System.out.println("Opengl ES 2.0: " + (Gdx.graphics.isGL20Available() ? "Supported!" : "Unsupported."));
-        camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        camera.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        camera = new OrthographicCamera(BurstGame.VIRTUAL_WIDTH, BurstGame.VIRTUAL_HEIGHT);
+        camera.setToOrtho(true, BurstGame.VIRTUAL_WIDTH, BurstGame.VIRTUAL_HEIGHT);
         camera.update();
 
         launcher = new FireworkLauncher(camera);
@@ -82,8 +91,11 @@ public class TestScreen implements Screen
             {
                 if (keycode == Keys.A)
                 {
-                    launcher.fire(new Vector2(Gdx.graphics.getWidth()  / 2,
-                                              Gdx.graphics.getHeight() / 2));
+                    /* Vector2 position = new Vector2(rng.nextFloat() * 200 + 140, 320.0f); */
+                    Vector2 position = new Vector2(0.0f, 0.0f);
+                    Vector2 destination = new Vector2(Gdx.graphics.getWidth()  / 2,
+                                              Gdx.graphics.getHeight() / 2);
+                    launcher.fire(position, destination);
 
                     return true;
                 }
@@ -103,16 +115,13 @@ public class TestScreen implements Screen
             {
                 if (button == Input.Buttons.LEFT)
                 {
-                    launcher.fire(new Vector2(x, y));
-                    return true;
-                }
-                else if (button == Input.Buttons.RIGHT)
-                {
-                    launcher.fire(new Vector2(x, y));
-                    launcher.fire(new Vector2(x, y));
-                    launcher.fire(new Vector2(x, y));
-                    launcher.fire(new Vector2(x, y));
-                    launcher.fire(new Vector2(x, y));
+                    /* Vector2 position = new Vector2(rng.nextFloat() * 200 + 140, 320.0f); */
+                    Vector2 position = new Vector2(0.0f, 0.0f);
+                    Vector3 destination = new Vector3(x, y, 0.0f);
+                    camera.unproject(destination);
+
+                    launcher.fire(position, new Vector2(destination.x, destination.y));
+
                     return true;
                 }
                 return false;

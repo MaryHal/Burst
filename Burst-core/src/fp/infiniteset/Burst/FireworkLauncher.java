@@ -80,10 +80,10 @@ public class FireworkLauncher
         /* blurShader.dispose(); */
     }
 
-    public void fire(Vector2 position)
+    public void fire(Vector2 position, Vector2 destination)
     {
         Firework f = fireworkPool.obtain();
-        f.set(new Vector2(0, 0), position);
+        f.set(position, destination);
         fireworks.add(f);
     }
 

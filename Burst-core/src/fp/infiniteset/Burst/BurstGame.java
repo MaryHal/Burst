@@ -4,6 +4,10 @@ import com.badlogic.gdx.Game;
 
 public class BurstGame extends Game
 {
+    public static final int VIRTUAL_WIDTH  = 480;
+    public static final int VIRTUAL_HEIGHT = 320;
+    public static final float ASPECT_RATIO = (float)VIRTUAL_WIDTH / (float)VIRTUAL_HEIGHT;
+
     private TestScreen testScreen;
 
     @Override
