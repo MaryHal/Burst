@@ -2,15 +2,14 @@ package fp.infiniteset.Burst;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Input.Keys;
-
-import com.badlogic.gdx.utils.Timer;
-
 import com.badlogic.gdx.math.Vector2;
+
+import java.util.Random;
 
 public class TestScreen implements Screen
 {
@@ -23,6 +22,8 @@ public class TestScreen implements Screen
     /* private BeatEditor beatEditor; */
     private BeatMap beatMap;
     private Stopwatch timer;
+
+    private Random rng;
 
     // constructor to keep a reference to the main Game class
     public TestScreen(BurstGame game)
@@ -42,8 +43,8 @@ public class TestScreen implements Screen
             if (timer.getTime() > beatMap.getNextBeat().time - 2.0f)
             {
                 beatMap.popBeat();
-                launcher.fire(new Vector2(Gdx.graphics.getWidth()  / 2,
-                                          Gdx.graphics.getHeight() / 2));
+                launcher.fire(new Vector2(rng.nextFloat() * 200 + 140,
+                                          rng.nextFloat() *  80 + 120));
             }
         }
         launcher.draw(delta);
@@ -65,12 +66,15 @@ public class TestScreen implements Screen
 
         launcher = new FireworkLauncher(camera);
         musicController = new MusicController();
+        musicController.loadSong(Gdx.files.external(".config/Burst/music/FuwaFuwa.mp3"));
         musicController.play();
 
         /* beatEditor = new BeatEditor(); */
-        beatMap = new BeatMap(Gdx.files.external(".config/Burst/music/Melodica.beats"));
+        beatMap = new BeatMap(Gdx.files.external(".config/Burst/music/FuwaFuwa_normal.beats"));
         timer = new Stopwatch();
         timer.start();
+
+        rng = new Random();
 
         InputAdapter adapter = new InputAdapter()
         {
@@ -97,8 +101,21 @@ public class TestScreen implements Screen
 
             public boolean touchUp(int x, int y, int pointer, int button)
             {
-                launcher.fire(new Vector2(x, y));
-                return true;
+                if (button == Input.Buttons.LEFT)
+                {
+                    launcher.fire(new Vector2(x, y));
+                    return true;
+                }
+                else if (button == Input.Buttons.RIGHT)
+                {
+                    launcher.fire(new Vector2(x, y));
+                    launcher.fire(new Vector2(x, y));
+                    launcher.fire(new Vector2(x, y));
+                    launcher.fire(new Vector2(x, y));
+                    launcher.fire(new Vector2(x, y));
+                    return true;
+                }
+                return false;
             }
         };
         Gdx.input.setInputProcessor(adapter);

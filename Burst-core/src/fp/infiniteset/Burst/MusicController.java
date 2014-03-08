@@ -3,13 +3,21 @@ package fp.infiniteset.Burst;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.*;
 
+import com.badlogic.gdx.files.FileHandle;
+
 public class MusicController
 {
     private Music music;
 
     public MusicController()
     {
-        music = Gdx.audio.newMusic(Gdx.files.external(".config/Burst/music/Melodica.mp3"));
+        /* music = Gdx.audio.newMusic(Gdx.files.external(".config/Burst/music/Melodica.mp3")); */
+        /* music.setLooping(false); */
+    }
+
+    public void loadSong(FileHandle file)
+    {
+        music = Gdx.audio.newMusic(file);
         music.setLooping(false);
     }
 
