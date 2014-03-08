@@ -32,6 +32,7 @@ public class BeatMap implements Json.Serializable
     }
 
     protected PriorityQueue<Beat> beatQueue;
+    protected PriorityQueue<Beat> runningQueue;
 
     protected BeatMap()
     {
@@ -42,11 +43,19 @@ public class BeatMap implements Json.Serializable
     {
         this();
         readFile(file);
+
+        // Clone our queue
+        runningQueue = new PriorityQueue<Beat>(beatQueue);
     }
 
     public Beat getNextBeat()
     {
-        return beatQueue.peek();
+        return runningQueue.peek();
+    }
+
+    public Beat popBeat()
+    {
+        return runningQueue.poll();
     }
 
     public void readFile(FileHandle file)
