@@ -9,7 +9,13 @@ public class MusicController
 
     public MusicController()
     {
-        music = Gdx.audio.newMusic(Gdx.files.internal("music/Melodica.mp3"));
+        music = Gdx.audio.newMusic(Gdx.files.external(".config/Burst/music/Melodica.mp3"));
+        music.setLooping(false);
+    }
+
+    public void dispose()
+    {
+        music.dispose();
     }
 
     public void play()

@@ -25,23 +25,13 @@ public class Stopwatch
         running = false;
     }
 
-    public long getTime()
+    public float getTime()
     {
-        long elapsed;
         if (running)
         {
-            elapsed = (System.currentTimeMillis() - startTime);
+            return (float)(System.currentTimeMillis() - startTime) / 1000.0f;
         }
-        else
-        {
-            elapsed = (stopTime - startTime);
-        }
-        return elapsed;
-    }
-
-    public float getFloat()
-    {
-        return (float)getTime() / 1000.0f;
+        return (float)(stopTime - startTime) / 1000.0f;
     }
 }
 

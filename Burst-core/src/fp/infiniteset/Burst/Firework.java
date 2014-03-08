@@ -26,7 +26,7 @@ public class Firework implements Pool.Poolable
     {
         this.position = position;
         this.destination = destination;
-        this.velocity = position.cpy().lerp(destination, 1.00f);
+        this.velocity = position.cpy().lerp(destination, 0.50f);
 
         this.sprite = new ShapeRenderer();
         this.alive = false;
@@ -36,7 +36,7 @@ public class Firework implements Pool.Poolable
     {
         this.position = position;
         this.destination = destination;
-        this.velocity = position.cpy().lerp(destination, 1.00f);
+        this.velocity = position.cpy().lerp(destination, 0.50f);
 
         this.alive = true;
     }

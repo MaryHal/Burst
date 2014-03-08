@@ -13,10 +13,11 @@ public class BurstGame extends Game
         this.setScreen(testScreen);
     }
 
-    // @Override
-    // public void dispose()
-    // {
-    // }
+    @Override
+    public void dispose()
+    {
+        testScreen.dispose();
+    }
 
     // @Override
     // public void render()

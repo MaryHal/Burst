@@ -20,7 +20,8 @@ public class TestScreen implements Screen
     private FireworkLauncher launcher;
     private MusicController musicController;
 
-    private BeatEditor beatEditor;
+    /* private BeatEditor beatEditor; */
+    private BeatMap beatMap;
     private Stopwatch timer;
 
     // constructor to keep a reference to the main Game class
@@ -36,6 +37,15 @@ public class TestScreen implements Screen
         Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        if (beatMap.getNextBeat() != null)
+        {
+            if (timer.getTime() > beatMap.getNextBeat().time - 2.0f)
+            {
+                beatMap.popBeat();
+                launcher.fire(new Vector2(Gdx.graphics.getWidth()  / 2,
+                                          Gdx.graphics.getHeight() / 2));
+            }
+        }
         launcher.draw(delta);
     }
 
@@ -57,7 +67,8 @@ public class TestScreen implements Screen
         musicController = new MusicController();
         musicController.play();
 
-        beatEditor = new BeatEditor();
+        /* beatEditor = new BeatEditor(); */
+        beatMap = new BeatMap(Gdx.files.external(".config/Burst/music/Melodica.beats"));
         timer = new Stopwatch();
         timer.start();
 
@@ -74,15 +85,10 @@ public class TestScreen implements Screen
                 }
                 else if (keycode == Keys.Q)
                 {
-                    beatEditor.addBeat(timer.getFloat(), 1);
+                    /* beatEditor.addBeat(timer.getTime(), 1); */
                     launcher.detonate(new Vector2(Gdx.graphics.getWidth()  / 2,
                                                   Gdx.graphics.getHeight() / 2));
 
-                    return true;
-                }
-                else if (keycode == Keys.W)
-                {
-                    System.out.println(beatEditor);
                     return true;
                 }
 
@@ -96,8 +102,6 @@ public class TestScreen implements Screen
             }
         };
         Gdx.input.setInputProcessor(adapter);
-
-        System.out.println("All Set!");
     }
 
     @Override
@@ -119,6 +123,9 @@ public class TestScreen implements Screen
     @Override
     public void dispose()
     {
+        /* beatEditor.writeFile(Gdx.files.external(".config/Burst/music/Melodica.beats"), true); */
+
         launcher.dispose();
+        musicController.dispose();
     }
 }
