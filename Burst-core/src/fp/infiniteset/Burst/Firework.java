@@ -22,7 +22,7 @@ public class Firework implements Pool.Poolable
         this(Vector2.Zero, Vector2.Zero);
     }
 
-    public Firework(Vector2 position, Vector2 destination)
+    private Firework(Vector2 position, Vector2 destination)
     {
         this.position = position;
         this.destination = destination;
@@ -36,7 +36,9 @@ public class Firework implements Pool.Poolable
     {
         this.position = position;
         this.destination = destination;
-        this.velocity = position.cpy().lerp(destination, 0.50f);
+        /* this.velocity = position.cpy().lerp(destination, 0.50f); */
+        this.velocity = new Vector2(destination.x - position.x,
+                                    destination.y - position.y);
 
         this.alive = true;
     }
@@ -79,6 +81,9 @@ public class Firework implements Pool.Poolable
         sprite.begin(ShapeType.Filled);
         sprite.setColor(1.0f, 1.0f, 1.0f, 1.0f);
         sprite.rect(position.x - 2, position.y - 2, 4, 4);
+
+        sprite.setColor(0.3f, 0.3f, 0.3f, 1.0f);
+        sprite.rect(destination.x - 2, destination.y - 2, 4, 4);
         sprite.end();
     }
 }

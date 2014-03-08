@@ -45,12 +45,12 @@ public class TestScreen implements Screen
 
         if (beatMap.getNextBeat() != null)
         {
-            if (timer.getTime() > beatMap.getNextBeat().time - 2.0f)
+            if (timer.getTime() > beatMap.getNextBeat().time - 1.0f)
             {
-                /* Vector2 position    = new Vector2(rng.nextFloat() * 200 + 140, 320.0f); */
-                Vector2 position    = new Vector2(0.0f, 0.0f);
+                Vector2 position    = new Vector2(rng.nextFloat() * 200 + 140, 320.0f);
+                /* Vector2 position    = new Vector2(0.0f, 0.0f); */
                 Vector2 destination = new Vector2(rng.nextFloat() * 200 + 140,
-                                                  rng.nextFloat() *  80 + 120);
+                                                  rng.nextFloat() * 80 + 80);
 
                 launcher.fire(position, destination);
                 beatMap.popBeat();
@@ -91,8 +91,8 @@ public class TestScreen implements Screen
             {
                 if (keycode == Keys.A)
                 {
-                    /* Vector2 position = new Vector2(rng.nextFloat() * 200 + 140, 320.0f); */
-                    Vector2 position = new Vector2(0.0f, 0.0f);
+                    Vector2 position = new Vector2(rng.nextFloat() * 200 + 140, 320.0f);
+                    /* Vector2 position = new Vector2(0.0f, 0.0f); */
                     Vector2 destination = new Vector2(Gdx.graphics.getWidth()  / 2,
                                               Gdx.graphics.getHeight() / 2);
                     launcher.fire(position, destination);
@@ -115,8 +115,8 @@ public class TestScreen implements Screen
             {
                 if (button == Input.Buttons.LEFT)
                 {
-                    /* Vector2 position = new Vector2(rng.nextFloat() * 200 + 140, 320.0f); */
-                    Vector2 position = new Vector2(0.0f, 0.0f);
+                    Vector2 position = new Vector2(rng.nextFloat() * 200 + 140, 320.0f);
+                    /* Vector2 position = new Vector2(0.0f, 10.0f); */
                     Vector3 destination = new Vector3(x, y, 0.0f);
                     camera.unproject(destination);
 
