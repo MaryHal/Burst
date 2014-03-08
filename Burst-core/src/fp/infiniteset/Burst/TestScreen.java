@@ -4,10 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Input.Keys;
+
+import com.badlogic.gdx.utils.Timer;
 
 import com.badlogic.gdx.math.Vector2;
 
@@ -18,6 +19,9 @@ public class TestScreen implements Screen
     private OrthographicCamera camera;
     private FireworkLauncher launcher;
     private MusicController musicController;
+
+    private BeatEditor beatEditor;
+    private Stopwatch timer;
 
     // constructor to keep a reference to the main Game class
     public TestScreen(BurstGame game)
@@ -51,7 +55,11 @@ public class TestScreen implements Screen
 
         launcher = new FireworkLauncher(camera);
         musicController = new MusicController();
-        /* musicController.play(); */
+        musicController.play();
+
+        beatEditor = new BeatEditor();
+        timer = new Stopwatch();
+        timer.start();
 
         InputAdapter adapter = new InputAdapter()
         {
@@ -64,6 +72,20 @@ public class TestScreen implements Screen
 
                     return true;
                 }
+                else if (keycode == Keys.Q)
+                {
+                    beatEditor.addBeat(timer.getFloat(), 1);
+                    launcher.detonate(new Vector2(Gdx.graphics.getWidth()  / 2,
+                                                  Gdx.graphics.getHeight() / 2));
+
+                    return true;
+                }
+                else if (keycode == Keys.W)
+                {
+                    System.out.println(beatEditor);
+                    return true;
+                }
+
                 return false;
             }
 
