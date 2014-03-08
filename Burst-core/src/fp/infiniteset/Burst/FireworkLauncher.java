@@ -9,6 +9,9 @@ import com.badlogic.gdx.graphics.g2d.ParticleEffectPool.PooledEffect;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+/* import com.badlogic.gdx.graphics.glutils.ShaderProgram; */
+/* import com.badlogic.gdx.utils.GdxRuntimeException; */
+
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 
@@ -28,6 +31,8 @@ public class FireworkLauncher
 
     private SpriteBatch particleBatch;
     private SpriteBatch fireworkBatch;
+
+    /* private ShaderProgram blurShader; */
 
     public FireworkLauncher(Camera camera)
     {
@@ -58,6 +63,13 @@ public class FireworkLauncher
 
         fireworkBatch = new SpriteBatch(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         fireworkBatch.setProjectionMatrix(camera.combined);
+
+        /* ShaderProgram.pedantic = false; */
+        /* blurShader = new ShaderProgram(Gdx.files.internal("shaders/blur.vshader"), */
+        /*                                Gdx.files.internal("shaders/blur.fshader")); */
+        /* if (!blurShader.isCompiled()) */
+        /*     throw new GdxRuntimeException(blurShader.getLog()); */
+
     }
 
     public void dispose()
@@ -65,6 +77,7 @@ public class FireworkLauncher
         prototype.dispose();
         particleBatch.dispose();
         fireworkBatch.dispose();
+        /* blurShader.dispose(); */
     }
 
     public void fire(Vector2 position)
@@ -72,7 +85,15 @@ public class FireworkLauncher
         Firework f = fireworkPool.obtain();
         f.set(new Vector2(0, 0), position);
         fireworks.add(f);
+    }
 
+    public void detonate(Vector2 position)
+    {
+        PooledEffect effect = effectPool.obtain();
+        float[] color = fireworkColors[rng.nextInt(fireworkColors.length)];
+        effect.getEmitters().peek().getTint().setColors(color);
+        effect.setPosition(position.x, position.y);
+        effects.add(effect);
     }
 
     public void update()
@@ -90,19 +111,16 @@ public class FireworkLauncher
                 if (!f.isAlive())
                 {
                     fireworks.removeValue(f, true);
-
-                    PooledEffect effect = effectPool.obtain();
-                    float[] color = fireworkColors[rng.nextInt(fireworkColors.length)];
-                    effect.getEmitters().peek().getTint().setColors(color);
-                    Vector2 destination = f.getDestination();
-                    effect.setPosition(destination.x, destination.y);
-                    effects.add(effect);
+                    detonate(f.getDestination());
                 }
             }
         }
         fireworkBatch.end();
 
         particleBatch.begin();
+        /* blurShader.setUniformMatrix("u_projTrans", particleBatch.getProjectionMatrix()); */
+        /* particleBatch.setShader(blurShader); */
+
         for (PooledEffect effect : effects)
         {
             effect.draw(particleBatch, delta);

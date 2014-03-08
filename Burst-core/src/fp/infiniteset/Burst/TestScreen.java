@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Input.Keys;
-/* import com.badlogic.gdx.audio.*; */
 
 import com.badlogic.gdx.math.Vector2;
 
@@ -18,8 +17,7 @@ public class TestScreen implements Screen
 
     private OrthographicCamera camera;
     private FireworkLauncher launcher;
-
-    /* private Music music; */
+    private MusicController musicController;
 
     // constructor to keep a reference to the main Game class
     public TestScreen(BurstGame game)
@@ -52,8 +50,8 @@ public class TestScreen implements Screen
         camera.update();
 
         launcher = new FireworkLauncher(camera);
-
-        /* music = Gdx.audio.newMusic(Gdx.files.internal("music/Melodica.mp3")); */
+        musicController = new MusicController();
+        /* musicController.play(); */
 
         InputAdapter adapter = new InputAdapter()
         {
