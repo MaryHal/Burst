@@ -1,6 +1,5 @@
 package fp.infiniteset.Burst;
 
-/* import com.badlogic.gdx.graphics.Camera; */
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
@@ -26,7 +25,7 @@ public class Firework implements Pool.Poolable
     {
         this.position = position;
         this.destination = destination;
-        this.velocity = position.cpy().lerp(destination, 0.50f);
+        this.velocity = destination.cpy().sub(position);
 
         this.sprite = new ShapeRenderer();
         this.alive = false;
@@ -36,9 +35,7 @@ public class Firework implements Pool.Poolable
     {
         this.position = position;
         this.destination = destination;
-        /* this.velocity = position.cpy().lerp(destination, 0.50f); */
-        this.velocity = new Vector2(destination.x - position.x,
-                                    destination.y - position.y);
+        this.velocity = destination.cpy().sub(position);
 
         this.alive = true;
     }

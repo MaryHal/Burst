@@ -58,6 +58,11 @@ public class BeatMap implements Json.Serializable
         return runningQueue.poll();
     }
 
+    public void reset()
+    {
+        runningQueue = new PriorityQueue<Beat>(beatQueue);
+    }
+
     public void readFile(FileHandle file)
     {
         JsonReader jsonReader = new JsonReader();

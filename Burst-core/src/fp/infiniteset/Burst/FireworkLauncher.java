@@ -47,13 +47,13 @@ public class FireworkLauncher
         fireworks = new Array<Firework>();
 
         fireworkColors = new float[][] {
-            {1.0f, 0.3f, 0.3f, 1.0f},
-            {0.3f, 1.0f, 0.3f, 1.0f},
-            {0.3f, 0.3f, 1.0f, 1.0f},
+            {0.8f, 0.3f, 0.3f, 1.0f},
+            {0.3f, 0.8f, 0.3f, 1.0f},
+            {0.3f, 0.3f, 0.8f, 1.0f},
 
-            {0.3f, 1.0f, 1.0f, 1.0f},
-            {1.0f, 0.3f, 1.0f, 1.0f},
-            {1.0f, 1.0f, 0.3f, 1.0f},
+            {0.3f, 0.9f, 0.9f, 1.0f},
+            {0.9f, 0.3f, 0.9f, 1.0f},
+            {0.9f, 0.9f, 0.3f, 1.0f},
         };
 
         rng = new Random();

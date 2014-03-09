@@ -3,35 +3,88 @@ package fp.infiniteset.Burst;
 public class Stopwatch
 {
     private long startTime;
-    private long stopTime;
-    private boolean running;
+    private long pauseTime;
+
+    private boolean started;
+    private boolean paused;
 
     public Stopwatch()
     {
         startTime = 0;
-        stopTime = 0;
-        running = false;
+        paurseTime = 0;
+
+        started = false;
+        paused = false;
     }
 
     public void start()
     {
+        started = true;
+        paused = false;
         startTime = System.currentTimeMillis();
-        running = true;
     }
 
     public void stop()
     {
-        stopTime = System.currentTimeMillis();
-        running = false;
+        started = false;
+        paused = false;
+    }
+
+    // Clock actions
+    public void pause()
+    {
+        if ((started == true) && (paused == false))
+        {
+            paused = true;
+            pauseTime = System.currentTimeMillis() - startTime;
+        }
+    }
+
+    public void unpause()
+    {
+        if (paused == true)
+        {
+            // Set status
+            paused = false;
+
+            // Reset times
+            startTime = System.currentTimeMillis() - pauseTime;
+            pauseTime = 0;
+        }
+    }
+
+    // Set Time
+    public void setOffset(float time)
+    {
+        startTime += time;
     }
 
     public float getTime()
     {
-        if (running)
+        if (started)
         {
-            return (float)(System.currentTimeMillis() - startTime) / 1000.0f;
+            if (paused)
+            {
+                return (float)pauseTime / 1000.0f;
+            }
+            else
+            {
+                return (float)(System.currentTimeMillis() - startTime) / 1000.0f;
+            }
         }
-        return (float)(stopTime - startTime) / 1000.0f;
+
+        return 0;
+    }
+
+        // Check status
+    public boolean isStarted()
+    {
+        return started;
+    }
+
+    public boolean isPaused()
+    {
+        return paused;
     }
 }
 
