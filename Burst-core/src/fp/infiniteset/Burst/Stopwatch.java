@@ -11,7 +11,7 @@ public class Stopwatch
     public Stopwatch()
     {
         startTime = 0;
-        paurseTime = 0;
+        pauseTime = 0;
 
         started = false;
         paused = false;

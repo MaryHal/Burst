@@ -1,0 +1,4 @@
+#!/bin/sh
+
+ /usr/lib/jvm/java-7-openjdk/bin/java -Dfile.encoding=UTF-8 -classpath /home/sanford/code/current/Burst/Burst-desktop/bin:/home/sanford/code/current/Burst/Burst-core/bin:/home/sanford/code/current/Burst/Burst-core/libs/gdx.jar:/home/sanford/code/current/Burst/Burst-desktop/libs/gdx-backend-lwjgl-natives.jar:/home/sanford/code/current/Burst/Burst-desktop/libs/gdx-backend-lwjgl.jar:/home/sanford/code/current/Burst/Burst-desktop/libs/gdx-natives.jar fp.infiniteset.Burst.Main
+

@@ -101,7 +101,7 @@ public class TestScreen implements Screen
                 {
                     Vector2 position = new Vector2(rng.nextFloat() * 200 + 140, 320.0f);
                     Vector2 destination = new Vector2(Gdx.graphics.getWidth()  / 2,
-                k                             Gdx.graphics.getHeight() / 2);
+                                              Gdx.graphics.getHeight() / 2);
                     launcher.fire(position, destination);
 
                     return true;
