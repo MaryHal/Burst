@@ -40,6 +40,7 @@ public class Firework implements Pool.Poolable
         this.alive = true;
     }
 
+    @Override
     public void reset()
     {
         position = Vector2.Zero;

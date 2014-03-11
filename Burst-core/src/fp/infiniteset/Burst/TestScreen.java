@@ -95,6 +95,7 @@ public class TestScreen implements Screen
 
         InputAdapter adapter = new InputAdapter()
         {
+            @Override
             public boolean keyUp(int keycode)
             {
                 if (keycode == Keys.A)
@@ -126,6 +127,7 @@ public class TestScreen implements Screen
                 return false;
             }
 
+            @Override
             public boolean touchUp(int x, int y, int pointer, int button)
             {
                 if (button == Input.Buttons.LEFT)

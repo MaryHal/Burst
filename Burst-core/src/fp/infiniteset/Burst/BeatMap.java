@@ -25,6 +25,7 @@ public class BeatMap implements Json.Serializable
 
     public class BeatComparator implements Comparator<Beat>
     {
+        @Override
         public int compare(Beat x, Beat y)
         {
             return Float.compare(x.time, y.time);
@@ -76,6 +77,7 @@ public class BeatMap implements Json.Serializable
         }
     }
 
+    @Override
     public void write(Json json)
     {
         Beat[] beatArray = new Beat[beatQueue.size()];
@@ -88,6 +90,7 @@ public class BeatMap implements Json.Serializable
         }
     }
 
+    @Override
     public void read(Json json, JsonValue jsonMap)
     {
         Beat b = new Beat(Float.parseFloat(jsonMap.child().name()),

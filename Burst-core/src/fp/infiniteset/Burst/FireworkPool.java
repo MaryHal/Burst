@@ -19,6 +19,7 @@ public class FireworkPool extends Pool<Firework>
         super(initialCapacity, max);
     }
 
+    @Override
     protected Firework newObject()
     {
         return new Firework();

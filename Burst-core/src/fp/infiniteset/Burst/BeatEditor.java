@@ -29,6 +29,7 @@ public class BeatEditor extends BeatMap
             file.writeString(json.toJson(this), false);
     }
 
+    @Override
     public String toString()
     {
         return new Json().prettyPrint(this);
