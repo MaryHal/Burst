@@ -43,25 +43,15 @@ public class TestScreen implements Screen
         Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        if (beatMap.getNextBeat() != null)
+        while (beatMap.getNextBeat() != null && 
+                timer.getTime() > beatMap.getNextBeat().time - 1.0f)
         {
-            while (timer.getTime() > beatMap.getNextBeat().time - 1.0f)
-            {
-                Vector2 position    = new Vector2(rng.nextFloat() * 200 + 140, 320.0f);
-                Vector2 destination = new Vector2(rng.nextFloat() * 200 + 140,
-                                                  rng.nextFloat() * 80 + 80);
+            Vector2 position    = new Vector2(rng.nextFloat() * 200 + 140, 320.0f);
+            Vector2 destination = new Vector2(rng.nextFloat() * 200 + 140,
+                    rng.nextFloat() * 80 + 80);
 
-                launcher.fire(position, destination);
-                beatMap.popBeat();
-            }
-        }
-        else
-        {
-            beatMap.reset();
-            musicController.getMusic().stop();
-            musicController.getMusic().play();
-            timer.stop();
-            timer.start();
+            launcher.fire(position, destination);
+            beatMap.popBeat();
         }
 
         launcher.draw(delta);
@@ -83,11 +73,11 @@ public class TestScreen implements Screen
 
         launcher = new FireworkLauncher(camera);
         musicController = new MusicController();
-        musicController.loadSong(Gdx.files.external(".config/Burst/music/FuwaFuwa.mp3"));
+        musicController.loadSong(Gdx.files.external(".config/Burst/music/SoonItWillBeColdEnough.mp3"));
         musicController.play();
 
         /* beatEditor = new BeatEditor(); */
-        beatMap = new BeatMap(Gdx.files.external(".config/Burst/music/FuwaFuwa_hard.beats"));
+        beatMap = new BeatMap(Gdx.files.external(".config/Burst/music/SoonItWillBeColdEnough.beats"));
         timer = new Stopwatch();
         timer.start();
 
@@ -155,11 +145,15 @@ public class TestScreen implements Screen
     @Override
     public void pause()
     {
+        /* timer.pause(); */
+        /* musicController.getMusic().pause(); */
     }
 
     @Override
     public void resume()
     {
+        /* timer.unpause(); */
+        /* musicController.getMusic().play(); */
     }
 
     @Override
