@@ -1,5 +1,7 @@
 package fp.infiniteset.Burst;
 
+import com.badlogic.gdx.utils.TimeUtils;
+
 public class Stopwatch
 {
     private long startTime;
@@ -21,7 +23,7 @@ public class Stopwatch
     {
         started = true;
         paused = false;
-        startTime = System.currentTimeMillis();
+        startTime = TimeUtils.millis();
     }
 
     public void stop()
@@ -36,7 +38,7 @@ public class Stopwatch
         if ((started == true) && (paused == false))
         {
             paused = true;
-            pauseTime = System.currentTimeMillis() - startTime;
+            pauseTime = TimeUtils.millis() - startTime;
         }
     }
 
@@ -48,7 +50,7 @@ public class Stopwatch
             paused = false;
 
             // Reset times
-            startTime = System.currentTimeMillis() - pauseTime;
+            startTime = TimeUtils.millis() - pauseTime;
             pauseTime = 0;
         }
     }
@@ -69,7 +71,7 @@ public class Stopwatch
             }
             else
             {
-                return (float)(System.currentTimeMillis() - startTime) / 1000.0f;
+                return (float)(TimeUtils.millis() - startTime) / 1000.0f;
             }
         }
 

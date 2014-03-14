@@ -13,14 +13,6 @@ public class BeatMap implements Json.Serializable
 {
     public class Beat
     {
-        public static final int T1 = 1 << 0;
-        public static final int T2 = 1 << 1;
-        public static final int T3 = 1 << 2;
-        public static final int T4 = 1 << 3;
-        public static final int T5 = 1 << 4;
-        public static final int T6 = 1 << 5;
-        public static final int T7 = 1 << 6;
-
         public float time;
         public int keys;
 

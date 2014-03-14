@@ -11,6 +11,10 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+
 import java.util.Random;
 
 public class TestScreen implements Screen
@@ -25,6 +29,9 @@ public class TestScreen implements Screen
     /* private BeatEditor beatEditor; */
     private BeatMap beatMap;
     private Stopwatch timer;
+
+    private SpriteBatch testBatch;
+    private BitmapFont font;
 
     private Random rng;
 
@@ -54,6 +61,11 @@ public class TestScreen implements Screen
             beatMap.popBeat();
         }
 
+        font.setColor(1.0f, 1.0f, 1.0f, 1.0f);
+        testBatch.begin();
+        font.draw(testBatch, "Hello World!", 100, BurstGame.VIRTUAL_HEIGHT - 100);
+        testBatch.end();
+
         launcher.draw(delta);
     }
 
@@ -82,6 +94,13 @@ public class TestScreen implements Screen
         timer.start();
 
         rng = new Random();
+
+        testBatch = new SpriteBatch();
+        /* testBatch.setProjectionMatrix(camera.combined); */
+
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/DroidSansFallback.ttf"));
+        font = generator.generateFont(12);
+        generator.dispose();
 
         InputAdapter adapter = new InputAdapter()
         {
@@ -145,22 +164,22 @@ public class TestScreen implements Screen
     @Override
     public void pause()
     {
-        /* timer.pause(); */
-        /* musicController.getMusic().pause(); */
+        timer.pause();
+        musicController.getMusic().pause();
     }
 
     @Override
     public void resume()
     {
-        /* timer.unpause(); */
-        /* musicController.getMusic().play(); */
+        timer.unpause();
+        musicController.getMusic().play();
     }
 
     @Override
     public void dispose()
     {
         /* beatEditor.writeFile(Gdx.files.external(".config/Burst/music/Melodica.beats"), true); */
-
+        testBatch.dispose();
         launcher.dispose();
         musicController.dispose();
     }

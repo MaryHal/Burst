@@ -58,15 +58,16 @@ public class FireworkLauncher
 
         rng = new Random();
 
-        particleBatch = new SpriteBatch(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        particleBatch = new SpriteBatch(2048);
         particleBatch.setProjectionMatrix(camera.combined);
 
-        fireworkBatch = new SpriteBatch(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        fireworkBatch = new SpriteBatch(64);
         fireworkBatch.setProjectionMatrix(camera.combined);
 
         /* ShaderProgram.pedantic = false; */
-        /* blurShader = new ShaderProgram(Gdx.files.internal("shaders/blur.vshader"), */
-        /*                                Gdx.files.internal("shaders/blur.fshader")); */
+        /* blurShader = new ShaderProgram(Gdx.files.internal("shaders/simple_vertex.glsl"), */
+        /*                                Gdx.files.internal("shaders/simple_fragment.glsl")); */
+        /* particleBatch.setShader(blurShader); */
         /* if (!blurShader.isCompiled()) */
         /*     throw new GdxRuntimeException(blurShader.getLog()); */
 
@@ -118,16 +119,15 @@ public class FireworkLauncher
         fireworkBatch.end();
 
         particleBatch.begin();
-        /* blurShader.setUniformMatrix("u_projTrans", particleBatch.getProjectionMatrix()); */
-        /* particleBatch.setShader(blurShader); */
-
-        for (PooledEffect effect : effects)
         {
-            effect.draw(particleBatch, delta);
-            if(effect.isComplete())
+            for (PooledEffect effect : effects)
             {
-                effects.removeValue(effect, true);
-                effect.free();
+                effect.draw(particleBatch, delta);
+                if(effect.isComplete())
+                {
+                    effects.removeValue(effect, true);
+                    effect.free();
+                }
             }
         }
         particleBatch.end();
