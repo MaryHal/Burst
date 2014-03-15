@@ -67,6 +67,11 @@ public class Firework implements Pool.Poolable
     {
         position.add(velocity.cpy().scl(delta));
 
+        if (position.x < 0 && position.x >= 480 &&
+            position.y < 0 && position.y >= 320)
+        {
+            alive = false;
+        }
         if (position.epsilonEquals(destination, 5.0f))
         {
             alive = false;

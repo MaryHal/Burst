@@ -65,8 +65,8 @@ public class FireworkLauncher
         fireworkBatch.setProjectionMatrix(camera.combined);
 
         /* ShaderProgram.pedantic = false; */
-        /* blurShader = new ShaderProgram(Gdx.files.internal("shaders/simple_vertex.glsl"), */
-        /*                                Gdx.files.internal("shaders/simple_fragment.glsl")); */
+        /* blurShader = new ShaderProgram(Gdx.files.internal("shaders/blur.vertex"), */
+        /*                                Gdx.files.internal("shaders/blur.fragment")); */
         /* particleBatch.setShader(blurShader); */
         /* if (!blurShader.isCompiled()) */
         /*     throw new GdxRuntimeException(blurShader.getLog()); */
@@ -108,12 +108,14 @@ public class FireworkLauncher
             for (Firework f : fireworks)
             {
                 f.update(delta);
-                f.draw(fireworkBatch);
                 if (!f.isAlive())
                 {
                     fireworks.removeValue(f, true);
                     detonate(f.getDestination());
+                    continue;
                 }
+
+                f.draw(fireworkBatch);
             }
         }
         fireworkBatch.end();

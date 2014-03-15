@@ -63,7 +63,7 @@ public class TestScreen implements Screen
 
         font.setColor(1.0f, 1.0f, 1.0f, 1.0f);
         testBatch.begin();
-        font.draw(testBatch, "Hello World!", 100, BurstGame.VIRTUAL_HEIGHT - 100);
+        font.draw(testBatch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 8, 8);
         testBatch.end();
 
         launcher.draw(delta);
@@ -96,10 +96,10 @@ public class TestScreen implements Screen
         rng = new Random();
 
         testBatch = new SpriteBatch();
-        /* testBatch.setProjectionMatrix(camera.combined); */
+        testBatch.setProjectionMatrix(camera.combined);
 
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/DroidSansFallback.ttf"));
-        font = generator.generateFont(12);
+        font = generator.generateFont(12, FreeTypeFontGenerator.DEFAULT_CHARS, true);
         generator.dispose();
 
         InputAdapter adapter = new InputAdapter()
