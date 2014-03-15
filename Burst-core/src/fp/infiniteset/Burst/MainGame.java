@@ -2,7 +2,7 @@ package fp.infiniteset.Burst;
 
 import com.badlogic.gdx.Game;
 
-public class BurstGame extends Game
+public class MainGame extends Game
 {
     public static final int VIRTUAL_WIDTH  = 480;
     public static final int VIRTUAL_HEIGHT = 320;

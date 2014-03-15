@@ -19,7 +19,7 @@ import java.util.Random;
 
 public class TestScreen implements Screen
 {
-    private BurstGame game;
+    private MainGame game;
 
     private OrthographicCamera camera;
 
@@ -36,7 +36,7 @@ public class TestScreen implements Screen
     private Random rng;
 
     // constructor to keep a reference to the main Game class
-    public TestScreen(BurstGame game)
+    public TestScreen(MainGame game)
     {
         this.game = game;
     }
@@ -50,8 +50,8 @@ public class TestScreen implements Screen
         Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        while (beatMap.getNextBeat() != null && 
-                timer.getTime() > beatMap.getNextBeat().time - 1.0f)
+        while (beatMap.getNextBeat() != null &&
+               timer.getTime() > beatMap.getNextBeat().time - 1.0f)
         {
             Vector2 position    = new Vector2(rng.nextFloat() * 200 + 140, 320.0f);
             Vector2 destination = new Vector2(rng.nextFloat() * 200 + 140,
@@ -79,8 +79,8 @@ public class TestScreen implements Screen
     {
         // Called when this screen is set as the screen with game.setScreen();
         // System.out.println("Opengl ES 2.0: " + (Gdx.graphics.isGL20Available() ? "Supported!" : "Unsupported."));
-        camera = new OrthographicCamera(BurstGame.VIRTUAL_WIDTH, BurstGame.VIRTUAL_HEIGHT);
-        camera.setToOrtho(true, BurstGame.VIRTUAL_WIDTH, BurstGame.VIRTUAL_HEIGHT);
+        camera = new OrthographicCamera(MainGame.VIRTUAL_WIDTH, MainGame.VIRTUAL_HEIGHT);
+        camera.setToOrtho(true, MainGame.VIRTUAL_WIDTH, MainGame.VIRTUAL_HEIGHT);
         camera.update();
 
         launcher = new FireworkLauncher(camera);
