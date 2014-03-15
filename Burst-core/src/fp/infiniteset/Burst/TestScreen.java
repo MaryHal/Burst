@@ -63,7 +63,7 @@ public class TestScreen implements Screen
 
         font.setColor(1.0f, 1.0f, 1.0f, 1.0f);
         testBatch.begin();
-        font.draw(testBatch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 8, 8);
+        font.draw(testBatch, "我是中国人アメリカ西森FPS: " + Gdx.graphics.getFramesPerSecond(), 8, 8);
         testBatch.end();
 
         launcher.draw(delta);
@@ -84,14 +84,6 @@ public class TestScreen implements Screen
         camera.update();
 
         launcher = new FireworkLauncher(camera);
-        musicController = new MusicController();
-        musicController.loadSong(Gdx.files.external(".config/Burst/music/SoonItWillBeColdEnough.mp3"));
-        musicController.play();
-
-        /* beatEditor = new BeatEditor(); */
-        beatMap = new BeatMap(Gdx.files.external(".config/Burst/music/SoonItWillBeColdEnough.beats"));
-        timer = new Stopwatch();
-        timer.start();
 
         rng = new Random();
 
@@ -101,6 +93,15 @@ public class TestScreen implements Screen
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/DroidSansFallback.ttf"));
         font = generator.generateFont(12, FreeTypeFontGenerator.DEFAULT_CHARS, true);
         generator.dispose();
+
+        musicController = new MusicController();
+        musicController.loadSong(Gdx.files.external(".config/Burst/music/SoonItWillBeColdEnough.mp3"));
+        musicController.play();
+
+        /* beatEditor = new BeatEditor(); */
+        beatMap = new BeatMap(Gdx.files.external(".config/Burst/music/SoonItWillBeColdEnough.beats"));
+        timer = new Stopwatch();
+        timer.start();
 
         InputAdapter adapter = new InputAdapter()
         {
@@ -164,15 +165,15 @@ public class TestScreen implements Screen
     @Override
     public void pause()
     {
-        timer.pause();
-        musicController.getMusic().pause();
+        /* timer.pause(); */
+        /* musicController.getMusic().pause(); */
     }
 
     @Override
     public void resume()
     {
-        timer.unpause();
-        musicController.getMusic().play();
+        /* timer.unpause(); */
+        /* musicController.getMusic().play(); */
     }
 
     @Override
