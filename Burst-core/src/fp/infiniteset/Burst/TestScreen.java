@@ -35,6 +35,8 @@ public class TestScreen implements Screen
 
     private Random rng;
 
+    private Menu menu;
+
     // constructor to keep a reference to the main Game class
     public TestScreen(MainGame game)
     {
@@ -63,8 +65,10 @@ public class TestScreen implements Screen
 
         font.setColor(1.0f, 1.0f, 1.0f, 1.0f);
         testBatch.begin();
-        font.draw(testBatch, "我是中国人アメリカ西森FPS: " + Gdx.graphics.getFramesPerSecond(), 8, 8);
+        font.draw(testBatch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 8, 8);
         testBatch.end();
+
+        menu.draw(delta);
 
         launcher.draw(delta);
     }
@@ -103,8 +107,22 @@ public class TestScreen implements Screen
         timer = new Stopwatch();
         timer.start();
 
+        menu = new Menu(camera, font, 100.0f, 100.0f);
+        menu.addItem("one fish");
+        menu.addItem("two fish");
+        menu.addItem("red fish");
+        menu.addItem("blue fish");
+
         InputAdapter adapter = new InputAdapter()
         {
+            @Override
+            public boolean keyDown(int keycode)
+            {
+                menu.handleKeyEvent(keycode);
+
+                return true;
+            }
+
             @Override
             public boolean keyUp(int keycode)
             {
@@ -140,6 +158,7 @@ public class TestScreen implements Screen
             @Override
             public boolean touchUp(int x, int y, int pointer, int button)
             {
+                menu.handleTouchEvent(x, y, pointer, button);
                 if (button == Input.Buttons.LEFT)
                 {
                     Vector2 position = new Vector2(rng.nextFloat() * 200 + 140, 320.0f);
