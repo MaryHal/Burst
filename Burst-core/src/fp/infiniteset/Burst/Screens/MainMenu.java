@@ -51,6 +51,7 @@ public class MainMenu implements Screen
         // Generate Menu
         menu = new Menu(camera, font, 100.0f, 100.0f);
         FileHandle[] beatFiles = Gdx.files.external(".config/Burst/music").list(".beats");
+        menu.addItem("Song List:", false);
         for (FileHandle file : beatFiles)
         {
             menu.addItem(file.nameWithoutExtension());
@@ -127,9 +128,10 @@ public class MainMenu implements Screen
             launcher.fire(position, destination);
         }
 
+        if (menu.isSelected())
+        {
+            System.out.println(menu.getSelection());
+        }
         menu.draw(delta);
-
-        /* menu.draw(delta); */
-        /* launcher.draw(delta); */
     }
 }

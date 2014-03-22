@@ -17,11 +17,13 @@ public class Menu
     {
         public String label;
         public Rectangle bounds;
+        public boolean selectable;
 
-        public MenuItem(String label, Rectangle bounds)
+        public MenuItem(String label, Rectangle bounds, boolean selectable)
         {
             this.label = label;
             this.bounds = bounds;
+            this.selectable = selectable;
         }
     }
 
@@ -46,7 +48,7 @@ public class Menu
         menuBatch.setProjectionMatrix(camera.combined);
         items = new ArrayList<MenuItem>();
 
-        index = 0;
+        index = -1;
         selected = false;
     }
 
@@ -57,27 +59,71 @@ public class Menu
 
     public void addItem(String label)
     {
-        BitmapFont.TextBounds textBounds = font.getBounds(label);
-        Rectangle old = (items.isEmpty() ? new Rectangle(offset.x, offset.y, 0.0f, 0.0f) : items.get(items.size() - 1).bounds);
+        appendToList(label, true);
+    }
 
-        Rectangle bounds = new Rectangle(old.x, old.y + old.height, textBounds.width, font.getLineHeight());
-        items.add(new MenuItem(label, bounds));
+    public void addItem(String label, boolean selectable)
+    {
+        appendToList(label, selectable);
+    }
+
+    private void appendToList(String label, boolean selectable)
+    {
+        BitmapFont.TextBounds textBounds = font.getBounds(label);
+        Rectangle old = (items.isEmpty() ?
+                         new Rectangle(offset.x, offset.y, 0.0f, 0.0f) :
+                         items.get(items.size() - 1).bounds);
+
+        Rectangle bounds = new Rectangle(old.x,
+                                         old.y + old.height,
+                                         textBounds.width,
+                                         font.getLineHeight());
+        items.add(new MenuItem(label, bounds, selectable));
+
+        // Set initial index
+        if (index < 0 && selectable)
+            index = items.size() - 1;
+    }
+
+    public void addMargin()
+    {
+        if (!items.isEmpty())
+            items.get(items.size() - 1).bounds.x += 8.0f;
+    }
+
+    public void removeMargin()
+    {
+        if (!items.isEmpty())
+            items.get(items.size() - 1).bounds.x -= 8.0f;
     }
 
     public boolean handleKeyEvent(int keycode)
     {
+        int accumulator = 0;
         if (keycode == Keys.W)
         {
-            index--;
-            if (index < 0)
-                index = items.size() - 1;
+            do
+            {
+                index--;
+                if (index < 0)
+                    index = items.size() - 1;
+            } while (++accumulator < items.size() && !items.get(index).selectable);
         }
         else if (keycode == Keys.S)
         {
-            index++;
-            if (index > items.size() - 1)
-                index = 0;
+            do
+            {
+                index++;
+                if (index > items.size() - 1)
+                    index = 0;
+            } while (++accumulator < items.size() && !items.get(index).selectable);
         }
+
+        if (keycode == Keys.J || keycode == Keys.ENTER)
+        {
+            selected = true;
+        }
+
         return true;
     }
 
@@ -88,9 +134,18 @@ public class Menu
             Vector3 point = new Vector3(x, y, 0.0f);
             camera.unproject(point);
 
-            if (items.get(i).bounds.contains(point.x, point.y))
+            MenuItem currentItem = items.get(i);
+            if (currentItem.bounds.contains(point.x, point.y) && currentItem.selectable)
             {
-                index = i;
+                // If the clicked menu item is already selected, hard select it.
+                if (index == i)
+                {
+                    selected = true;
+                }
+                else
+                {
+                    index = i;
+                }
                 return true;
             }
         }
