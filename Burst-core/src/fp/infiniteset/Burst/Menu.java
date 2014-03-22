@@ -13,11 +13,23 @@ import com.badlogic.gdx.math.Rectangle;
 
 public class Menu
 {
+    private class MenuItem
+    {
+        public String label;
+        public Rectangle bounds;
+
+        public MenuItem(String label, Rectangle bounds)
+        {
+            this.label = label;
+            this.bounds = bounds;
+        }
+    }
+
     private SpriteBatch menuBatch;
     private Camera camera;
 
     private BitmapFont font;
-    private ArrayList<String> items;
+    private ArrayList<MenuItem> items;
 
     private Vector2 offset;
     private int index;
@@ -31,8 +43,8 @@ public class Menu
         offset = new Vector2(x, y);
 
         menuBatch = new SpriteBatch(64);
-        menuBatch.setProjectionMatrix(camera.combined.translate(offset.x, offset.y, 0.0f));
-        items = new ArrayList<String>();
+        menuBatch.setProjectionMatrix(camera.combined);
+        items = new ArrayList<MenuItem>();
 
         index = 0;
         selected = false;
@@ -43,9 +55,13 @@ public class Menu
         menuBatch.dispose();
     }
 
-    public void addItem(String item)
+    public void addItem(String label)
     {
-        items.add(item);
+        BitmapFont.TextBounds textBounds = font.getBounds(label);
+        Rectangle old = (items.isEmpty() ? new Rectangle(offset.x, offset.y, 0.0f, 0.0f) : items.get(items.size() - 1).bounds);
+
+        Rectangle bounds = new Rectangle(old.x, old.y + old.height, textBounds.width, font.getLineHeight());
+        items.add(new MenuItem(label, bounds));
     }
 
     public boolean handleKeyEvent(int keycode)
@@ -69,19 +85,10 @@ public class Menu
     {
         for (int i = 0; i < items.size(); i++)
         {
-            Vector3 position = new Vector3(x, y, 0.0f);
-            camera.unproject(position);
+            Vector3 point = new Vector3(x, y, 0.0f);
+            camera.unproject(point);
 
-            BitmapFont.TextBounds bounds = font.getBounds(items.get(i));
-            Rectangle rect = new Rectangle(offset.x,
-                                           offset.y,
-                                           bounds.width,
-                                           bounds.height + i * font.getLineHeight());
-
-            if (position.x >= rect.x &&
-                position.x <= rect.x + rect.width &&
-                position.y >= rect.y &&
-                position.y <= rect.y + rect.height)
+            if (items.get(i).bounds.contains(point.x, point.y))
             {
                 index = i;
                 return true;
@@ -101,7 +108,7 @@ public class Menu
         if (selected)
         {
             selected = false;
-            return items.get(index);
+            return items.get(index).label;
         }
 
         return "";
@@ -117,7 +124,7 @@ public class Menu
             else
                 font.setColor(1.0f, 1.0f, 1.0f, 1.0f);
 
-            font.draw(menuBatch, items.get(i), 0, i * font.getLineHeight());
+            font.draw(menuBatch, items.get(i).label, items.get(i).bounds.x, items.get(i).bounds.y);
         }
         menuBatch.end();
     }
