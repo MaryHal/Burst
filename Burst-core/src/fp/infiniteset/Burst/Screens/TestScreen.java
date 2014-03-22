@@ -1,4 +1,4 @@
-package fp.infiniteset.Burst;
+package fp.infiniteset.Burst.Screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
@@ -7,19 +7,24 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Input.Keys;
-
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+
+import fp.infiniteset.Burst.MainGame;
+import fp.infiniteset.Burst.BeatMap;
+import fp.infiniteset.Burst.FireworkLauncher;
+import fp.infiniteset.Burst.Menu;
+import fp.infiniteset.Burst.MusicController;
+import fp.infiniteset.Burst.Stopwatch;
 
 import java.util.Random;
 
 public class TestScreen implements Screen
 {
-    private MainGame game;
+    /* private MainGame game; */
 
     private OrthographicCamera camera;
 
@@ -40,7 +45,7 @@ public class TestScreen implements Screen
     // constructor to keep a reference to the main Game class
     public TestScreen(MainGame game)
     {
-        this.game = game;
+        /* this.game = game; */
     }
 
     @Override
@@ -202,5 +207,6 @@ public class TestScreen implements Screen
         testBatch.dispose();
         launcher.dispose();
         musicController.dispose();
+        menu.dispose();
     }
 }

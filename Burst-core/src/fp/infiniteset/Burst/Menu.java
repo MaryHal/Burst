@@ -38,6 +38,11 @@ public class Menu
         selected = false;
     }
 
+    public void dispose()
+    {
+        menuBatch.dispose();
+    }
+
     public void addItem(String item)
     {
         items.add(item);
