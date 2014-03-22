@@ -1,4 +1,4 @@
-package fp.infiniteset.Burst;
+package fp.infiniteset.Burst.Beats;
 
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Json;

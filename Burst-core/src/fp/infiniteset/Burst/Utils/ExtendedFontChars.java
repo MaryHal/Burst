@@ -1,4 +1,4 @@
-package fp.infiniteset.Burst;
+package fp.infiniteset.Burst.Utils;
 
 public class ExtendedFontChars
 {

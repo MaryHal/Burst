@@ -14,11 +14,11 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 
 import fp.infiniteset.Burst.MainGame;
-import fp.infiniteset.Burst.BeatMap;
-import fp.infiniteset.Burst.FireworkLauncher;
-import fp.infiniteset.Burst.Menu;
 import fp.infiniteset.Burst.MusicController;
-import fp.infiniteset.Burst.Stopwatch;
+import fp.infiniteset.Burst.Beats.BeatMap;
+import fp.infiniteset.Burst.Fireworks.FireworkLauncher;
+import fp.infiniteset.Burst.Utils.Menu;
+import fp.infiniteset.Burst.Utils.Stopwatch;
 
 import java.util.Random;
 

@@ -4,19 +4,16 @@ import fp.infiniteset.Burst.MainGame;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
-
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-
 import com.badlogic.gdx.math.Vector2;
 
-import fp.infiniteset.Burst.FireworkLauncher;
-import fp.infiniteset.Burst.Menu;
+import fp.infiniteset.Burst.Fireworks.FireworkLauncher;
+import fp.infiniteset.Burst.Utils.Menu;
 
 import java.util.Random;
 
