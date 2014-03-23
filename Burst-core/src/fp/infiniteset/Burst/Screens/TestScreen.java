@@ -123,7 +123,7 @@ public class TestScreen implements Screen
             @Override
             public boolean keyDown(int keycode)
             {
-                menu.handleKeyEvent(keycode);
+                menu.handleKeyDown(keycode);
 
                 return true;
             }
@@ -163,7 +163,7 @@ public class TestScreen implements Screen
             @Override
             public boolean touchUp(int x, int y, int pointer, int button)
             {
-                menu.handleTouchEvent(x, y, pointer, button);
+                menu.handleTouchDown(x, y, pointer, button);
                 if (button == Input.Buttons.LEFT)
                 {
                     Vector2 position = new Vector2(rng.nextFloat() * 200 + 140, 320.0f);

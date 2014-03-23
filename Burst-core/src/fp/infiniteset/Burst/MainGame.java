@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Rectangle;
 
 /* import fp.infiniteset.Burst.Screens.TestScreen; */
 import fp.infiniteset.Burst.Screens.MainMenu;
+import fp.infiniteset.Burst.Screens.SimpleScreen;
 
 public class MainGame extends Game
 {
@@ -14,13 +15,17 @@ public class MainGame extends Game
     public static final Rectangle viewport = new Rectangle(0.0f, 0.0f, VIRTUAL_WIDTH, VIRTUAL_HEIGHT);
 
     /* private TestScreen testScreen; */
-    private MainMenu mainMenu;
+
+    public MainMenu mainMenu;
+    public SimpleScreen simpleScreen;
 
     @Override
     public void create()
     {
         /* testScreen = new TestScreen(this); */
         mainMenu = new MainMenu(this);
+        simpleScreen = new SimpleScreen(this);
+
         this.setScreen(mainMenu);
     }
 

@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.files.FileHandle;
+
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -61,7 +62,7 @@ public class MainMenu implements Screen
             @Override
             public boolean keyDown(int keycode)
             {
-                return menu.handleKeyEvent(keycode);
+                return menu.handleKeyDown(keycode);
             }
 
             @Override
@@ -73,7 +74,7 @@ public class MainMenu implements Screen
             @Override
             public boolean touchDown(int x, int y, int pointer, int button)
             {
-                return menu.handleTouchEvent(x, y, pointer, button);
+                return menu.handleTouchDown(x, y, pointer, button);
             }
         };
         Gdx.input.setInputProcessor(adapter);
@@ -127,7 +128,11 @@ public class MainMenu implements Screen
 
         if (menu.isSelected())
         {
-            System.out.println(menu.getSelection());
+            String name = menu.getSelection();
+            game.simpleScreen.loadFiles(
+                    Gdx.files.external(".config/Burst/music/" + name + ".mp3"),
+                    Gdx.files.external(".config/Burst/music/" + name + ".beats"));
+            game.setScreen(game.simpleScreen);
         }
         menu.draw(delta);
     }

@@ -97,7 +97,7 @@ public class Menu
             items.get(items.size() - 1).bounds.x -= 8.0f;
     }
 
-    public boolean handleKeyEvent(int keycode)
+    public boolean handleKeyDown(int keycode)
     {
         int accumulator = 0;
         if (keycode == Keys.W)
@@ -127,7 +127,7 @@ public class Menu
         return true;
     }
 
-    public boolean handleTouchEvent(int x, int y, int pointer, int button)
+    public boolean handleTouchDown(int x, int y, int pointer, int button)
     {
         for (int i = 0; i < items.size(); i++)
         {
