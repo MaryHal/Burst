@@ -66,7 +66,8 @@ public class SimpleScreen implements Screen
         // update and draw stuff
         Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-    }
 
+        simpleGame.render(delta);
+    }
 }
 
