@@ -1,2 +1,0 @@
-# Module fp.infiniteset.Burst.GwtDefinition
-# RPC service class, partial path of RPC policy file
