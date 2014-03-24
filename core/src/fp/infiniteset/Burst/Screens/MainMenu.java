@@ -44,8 +44,8 @@ public class MainMenu implements Screen
         // font = generator.generateFont(12, FreeTypeFontGenerator.DEFAULT_CHARS, true);
         // generator.dispose();
 
-        font =  new BitmapFont(Gdx.files.internal("fonts/DroidSansFallback.fnt"), true);
-        
+        font =  new BitmapFont(Gdx.files.internal("fonts/DroidSansFallback12.fnt"), true);
+
         launcher = new FireworkLauncher(camera);
 
         // Generate Menu

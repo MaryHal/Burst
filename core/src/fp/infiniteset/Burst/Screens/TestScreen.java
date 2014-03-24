@@ -103,8 +103,8 @@ public class TestScreen implements Screen
         // font = generator.generateFont(12, FreeTypeFontGenerator.DEFAULT_CHARS, true);
         // generator.dispose();
 
-        font =  new BitmapFont(Gdx.files.internal("fonts/DroidSansFallback.fnt"), true);
-        
+        font =  new BitmapFont(Gdx.files.internal("fonts/DroidSansFallback12.hiero"), true);
+
         musicController = new MusicController();
         musicController.loadSong(Gdx.files.external(".config/Burst/music/SoonItWillBeColdEnough.mp3"));
         musicController.play();
