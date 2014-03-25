@@ -1,6 +1,8 @@
 package fp.infiniteset.Burst.Fireworks;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.utils.Disposable;
+
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.ParticleEffectPool;
 import com.badlogic.gdx.graphics.g2d.ParticleEffectPool.PooledEffect;
@@ -15,7 +17,7 @@ import com.badlogic.gdx.utils.Array;
 
 import java.util.Random;
 
-public class FireworkLauncher
+public class FireworkLauncher implements Disposable
 {
     private ParticleEffect prototype;
     private ParticleEffectPool effectPool;
@@ -71,6 +73,7 @@ public class FireworkLauncher
 
     }
 
+    @Override
     public void dispose()
     {
         prototype.dispose();

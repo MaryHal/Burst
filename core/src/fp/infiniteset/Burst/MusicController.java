@@ -3,9 +3,11 @@ package fp.infiniteset.Burst;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.*;
 
+import com.badlogic.gdx.utils.Disposable;
+
 import com.badlogic.gdx.files.FileHandle;
 
-public class MusicController
+public class MusicController implements Disposable
 {
     private Music music;
 
@@ -21,6 +23,7 @@ public class MusicController
         music.setLooping(false);
     }
 
+    @Override
     public void dispose()
     {
         music.dispose();

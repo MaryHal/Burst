@@ -2,6 +2,8 @@ package fp.infiniteset.Burst.Utils;
 
 import java.util.ArrayList;
 
+import com.badlogic.gdx.utils.Disposable;
+
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.Camera;
@@ -11,7 +13,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.Rectangle;
 
-public class Menu
+public class Menu implements Disposable
 {
     private class MenuItem
     {
@@ -52,6 +54,7 @@ public class Menu
         selected = false;
     }
 
+    @Override
     public void dispose()
     {
         menuBatch.dispose();
