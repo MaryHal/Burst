@@ -7,6 +7,9 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.files.FileHandle;
 
+import com.badlogic.gdx.utils.Sort;
+import java.util.Comparator;
+
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -50,8 +53,19 @@ public class MainMenu implements Screen
 
         // Generate Menu
         menu = new Menu(camera, font, 100.0f, 100.0f);
-        FileHandle[] beatFiles = Gdx.files.external(".config/Burst/music").list(".beats");
         menu.addItem("Song List:", false);
+
+        // Get beatfiles and sort 'em
+        FileHandle[] beatFiles = Gdx.files.external(".config/Burst/music").list(".beats");
+        Sort.instance().sort(beatFiles, new Comparator<FileHandle>()
+                {
+                    @Override
+                    public int compare(FileHandle o1, FileHandle o2)
+                    {
+                        return o1.name().compareTo(o2.name());
+                    }
+                });
+
         for (FileHandle file : beatFiles)
         {
             menu.addItem(file.nameWithoutExtension());
