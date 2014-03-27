@@ -10,7 +10,7 @@ public abstract class GameController
     protected OrthographicCamera camera;
     protected FireworkLauncher launcher;
     protected MusicController music;
-    /* protected int score; */
+    protected int score;
 
     protected GameController()
     {
@@ -26,5 +26,10 @@ public abstract class GameController
     public abstract boolean handleKeyDown(int keycode);
     public abstract boolean handleTouchDown(int x, int y, int pointer, int button);
     public abstract void render(float delta);
+
+    public int getScore()
+    {
+        return score;
+    }
 }
 

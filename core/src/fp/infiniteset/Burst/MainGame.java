@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Rectangle;
 
 /* import fp.infiniteset.Burst.Screens.TestScreen; */
 import fp.infiniteset.Burst.Screens.MainMenu;
+import fp.infiniteset.Burst.Screens.AutoScreen;
 import fp.infiniteset.Burst.Screens.SimpleScreen;
 
 public class MainGame extends Game
@@ -17,6 +18,7 @@ public class MainGame extends Game
     /* private TestScreen testScreen; */
 
     public MainMenu mainMenu;
+    public AutoScreen autoScreen;
     public SimpleScreen simpleScreen;
 
     @Override
@@ -24,6 +26,7 @@ public class MainGame extends Game
     {
         /* testScreen = new TestScreen(this); */
         mainMenu = new MainMenu(this);
+        autoScreen = new AutoScreen(this);
         simpleScreen = new SimpleScreen(this);
 
         this.setScreen(mainMenu);

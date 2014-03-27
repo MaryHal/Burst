@@ -1,7 +1,7 @@
 package fp.infiniteset.Burst.Screens;
 
 import fp.infiniteset.Burst.MainGame;
-import fp.infiniteset.Burst.SimpleGame;
+import fp.infiniteset.Burst.AutoGame;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -9,19 +9,19 @@ import com.badlogic.gdx.files.FileHandle;
 
 import com.badlogic.gdx.graphics.GL20;
 
-public class SimpleScreen implements Screen
+public class AutoScreen implements Screen
 {
     private MainGame game;
-    private SimpleGame simpleGame;
+    private AutoGame simpleGame;
 
-    public SimpleScreen(MainGame game)
+    public AutoScreen(MainGame game)
     {
         this.game = game;
     }
 
     public void loadFiles(FileHandle musicFile, FileHandle beatFile)
     {
-        simpleGame = new SimpleGame(musicFile, beatFile);
+        simpleGame = new AutoGame(musicFile, beatFile);
         if (simpleGame != null)
             simpleGame.reset();
     }
