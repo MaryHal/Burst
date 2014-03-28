@@ -87,7 +87,6 @@ public abstract class FireworkLauncher implements Disposable
         Firework f = fireworkPool.obtain();
         f.set(position, destination);
         fireworks.add(f);
-        System.out.println(fireworkPool.getFree() + " " + fireworks.size);
     }
 
     public void detonate(Firework f)

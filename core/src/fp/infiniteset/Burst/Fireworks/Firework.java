@@ -100,6 +100,7 @@ public class Firework implements Pool.Poolable
     public void draw(SpriteBatch batch)
     {
         sprite.setProjectionMatrix(batch.getProjectionMatrix());
+
         sprite.begin(ShapeType.Filled);
         sprite.setColor(1.0f, 1.0f, 1.0f, 1.0f);
         sprite.rect(position.x - 2, position.y - 2, 4, 4);
@@ -107,6 +108,14 @@ public class Firework implements Pool.Poolable
         sprite.setColor(0.3f, 0.3f, 0.3f, 1.0f);
         sprite.rect(destination.x - 2, destination.y - 2, 4, 4);
         sprite.end();
+
+        if (position.y > destination.y)
+        {
+            sprite.begin(ShapeType.Line);
+            sprite.setColor(0.15f, 0.15f, 0.15f, 1.0f);
+            sprite.circle(destination.x, destination.y, position.dst(destination));
+            sprite.end();
+        }
     }
 }
 
