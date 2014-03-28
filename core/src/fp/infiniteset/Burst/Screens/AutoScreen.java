@@ -12,7 +12,7 @@ import com.badlogic.gdx.graphics.GL20;
 public class AutoScreen implements Screen
 {
     private MainGame game;
-    private AutoGame simpleGame;
+    private AutoGame autoGame;
 
     public AutoScreen(MainGame game)
     {
@@ -21,16 +21,16 @@ public class AutoScreen implements Screen
 
     public void loadFiles(FileHandle musicFile, FileHandle beatFile)
     {
-        simpleGame = new AutoGame(musicFile, beatFile);
-        if (simpleGame != null)
-            simpleGame.reset();
+        autoGame = new AutoGame(musicFile, beatFile);
+        if (autoGame != null)
+            autoGame.reset();
     }
 
     @Override
     public void show()
     {
-        if (simpleGame != null)
-            simpleGame.reset();
+        if (autoGame != null)
+            autoGame.reset();
     }
 
     @Override
@@ -66,7 +66,7 @@ public class AutoScreen implements Screen
         Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        simpleGame.render(delta);
+        autoGame.render(delta);
     }
 }
 

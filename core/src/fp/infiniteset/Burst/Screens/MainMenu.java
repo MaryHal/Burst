@@ -16,6 +16,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 // import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Vector2;
 
+import fp.infiniteset.Burst.Fireworks.Firework;
 import fp.infiniteset.Burst.Fireworks.FireworkLauncher;
 import fp.infiniteset.Burst.Utils.Menu;
 
@@ -49,7 +50,20 @@ public class MainMenu implements Screen
 
         font =  new BitmapFont(Gdx.files.internal("fonts/DroidSansFallback12.fnt"), true);
 
-        launcher = new FireworkLauncher(camera);
+        launcher = new FireworkLauncher(camera)
+        {
+            @Override
+            public void updateFirework(Firework f, float delta)
+            {
+                f.update(delta);
+                f.setAlive(f.checkBoundary() && f.checkCloseness());
+
+                if (!f.isAlive())
+                {
+                    detonate(f);
+                }
+            }
+        };
 
         // Generate Menu
         menu = new Menu(camera, font, 100.0f, 100.0f);
@@ -57,7 +71,8 @@ public class MainMenu implements Screen
 
         // Get beatfiles and sort 'em
         FileHandle[] beatFiles = Gdx.files.external(".config/Burst/music").list(".beats");
-        Sort.instance().sort(beatFiles, new Comparator<FileHandle>()
+        Sort.instance().sort(beatFiles, 
+                new Comparator<FileHandle>()
                 {
                     @Override
                     public int compare(FileHandle o1, FileHandle o2)
@@ -145,10 +160,10 @@ public class MainMenu implements Screen
         if (menu.isSelected())
         {
             String name = menu.getSelection();
-            game.autoScreen.loadFiles(
+            game.simpleScreen.loadFiles(
                     Gdx.files.external(".config/Burst/music/" + name + ".mp3"),
                     Gdx.files.external(".config/Burst/music/" + name + ".beats"));
-            game.setScreen(game.autoScreen);
+            game.setScreen(game.simpleScreen);
         }
         menu.draw(delta);
     }

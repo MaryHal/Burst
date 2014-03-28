@@ -1,5 +1,8 @@
 package fp.infiniteset.Burst;
 
+import fp.infiniteset.Burst.Fireworks.FireworkLauncher;
+import fp.infiniteset.Burst.Fireworks.Firework;
+
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.math.Vector2;
 
@@ -10,14 +13,29 @@ import java.util.Random;
 
 public class SimpleGame extends GameController
 {
-    private BeatMap beatMap;
-    private Stopwatch timer;
+    protected BeatMap beatMap;
+    protected Stopwatch timer;
 
-    private Random rng;
+    protected Random rng;
 
     public SimpleGame(FileHandle musicFile, FileHandle beatFile)
     {
         super();
+
+        launcher = new FireworkLauncher(camera)
+        {
+            @Override
+            public void updateFirework(Firework f, float delta)
+            {
+                f.update(delta);
+
+                if (f.getPosition().y < 0.0f)
+                {
+                    f.setAlive(false);
+                    remove(f);
+                }
+            }
+        };
 
         music.loadSong(musicFile);
 
@@ -39,7 +57,14 @@ public class SimpleGame extends GameController
     @Override
     public boolean handleKeyDown(int keycode)
     {
-        return false;
+        for (Firework f : launcher.getFireworks())
+        {
+            if (f.getDistance2() < 400.0f)
+            {
+                launcher.detonate(f);
+            }
+        }
+        return true;
     }
 
     @Override

@@ -18,7 +18,7 @@ public abstract class GameController
         camera.setToOrtho(true, MainGame.VIRTUAL_WIDTH, MainGame.VIRTUAL_HEIGHT);
         camera.update();
 
-        launcher = new FireworkLauncher(camera);
+        /* launcher = new FireworkLauncher(camera); */
 
         music = new MusicController();
     }

@@ -53,9 +53,19 @@ public class Firework implements Pool.Poolable
         return position.dst2(destination);
     }
 
+    public Vector2 getPosition()
+    {
+        return position;
+    }
+
     public Vector2 getDestination()
     {
         return destination;
+    }
+
+    public void setAlive(boolean alive)
+    {
+        this.alive = alive;
     }
 
     public boolean isAlive()
@@ -66,16 +76,25 @@ public class Firework implements Pool.Poolable
     public void update(float delta)
     {
         position.add(velocity.cpy().scl(delta));
+    }
 
-        if (position.x < 0 && position.x >= 480 &&
-            position.y < 0 && position.y >= 320)
+    // Returns true if inside window, false if outside
+    public boolean checkBoundary()
+    {
+        if (position.x < 0 && position.x >= 480)
         {
-            alive = false;
+            if (position.y < 0 && position.y >= 320)
+            {
+                return false;
+            }
         }
-        if (position.epsilonEquals(destination, 5.0f))
-        {
-            alive = false;
-        }
+        return true;
+    }
+
+    // Returns true if far from destination
+    public boolean checkCloseness()
+    {
+        return !position.epsilonEquals(destination, 5.0f);
     }
 
     public void draw(SpriteBatch batch)

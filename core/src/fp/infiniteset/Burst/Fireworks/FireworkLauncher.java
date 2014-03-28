@@ -17,7 +17,7 @@ import com.badlogic.gdx.utils.Array;
 
 import java.util.Random;
 
-public class FireworkLauncher implements Disposable
+public abstract class FireworkLauncher implements Disposable
 {
     private ParticleEffect prototype;
     private ParticleEffectPool effectPool;
@@ -43,7 +43,7 @@ public class FireworkLauncher implements Disposable
         effectPool = new ParticleEffectPool(prototype, 0, 70);
         effects = new Array<PooledEffect>();
 
-        fireworkPool = new FireworkPool(64, 128);
+        fireworkPool = new FireworkPool(16, 64);
         fireworks = new Array<Firework>();
 
         fireworkColors = new float[][] {
@@ -87,19 +87,40 @@ public class FireworkLauncher implements Disposable
         Firework f = fireworkPool.obtain();
         f.set(position, destination);
         fireworks.add(f);
+        System.out.println(fireworkPool.getFree() + " " + fireworks.size);
     }
 
-    public void detonate(Vector2 position)
+    public void detonate(Firework f)
     {
+        fireworks.removeValue(f, true);
+        Vector2 effectPosition = f.getPosition();
+
         PooledEffect effect = effectPool.obtain();
         float[] color = fireworkColors[rng.nextInt(fireworkColors.length)];
         effect.getEmitters().peek().getTint().setColors(color);
-        effect.setPosition(position.x, position.y);
+        effect.setPosition(effectPosition.x, effectPosition.y);
         effects.add(effect);
     }
 
-    public void update()
+    public void remove(Firework f)
     {
+        fireworks.removeValue(f, true);
+    }
+
+    public Array<Firework> getFireworks()
+    {
+        return fireworks;
+    }
+
+    public void updateFirework(Firework f, float delta)
+    {
+        f.update(delta);
+        f.setAlive(f.checkBoundary() && f.checkCloseness());
+
+        if (!f.isAlive())
+        {
+            detonate(f);
+        }
     }
 
     public void draw(float delta)
@@ -108,13 +129,7 @@ public class FireworkLauncher implements Disposable
         {
             for (Firework f : fireworks)
             {
-                f.update(delta);
-                if (!f.isAlive())
-                {
-                    fireworks.removeValue(f, true);
-                    detonate(f.getDestination());
-                    continue;
-                }
+                updateFirework(f, delta);
 
                 f.draw(fireworkBatch);
             }

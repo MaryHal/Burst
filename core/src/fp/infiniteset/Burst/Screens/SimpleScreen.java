@@ -6,6 +6,7 @@ import fp.infiniteset.Burst.SimpleGame;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.InputAdapter;
 
 import com.badlogic.gdx.graphics.GL20;
 
@@ -31,6 +32,28 @@ public class SimpleScreen implements Screen
     {
         if (simpleGame != null)
             simpleGame.reset();
+
+        InputAdapter adapter = new InputAdapter()
+        {
+            @Override
+            public boolean keyDown(int keycode)
+            {
+                return simpleGame.handleKeyDown(keycode);
+            }
+
+            @Override
+            public boolean keyUp(int keycode)
+            {
+                return false;
+            }
+
+            @Override
+            public boolean touchDown(int x, int y, int pointer, int button)
+            {
+                return false;
+            }
+        };
+        Gdx.input.setInputProcessor(adapter);
     }
 
     @Override
