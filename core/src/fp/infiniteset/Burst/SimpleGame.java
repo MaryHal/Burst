@@ -70,7 +70,14 @@ public class SimpleGame extends GameController
     @Override
     public boolean handleTouchDown(int x, int y, int pointer, int button)
     {
-        return false;
+        for (Firework f : launcher.getFireworks())
+        {
+            if (f.getDistance2() < 400.0f)
+            {
+                launcher.detonate(f);
+            }
+        }
+        return true;
     }
 
     @Override

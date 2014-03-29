@@ -50,7 +50,7 @@ public class SimpleScreen implements Screen
             @Override
             public boolean touchDown(int x, int y, int pointer, int button)
             {
-                return false;
+                return simpleGame.handleTouchDown(x, y, pointer, button);
             }
         };
         Gdx.input.setInputProcessor(adapter);
