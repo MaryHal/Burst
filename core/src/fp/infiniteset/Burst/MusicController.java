@@ -10,6 +10,7 @@ import com.badlogic.gdx.files.FileHandle;
 public class MusicController implements Disposable
 {
     private Music music;
+    private Music music2;
 
     public MusicController()
     {
@@ -21,6 +22,10 @@ public class MusicController implements Disposable
     {
         music = Gdx.audio.newMusic(file);
         music.setLooping(false);
+
+        music2 = Gdx.audio.newMusic(file);
+        music2.setLooping(false);
+        music2.setVolume(0.0f);
     }
 
     @Override
@@ -32,10 +37,17 @@ public class MusicController implements Disposable
     public void play()
     {
         music.play();
+        music2.play();
     }
 
     public Music getMusic()
     {
         return music;
+    }
+
+    public float timeDiff()
+    {
+        System.out.println(music2.getPosition() + " " + music.getPosition());
+        return music2.getPosition() - music.getPosition();
     }
 }

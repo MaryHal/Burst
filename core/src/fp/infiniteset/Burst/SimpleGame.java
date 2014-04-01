@@ -49,7 +49,7 @@ public class SimpleGame extends GameController
     {
         beatMap.reset();
         music.getMusic().stop();
-        music.getMusic().play();
+        music.play();
         timer.stop();
         timer.start();
     }
@@ -84,6 +84,7 @@ public class SimpleGame extends GameController
     public void render(float delta)
     {
         camera.update();
+        music.timeDiff();
 
         while (beatMap.getNextBeat() != null &&
                timer.getTime() > beatMap.getNextBeat().time - 1.0f)

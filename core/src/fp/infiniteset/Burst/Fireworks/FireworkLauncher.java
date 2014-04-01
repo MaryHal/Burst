@@ -111,7 +111,8 @@ public abstract class FireworkLauncher implements Disposable
         return fireworks;
     }
 
-    public void updateFirework(Firework f, float delta)
+    public abstract void updateFirework(Firework f, float delta);
+    /*
     {
         f.update(delta);
         f.setAlive(f.checkBoundary() && f.checkCloseness());
@@ -121,6 +122,7 @@ public abstract class FireworkLauncher implements Disposable
             detonate(f);
         }
     }
+    */
 
     public void draw(float delta)
     {
