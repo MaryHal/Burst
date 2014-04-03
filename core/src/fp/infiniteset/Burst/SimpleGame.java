@@ -22,8 +22,21 @@ public class SimpleGame extends GameController
     {
         super();
 
+        music.loadSong(musicFile);
+
+        beatMap = new BeatMap(beatFile);
+        timer = new Stopwatch();
+
+        rng = new Random();
+    }
+
+    @Override
+    public boolean initializeLauncher()
+    {
         launcher = new FireworkLauncher(camera)
         {
+            // Since Fireworks are not guaranteed to "hit" their targets,
+            // we gotta remove undetonated ones.
             @Override
             public void updateFirework(Firework f, float delta)
             {
@@ -36,13 +49,6 @@ public class SimpleGame extends GameController
                 }
             }
         };
-
-        music.loadSong(musicFile);
-
-        beatMap = new BeatMap(beatFile);
-        timer = new Stopwatch();
-
-        rng = new Random();
     }
 
     public void reset()
@@ -59,6 +65,7 @@ public class SimpleGame extends GameController
     {
         for (Firework f : launcher.getFireworks())
         {
+            // 20 pixel radius to destination
             if (f.getDistance2() < 400.0f)
             {
                 launcher.detonate(f);
@@ -72,6 +79,7 @@ public class SimpleGame extends GameController
     {
         for (Firework f : launcher.getFireworks())
         {
+            // 20 pixel radius to destination
             if (f.getDistance2() < 400.0f)
             {
                 launcher.detonate(f);
@@ -89,6 +97,7 @@ public class SimpleGame extends GameController
         while (beatMap.getNextBeat() != null &&
                timer.getTime() > beatMap.getNextBeat().time - 1.0f)
         {
+            // TODO: More robust positioning.
             Vector2 position    = new Vector2(rng.nextFloat() * 200 + 140, 320.0f);
             Vector2 destination = new Vector2(rng.nextFloat() * 200 + 140,
                     rng.nextFloat() * 80 + 80);

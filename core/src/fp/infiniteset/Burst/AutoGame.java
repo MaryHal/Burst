@@ -11,6 +11,7 @@ import fp.infiniteset.Burst.Utils.Stopwatch;
 
 import java.util.Random;
 
+// Simple testbed
 public class AutoGame extends GameController
 {
     protected BeatMap beatMap;
@@ -22,6 +23,17 @@ public class AutoGame extends GameController
     {
         super();
 
+        music.loadSong(musicFile);
+
+        beatMap = new BeatMap(beatFile);
+        timer = new Stopwatch();
+
+        rng = new Random();
+    }
+
+    @Override
+    public boolean initializeLauncher()
+    {
         launcher = new FireworkLauncher(camera)
         {
             @Override
@@ -36,13 +48,6 @@ public class AutoGame extends GameController
                 }
             }
         };
-
-        music.loadSong(musicFile);
-
-        beatMap = new BeatMap(beatFile);
-        timer = new Stopwatch();
-
-        rng = new Random();
     }
 
     public void reset()

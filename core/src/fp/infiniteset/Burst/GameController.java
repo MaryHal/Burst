@@ -18,10 +18,13 @@ public abstract class GameController
         camera.setToOrtho(true, MainGame.VIRTUAL_WIDTH, MainGame.VIRTUAL_HEIGHT);
         camera.update();
 
-        /* launcher = new FireworkLauncher(camera); */
+        initializeLauncher();
 
         music = new MusicController();
     }
+
+    // More explicit method to enforce that launcher is overridden
+    public abstract void initializeLauncher();
 
     public abstract boolean handleKeyDown(int keycode);
     public abstract boolean handleTouchDown(int x, int y, int pointer, int button);
