@@ -6,33 +6,17 @@ import fp.infiniteset.Burst.Fireworks.Firework;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.math.Vector2;
 
-import fp.infiniteset.Burst.Beats.BeatMap;
-import fp.infiniteset.Burst.Utils.Stopwatch;
-
-import java.util.Random;
-
 // Simple testbed
 public class AutoGame extends GameController
 {
-    protected BeatMap beatMap;
-    protected Stopwatch timer;
-
-    protected Random rng;
 
     public AutoGame(FileHandle musicFile, FileHandle beatFile)
     {
-        super();
-
-        music.loadSong(musicFile);
-
-        beatMap = new BeatMap(beatFile);
-        timer = new Stopwatch();
-
-        rng = new Random();
+        super(musicFile, beatFile);
     }
 
     @Override
-    public boolean initializeLauncher()
+    public void initializeLauncher()
     {
         launcher = new FireworkLauncher(camera)
         {
@@ -48,15 +32,6 @@ public class AutoGame extends GameController
                 }
             }
         };
-    }
-
-    public void reset()
-    {
-        beatMap.reset();
-        music.getMusic().stop();
-        music.getMusic().play();
-        timer.stop();
-        timer.start();
     }
 
     @Override
@@ -79,6 +54,8 @@ public class AutoGame extends GameController
         while (beatMap.getNextBeat() != null &&
                timer.getTime() > beatMap.getNextBeat().time - 1.0f)
         {
+            /* System.out.println(timer.getTime() + ", " + music.getPosition() + ", " + beatMap.getNextBeat().time); */
+
             Vector2 position    = new Vector2(rng.nextFloat() * 200 + 140, 320.0f);
             Vector2 destination = new Vector2(rng.nextFloat() * 200 + 140,
                     rng.nextFloat() * 80 + 80);

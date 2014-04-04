@@ -1,18 +1,30 @@
 package fp.infiniteset.Burst;
 
+import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 
-import fp.infiniteset.Burst.MusicController;
-import fp.infiniteset.Burst.Fireworks.FireworkLauncher;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.*;
+import com.badlogic.gdx.files.FileHandle;
 
-public abstract class GameController
+import fp.infiniteset.Burst.Fireworks.FireworkLauncher;
+import fp.infiniteset.Burst.Beats.BeatMap;
+import fp.infiniteset.Burst.Utils.Stopwatch;
+
+import java.util.Random;
+
+public abstract class GameController implements Disposable
 {
     protected OrthographicCamera camera;
     protected FireworkLauncher launcher;
-    protected MusicController music;
+    protected BeatMap beatMap;
+    protected Stopwatch timer;
+    protected Music music;
+
+    protected Random rng;
     protected int score;
 
-    protected GameController()
+    protected GameController(FileHandle file, FileHandle beatFile)
     {
         camera = new OrthographicCamera(MainGame.VIRTUAL_WIDTH, MainGame.VIRTUAL_HEIGHT);
         camera.setToOrtho(true, MainGame.VIRTUAL_WIDTH, MainGame.VIRTUAL_HEIGHT);
@@ -20,7 +32,28 @@ public abstract class GameController
 
         initializeLauncher();
 
-        music = new MusicController();
+        beatMap = new BeatMap(beatFile);
+        timer = new Stopwatch();
+
+        music = Gdx.audio.newMusic(file);
+        music.setLooping(false);
+
+        rng = new Random();
+    }
+
+    @Override
+    public void dispose()
+    {
+        music.dispose();
+    }
+
+    public void reset()
+    {
+        beatMap.reset();
+        music.stop();
+        music.play();
+        timer.stop();
+        timer.start();
     }
 
     // More explicit method to enforce that launcher is overridden
