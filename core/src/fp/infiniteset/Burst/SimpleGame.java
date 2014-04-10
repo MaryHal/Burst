@@ -17,7 +17,9 @@ public class SimpleGame extends GameController
     {
         super(musicFile, beatFile);
 
-        this.index = 0;
+        // Throw away the first 20 numbers from the HaltonSequence
+        // and also introduce some randomness./
+        this.index = rng.nextInt(10) + 20;
         dist = new HaltonSequence(new int[] {2, 3});
     }
 

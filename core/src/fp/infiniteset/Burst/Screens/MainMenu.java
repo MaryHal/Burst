@@ -13,7 +13,7 @@ import java.util.Comparator;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-// import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Vector2;
 
 import fp.infiniteset.Burst.Fireworks.Firework;
@@ -44,11 +44,14 @@ public class MainMenu implements Screen
         camera.setToOrtho(true, MainGame.VIRTUAL_WIDTH, MainGame.VIRTUAL_HEIGHT);
         camera.update();
 
-        // FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/DroidSansFallback.ttf"));
-        // font = generator.generateFont(12, FreeTypeFontGenerator.DEFAULT_CHARS, true);
-        // generator.dispose();
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/DroidSansFallback.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter fontParameters = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        fontParameters.size = 12;
+        fontParameters.flip = true;
+        font = generator.generateFont(fontParameters);
+        generator.dispose();
 
-        font =  new BitmapFont(Gdx.files.internal("fonts/DroidSansFallback12.fnt"), true);
+        // font =  new BitmapFont(Gdx.files.internal("fonts/DroidSansFallback12.fnt"), true);
 
         launcher = new FireworkLauncher(camera)
         {
