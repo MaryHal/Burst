@@ -52,6 +52,7 @@ public class SimpleGame extends GameController
             // 20 pixel radius to destination
             if (f.getDistance2() < 400.0f)
             {
+                score += (400.0f - f.getDistance2());
                 launcher.detonate(f);
             }
         }
@@ -66,6 +67,7 @@ public class SimpleGame extends GameController
             // 20 pixel radius to destination
             if (f.getDistance2() < 400.0f)
             {
+                score += (400.0f - f.getDistance2());
                 launcher.detonate(f);
             }
         }
@@ -75,14 +77,11 @@ public class SimpleGame extends GameController
     @Override
     public void render(float delta)
     {
-        camera.update();
-
         /* System.out.println(music.getPosition() + ", " + beatMap.getNextBeat().time); */
 
         while (beatMap.getNextBeat() != null &&
                timer.getTime() > beatMap.getNextBeat().time - 1.0f)
         {
-            // TODO: More robust positioning.
             Vector2 position    = new Vector2(rng.nextFloat() * 200 + 140, 320.0f);
 
             double[] v = dist.getHaltonNumber(index);

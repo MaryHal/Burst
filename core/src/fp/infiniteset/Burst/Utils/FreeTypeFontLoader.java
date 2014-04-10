@@ -9,24 +9,16 @@ import com.badlogic.gdx.assets.loaders.AsynchronousAssetLoader;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 import com.badlogic.gdx.files.FileHandle;
 
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-
 import com.badlogic.gdx.utils.Array;
 
-public class FreeTypeFontLoader extends AsynchronousAssetLoader<BitmapFont, FreeTypeFontLoader.FreeTypeParameter>
+public class FreeTypeFontLoader extends AsynchronousAssetLoader<FreeTypeFontGenerator, FreeTypeFontLoader.FreeTypeParameter>
 {
-    static public class FreeTypeParameter extends AssetLoaderParameters<BitmapFont>
+    static public class FreeTypeParameter extends AssetLoaderParameters<FreeTypeFontGenerator>
     {
-        public FreeTypeFontGenerator.FreeTypeFontParameter parameters;
-
-        public FreeTypeParameter()
-        {
-            parameters = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        }
     }
 
-    private BitmapFont font;
+    private FreeTypeFontGenerator fontGenerator;
 
     public FreeTypeFontLoader(FileHandleResolver resolver)
     {
@@ -37,16 +29,14 @@ public class FreeTypeFontLoader extends AsynchronousAssetLoader<BitmapFont, Free
     public void loadAsync(AssetManager manager, String fileName, FileHandle file,
             FreeTypeParameter parameter)
     {
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(file);
-        font = generator.generateFont(parameter.parameters);
-        generator.dispose();
+        fontGenerator = new FreeTypeFontGenerator(file);
     }
 
     @Override
-    public BitmapFont loadSync(AssetManager manager, String fileName, FileHandle file,
+    public FreeTypeFontGenerator loadSync(AssetManager manager, String fileName, FileHandle file,
             FreeTypeParameter parameter)
     {
-        return font;
+        return fontGenerator;
     }
 
     @SuppressWarnings("rawtypes")

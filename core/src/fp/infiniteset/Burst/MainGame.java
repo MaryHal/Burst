@@ -3,10 +3,18 @@ package fp.infiniteset.Burst;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.math.Rectangle;
 
+import com.badlogic.gdx.graphics.OrthographicCamera;
+
 /* import fp.infiniteset.Burst.Screens.TestScreen; */
+import fp.infiniteset.Burst.Screens.LoadingScreen;
 import fp.infiniteset.Burst.Screens.MainMenu;
 import fp.infiniteset.Burst.Screens.AutoScreen;
 import fp.infiniteset.Burst.Screens.SimpleScreen;
+
+import fp.infiniteset.Burst.Utils.FreeTypeFontLoader;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 
 public class MainGame extends Game
 {
@@ -15,6 +23,10 @@ public class MainGame extends Game
     public static final float ASPECT_RATIO = (float)VIRTUAL_WIDTH / (float)VIRTUAL_HEIGHT;
     public static final Rectangle viewport = new Rectangle(0.0f, 0.0f, VIRTUAL_WIDTH, VIRTUAL_HEIGHT);
 
+    public OrthographicCamera camera;
+    public AssetManager assets;
+
+    public LoadingScreen loadingScreen;
     public MainMenu mainMenu;
     public AutoScreen autoScreen;
     public SimpleScreen simpleScreen;
@@ -22,18 +34,26 @@ public class MainGame extends Game
     @Override
     public void create()
     {
-        /* testScreen = new TestScreen(this); */
-        mainMenu = new MainMenu(this);
-        autoScreen = new AutoScreen(this);
-        simpleScreen = new SimpleScreen(this);
+        camera = new OrthographicCamera(VIRTUAL_WIDTH, VIRTUAL_HEIGHT);
+        camera.setToOrtho(true, VIRTUAL_WIDTH, VIRTUAL_HEIGHT);
+        camera.update();
 
-        this.setScreen(mainMenu);
+        assets = new AssetManager();
+        assets.setLoader(FreeTypeFontGenerator.class, new FreeTypeFontLoader(new InternalFileHandleResolver()));
+
+        loadingScreen = new LoadingScreen(this, assets);
+        mainMenu      = new MainMenu(this, assets);
+        autoScreen    = new AutoScreen(this, assets);
+        simpleScreen  = new SimpleScreen(this, assets);
+
+        this.setScreen(loadingScreen);
     }
 
     @Override
     public void dispose()
     {
-        /* testScreen.dispose(); */
+        assets.dispose();
+
         mainMenu.dispose();
         autoScreen.dispose();
         simpleScreen.dispose();

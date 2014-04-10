@@ -10,14 +10,26 @@ import com.badlogic.gdx.InputAdapter;
 
 import com.badlogic.gdx.graphics.GL20;
 
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
+
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
 public class SimpleScreen implements Screen
 {
     private MainGame game;
-    private SimpleGame simpleGame;
+    private AssetManager assets;
 
-    public SimpleScreen(MainGame game)
+    private SimpleGame simpleGame;
+    private BitmapFont font;
+    private SpriteBatch textBatch;
+
+    public SimpleScreen(MainGame game, AssetManager assets)
     {
         this.game = game;
+        this.assets = assets;
     }
 
     public void loadFiles(FileHandle musicFile, FileHandle beatFile)
@@ -54,6 +66,15 @@ public class SimpleScreen implements Screen
             }
         };
         Gdx.input.setInputProcessor(adapter);
+
+        FreeTypeFontGenerator generator = assets.get("fonts/DroidSansFallback.ttf", FreeTypeFontGenerator.class);
+        FreeTypeFontParameter parameters = new FreeTypeFontParameter();
+        parameters.size = 12;
+        parameters.flip = true;
+        font = generator.generateFont(parameters);
+        
+        textBatch = new SpriteBatch(64);
+        textBatch.setProjectionMatrix(game.camera.combined);
     }
 
     @Override
@@ -90,6 +111,12 @@ public class SimpleScreen implements Screen
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         simpleGame.render(delta);
+
+        textBatch.begin();
+        {
+            font.draw(textBatch, "Score: " + simpleGame.getScore(), 4.0f, 4.0f);
+        }
+        textBatch.end();
     }
 }
 

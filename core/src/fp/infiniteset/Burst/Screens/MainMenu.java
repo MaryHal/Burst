@@ -11,10 +11,12 @@ import com.badlogic.gdx.utils.Sort;
 import java.util.Comparator;
 
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.math.Vector2;
+
+import com.badlogic.gdx.assets.AssetManager;
 
 import fp.infiniteset.Burst.Fireworks.Firework;
 import fp.infiniteset.Burst.Fireworks.FireworkLauncher;
@@ -25,35 +27,30 @@ import java.util.Random;
 public class MainMenu implements Screen
 {
     private MainGame game;
-    private OrthographicCamera camera;
+    private AssetManager assets;
+
     private BitmapFont font;
 
     private FireworkLauncher launcher;
     private Menu menu;
     private Random rng;
 
-    public MainMenu(MainGame game)
+    public MainMenu(MainGame game, AssetManager assets)
     {
         this.game = game;
+        this.assets = assets;
     }
 
     @Override
     public void show()
     {
-        camera = new OrthographicCamera(MainGame.VIRTUAL_WIDTH, MainGame.VIRTUAL_HEIGHT);
-        camera.setToOrtho(true, MainGame.VIRTUAL_WIDTH, MainGame.VIRTUAL_HEIGHT);
-        camera.update();
+        FreeTypeFontGenerator generator = assets.get("fonts/DroidSansFallback.ttf", FreeTypeFontGenerator.class);
+        FreeTypeFontParameter parameters = new FreeTypeFontParameter();
+        parameters.size = 16;
+        parameters.flip = true;
+        font = generator.generateFont(parameters);
 
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/DroidSansFallback.ttf"));
-        FreeTypeFontGenerator.FreeTypeFontParameter fontParameters = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        fontParameters.size = 12;
-        fontParameters.flip = true;
-        font = generator.generateFont(fontParameters);
-        generator.dispose();
-
-        // font =  new BitmapFont(Gdx.files.internal("fonts/DroidSansFallback12.fnt"), true);
-
-        launcher = new FireworkLauncher(camera)
+        launcher = new FireworkLauncher(game.camera)
         {
             @Override
             public void updateFirework(Firework f, float delta)
@@ -69,7 +66,7 @@ public class MainMenu implements Screen
         };
 
         // Generate Menu
-        menu = new Menu(camera, font, 100.0f, 100.0f);
+        menu = new Menu(game.camera, font, 100.0f, 100.0f);
         menu.addItem("Song List:", false);
 
         // Get beatfiles and sort 'em
@@ -144,8 +141,6 @@ public class MainMenu implements Screen
     @Override
     public void render(float delta)
     {
-        camera.update();
-
         // update and draw stuff
         Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
