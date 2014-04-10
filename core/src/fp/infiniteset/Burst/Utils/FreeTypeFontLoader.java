@@ -19,6 +19,11 @@ public class FreeTypeFontLoader extends AsynchronousAssetLoader<BitmapFont, Free
     static public class FreeTypeParameter extends AssetLoaderParameters<BitmapFont>
     {
         public FreeTypeFontGenerator.FreeTypeFontParameter parameters;
+
+        public FreeTypeParameter()
+        {
+            parameters = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        }
     }
 
     private BitmapFont font;

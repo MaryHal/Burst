@@ -44,7 +44,12 @@ public class MainMenu implements Screen
         camera.setToOrtho(true, MainGame.VIRTUAL_WIDTH, MainGame.VIRTUAL_HEIGHT);
         camera.update();
 
-        font = game.manager.get("fonts/DroidSansFallback.ttf", BitmapFont.class);
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/DroidSansFallback.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter fontParameters = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        fontParameters.size = 12;
+        fontParameters.flip = true;
+        font = generator.generateFont(fontParameters);
+        generator.dispose();
 
         // font =  new BitmapFont(Gdx.files.internal("fonts/DroidSansFallback12.fnt"), true);
 
