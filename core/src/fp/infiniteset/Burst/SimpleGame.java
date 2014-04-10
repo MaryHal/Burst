@@ -3,14 +3,22 @@ package fp.infiniteset.Burst;
 import fp.infiniteset.Burst.Fireworks.FireworkLauncher;
 import fp.infiniteset.Burst.Fireworks.Firework;
 
+import fp.infiniteset.Burst.Utils.HaltonSequence;
+
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.math.Vector2;
 
 public class SimpleGame extends GameController
 {
+    private HaltonSequence dist;
+    private int index;
+
     public SimpleGame(FileHandle musicFile, FileHandle beatFile)
     {
         super(musicFile, beatFile);
+
+        this.index = 0;
+        dist = new HaltonSequence(new int[] {2, 3});
     }
 
     @Override
@@ -74,8 +82,14 @@ public class SimpleGame extends GameController
         {
             // TODO: More robust positioning.
             Vector2 position    = new Vector2(rng.nextFloat() * 200 + 140, 320.0f);
-            Vector2 destination = new Vector2(rng.nextFloat() * 200 + 140,
-                    rng.nextFloat() * 80 + 80);
+
+            double[] v = dist.getHaltonNumber(index);
+            index++;
+            Vector2 destination = new Vector2((float)v[0] * 200 + 140,
+                                              (float)v[1] * 80 + 80);
+
+            // Vector2 destination = new Vector2(rng.nextFloat() * 200 + 140,
+            //         rng.nextFloat() * 80 + 80);
 
             launcher.fire(position, destination);
             beatMap.popBeat();

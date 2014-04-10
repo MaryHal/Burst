@@ -160,10 +160,10 @@ public class MainMenu implements Screen
         if (menu.isSelected())
         {
             String name = menu.getSelection();
-            game.autoScreen.loadFiles(
+            game.simpleScreen.loadFiles(
                     Gdx.files.external(".config/Burst/music/" + name + ".mp3"),
                     Gdx.files.external(".config/Burst/music/" + name + ".beats"));
-            game.setScreen(game.autoScreen);
+            game.setScreen(game.simpleScreen);
         }
         menu.draw(delta);
     }

@@ -1,10 +1,10 @@
 package fp.infiniteset.Burst.Fireworks;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
 import com.badlogic.gdx.utils.Pool;
 
 public class Firework implements Pool.Poolable
@@ -111,6 +111,7 @@ public class Firework implements Pool.Poolable
 
         if (position.y > destination.y)
         {
+            Gdx.gl20.glLineWidth(2.0f);
             sprite.begin(ShapeType.Line);
             sprite.setColor(0.15f, 0.15f, 0.15f, 1.0f);
             sprite.circle(destination.x, destination.y, position.dst(destination));
