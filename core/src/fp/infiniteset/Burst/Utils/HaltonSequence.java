@@ -1,8 +1,49 @@
 package fp.infiniteset.Burst.Utils;
 
+import java.util.Random;
+import java.util.TreeSet;
+
 public class HaltonSequence
 {
+    private static final int[] PRIMES = new int[] 
+    {
+        2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67,
+            71, 73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 127, 131, 137, 139,
+            149, 151, 157, 163, 167, 173
+    };
+
     int[] baseVector;
+
+    // public HaltonSequence(int base)
+    // {
+    //     if(base < 2)
+    //         throw new RuntimeException("Cannot create Halton sequence with base less than two.");
+
+    //     this.baseVector = new int[] { base };
+    // }
+
+    public HaltonSequence(int dimension)
+    {
+        Random rng = new Random();
+        TreeSet<Integer> bases = new TreeSet<Integer>();
+
+        while (bases.size() < dimension)
+        {
+            for (int i = 0; i < dimension; i++)
+            {
+                bases.add(PRIMES[rng.nextInt(PRIMES.length)]);
+            }
+        }
+
+        // Let's not work with Integers
+        Integer[] uniqueBases = new Integer[dimension];
+        uniqueBases = bases.toArray(uniqueBases);
+        baseVector = new int[dimension];
+        for (int i = 0; i < uniqueBases.length; i++)
+        {
+            baseVector[i] = uniqueBases[i];
+        }
+    }
 
     public HaltonSequence(int[] baseVector)
     {
@@ -13,14 +54,6 @@ public class HaltonSequence
         }
 
         this.baseVector = baseVector;
-    }
-
-    public HaltonSequence(int base)
-    {
-        if(base < 2)
-            throw new RuntimeException("Cannot create Halton sequence with base less than two.");
-
-        this.baseVector = new int[] { base };
     }
 
     public double[] getHaltonNumber(int index)

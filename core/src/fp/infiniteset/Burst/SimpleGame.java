@@ -47,31 +47,13 @@ public class SimpleGame extends GameController
     @Override
     public boolean handleKeyDown(int keycode)
     {
-        for (Firework f : launcher.getFireworks())
-        {
-            // 20 pixel radius to destination
-            if (f.getDistance2() < 400.0f)
-            {
-                score += (400.0f - f.getDistance2());
-                launcher.detonate(f);
-            }
-        }
-        return true;
+        return handleInputEvent();
     }
 
     @Override
     public boolean handleTouchDown(int x, int y, int pointer, int button)
     {
-        for (Firework f : launcher.getFireworks())
-        {
-            // 20 pixel radius to destination
-            if (f.getDistance2() < 400.0f)
-            {
-                score += (400.0f - f.getDistance2());
-                launcher.detonate(f);
-            }
-        }
-        return true;
+        return handleInputEvent();
     }
 
     @Override
@@ -82,15 +64,13 @@ public class SimpleGame extends GameController
         while (beatMap.getNextBeat() != null &&
                timer.getTime() > beatMap.getNextBeat().time - 1.0f)
         {
-            Vector2 position    = new Vector2(rng.nextFloat() * 200 + 140, 320.0f);
+            Vector2 position = new Vector2(rng.nextFloat() * 200 + 140, 320.0f);
 
+            // Calculate destination position
             double[] v = dist.getHaltonNumber(index);
             index++;
             Vector2 destination = new Vector2((float)v[0] * 200 + 140,
                                               (float)v[1] * 80 + 80);
-
-            // Vector2 destination = new Vector2(rng.nextFloat() * 200 + 140,
-            //         rng.nextFloat() * 80 + 80);
 
             launcher.fire(position, destination);
             beatMap.popBeat();
@@ -99,9 +79,30 @@ public class SimpleGame extends GameController
         launcher.draw(delta);
     }
 
+    @Override
     public void dispose()
     {
+        super.dispose();
         launcher.dispose();
-        music.dispose();
+    }
+
+    public boolean handleInputEvent()
+    {
+        boolean success = false;
+        for (Firework f : launcher.getFireworks())
+        {
+            // 20 pixel radius to destination
+            if (f.getDistance2() < 400.0f)
+            {
+                score += (400.0f - f.getDistance2());
+                launcher.detonate(f);
+                success = true;
+            }
+        }
+
+        if (!success)
+            score -= 1200;
+
+        return true;
     }
 }

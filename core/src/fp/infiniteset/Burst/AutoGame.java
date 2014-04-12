@@ -67,9 +67,10 @@ public class AutoGame extends GameController
         launcher.draw(delta);
     }
 
+    @Override
     public void dispose()
     {
-        launcher.dispose();
+        super.dispose();
         music.dispose();
     }
 }

@@ -67,5 +67,10 @@ public abstract class GameController implements Disposable
     {
         return score;
     }
+
+    public float getSongPosition()
+    {
+        return music.getPosition();
+    }
 }
 

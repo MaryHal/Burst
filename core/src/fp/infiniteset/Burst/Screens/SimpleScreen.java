@@ -24,7 +24,7 @@ public class SimpleScreen implements Screen
 
     private SimpleGame simpleGame;
     private BitmapFont font;
-    private SpriteBatch textBatch;
+    private SpriteBatch hudBatch;
 
     public SimpleScreen(MainGame game, AssetManager assets)
     {
@@ -72,9 +72,9 @@ public class SimpleScreen implements Screen
         parameters.size = 12;
         parameters.flip = true;
         font = generator.generateFont(parameters);
-        
-        textBatch = new SpriteBatch(64);
-        textBatch.setProjectionMatrix(game.camera.combined);
+
+        hudBatch = new SpriteBatch(64);
+        hudBatch.setProjectionMatrix(game.camera.combined);
     }
 
     @Override
@@ -112,11 +112,12 @@ public class SimpleScreen implements Screen
 
         simpleGame.render(delta);
 
-        textBatch.begin();
+        hudBatch.begin();
         {
-            font.draw(textBatch, "Score: " + simpleGame.getScore(), 4.0f, 4.0f);
+            font.draw(hudBatch, String.format("Song Position: %.2f", simpleGame.getSongPosition()), 4.0f, 4.0f);
+            font.draw(hudBatch, "Score: " + simpleGame.getScore(), 4.0f, 18.0f);
         }
-        textBatch.end();
+        hudBatch.end();
     }
 }
 
