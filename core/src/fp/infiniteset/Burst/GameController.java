@@ -12,12 +12,18 @@ import fp.infiniteset.Burst.Beats.BeatMap;
 import fp.infiniteset.Burst.Utils.Stopwatch;
 
 import java.util.Random;
+import java.util.ArrayList;
 
 public abstract class GameController implements Disposable
 {
     protected OrthographicCamera camera;
+
     protected FireworkLauncher launcher;
     protected BeatMap beatMap;
+    protected ArrayList<BeatMap.Beat> beatList;
+    protected int beatIndex;
+    protected int comboSize;
+
     protected Stopwatch timer;
     protected Music music;
 
@@ -34,6 +40,10 @@ public abstract class GameController implements Disposable
         initializeLauncher();
 
         beatMap = new BeatMap(beatFile);
+        beatList = beatMap.getNewBeatList();
+        beatIndex = 0;
+        comboSize = 0;
+
         timer = new Stopwatch();
 
         music = Gdx.audio.newMusic(file);
@@ -53,7 +63,10 @@ public abstract class GameController implements Disposable
 
     public void reset()
     {
-        beatMap.reset();
+        beatList = beatMap.getNewBeatList();
+        beatIndex = 0;
+        comboSize = 0;
+
         music.stop();
         music.play();
         timer.stop();

@@ -21,17 +21,12 @@ public class BeatMap implements Json.Serializable
         public int type;
         public float x;
         public float y;
+        public int comboSize;
 
         public Beat(float time, int type)
         {
             this.time = time;
             this.type = type;
-        }
-
-        public void setLocation(float x, float y)
-        {
-            this.x = x;
-            this.y = y;
         }
     }
 
@@ -48,7 +43,7 @@ public class BeatMap implements Json.Serializable
     // We must keep an "original" copy in case we ever want to replay a song without
     // reloading a beat file.
     protected PriorityQueue<Beat> beatQueue;
-    protected PriorityQueue<Beat> runningQueue;
+    // protected PriorityQueue<Beat> runningQueue;
 
     protected BeatMap()
     {
@@ -58,25 +53,22 @@ public class BeatMap implements Json.Serializable
     public BeatMap(FileHandle file)
     {
         this();
+
         readFile(file);
-
-        // Clone our queue
-        runningQueue = cloneAndPlaceBeats();
-    }
-
-    public Beat getNextBeat()
-    {
-        return runningQueue.peek();
-    }
-
-    public Beat popBeat()
-    {
-        return runningQueue.poll();
+        placeBeats();
     }
 
     public void reset()
     {
-        runningQueue = cloneAndPlaceBeats();
+        placeBeats();
+    }
+
+    public ArrayList<Beat> getNewBeatList()
+    {
+        placeBeats();
+        Beat[] beatArray = new Beat[beatQueue.size()];
+        beatQueue.toArray(beatArray);
+        return new ArrayList<Beat>(Arrays.asList(beatArray));
     }
 
     public void readFile(FileHandle file)
@@ -113,11 +105,8 @@ public class BeatMap implements Json.Serializable
         beatQueue.add(b);
     }
 
-    public PriorityQueue<Beat> cloneAndPlaceBeats()
+    public void placeBeats()
     {
-        // Clone our beat queue
-        PriorityQueue<Beat> bq = new PriorityQueue<Beat>(beatQueue);
-
         /* Description of "type" from Osu-sdk
          *
          * [Flags]
@@ -160,6 +149,7 @@ public class BeatMap implements Json.Serializable
                 index++;
 
                 placeCircle(comboList, (float)v[0] * 200 + 140, (float)v[1] * 80 + 80, rng.nextInt(20) + 20);
+                comboList.get(0).comboSize = comboList.size();
 
                 // Start our combo over again
                 comboList.clear();
@@ -171,8 +161,12 @@ public class BeatMap implements Json.Serializable
         index++;
 
         placeCircle(comboList, (float)v[0] * 200 + 140, (float)v[1] * 80 + 80, rng.nextInt(20) + 20);
+        comboList.get(0).comboSize = comboList.size();
+    }
 
-        return bq;
+    public void placeCombo()
+    {
+
     }
 
     public void placeLine(ArrayList<Beat> comboList)

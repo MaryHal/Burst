@@ -15,8 +15,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 
-import java.util.Random;
-
 public abstract class FireworkLauncher implements Disposable
 {
     private ParticleEffect prototype;
@@ -26,8 +24,7 @@ public abstract class FireworkLauncher implements Disposable
     private FireworkPool fireworkPool;
     private Array<Firework> fireworks;
 
-    private float[][] fireworkColors;
-    private Random rng;
+    private Array<float[]> fireworkColors;
 
     private SpriteBatch particleBatch;
     private SpriteBatch fireworkBatch;
@@ -46,7 +43,7 @@ public abstract class FireworkLauncher implements Disposable
         fireworkPool = new FireworkPool(16, 64);
         fireworks = new Array<Firework>();
 
-        fireworkColors = new float[][] {
+        fireworkColors = new Array<float[]>(new float[][]{
             {0.8f, 0.3f, 0.3f, 1.0f},
             {0.3f, 0.8f, 0.3f, 1.0f},
             {0.3f, 0.3f, 0.8f, 1.0f},
@@ -54,9 +51,7 @@ public abstract class FireworkLauncher implements Disposable
             {0.3f, 0.9f, 0.9f, 1.0f},
             {0.9f, 0.3f, 0.9f, 1.0f},
             {0.9f, 0.9f, 0.3f, 1.0f},
-        };
-
-        rng = new Random();
+        });
 
         particleBatch = new SpriteBatch(2048);
         particleBatch.setProjectionMatrix(camera.combined);
@@ -82,11 +77,18 @@ public abstract class FireworkLauncher implements Disposable
         /* blurShader.dispose(); */
     }
 
-    public void fire(Vector2 position, Vector2 destination)
+    public Firework fire(Vector2 position, Vector2 destination, Firework next)
     {
         Firework f = fireworkPool.obtain();
-        f.set(position, destination);
+        f.set(position, destination, next);
         fireworks.add(f);
+
+        return f;
+    }
+
+    public void launch(Firework f)
+    {
+        f.launch();
     }
 
     public void detonate(Firework f)
@@ -95,7 +97,7 @@ public abstract class FireworkLauncher implements Disposable
         Vector2 effectPosition = f.getPosition();
 
         PooledEffect effect = effectPool.obtain();
-        float[] color = fireworkColors[rng.nextInt(fireworkColors.length)];
+        float[] color = fireworkColors.random();
         effect.getEmitters().peek().getTint().setColors(color);
         effect.setPosition(effectPosition.x, effectPosition.y);
         effects.add(effect);

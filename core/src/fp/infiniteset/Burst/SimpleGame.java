@@ -6,13 +6,17 @@ import fp.infiniteset.Burst.Fireworks.Firework;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.math.Vector2;
 
+import java.util.LinkedList;
+
 public class SimpleGame extends GameController
 {
-    private int index;
+    private LinkedList<Firework> comboList;
 
     public SimpleGame(FileHandle musicFile, FileHandle beatFile)
     {
         super(musicFile, beatFile);
+
+        comboList = new LinkedList<Firework>();
     }
 
     @Override
@@ -53,15 +57,28 @@ public class SimpleGame extends GameController
     @Override
     public void render(float delta)
     {
-        while (beatMap.getNextBeat() != null &&
-               timer.getTime() > beatMap.getNextBeat().time - 1.0f)
+        if (beatIndex < beatList.size() && comboList.size() == 0)
         {
-            Vector2 position    = new Vector2(rng.nextFloat() * 200 + 140, 320.0f);
-            Vector2 destination = new Vector2(beatMap.getNextBeat().x,
-                                              beatMap.getNextBeat().y);
+            int comboSize = beatList.get(beatIndex).comboSize;
 
-            launcher.fire(position, destination);
-            beatMap.popBeat();
+            // Fixed starting position for a set of beats
+            Vector2 position = new Vector2(rng.nextFloat() * 200 + 140, 320.0f);
+            for (int i = comboSize; i > 0; i--)
+            {
+                Vector2 destination = new Vector2(beatList.get(beatIndex + i - 1).x,
+                        beatList.get(beatIndex + i - 1).y);
+
+                Firework next = comboList.isEmpty() ? null : comboList.getFirst();
+                Firework f = launcher.fire(position.cpy(), destination, next);
+                comboList.addFirst(f);
+            }
+        }
+
+        while (beatIndex < beatList.size() &&
+               timer.getTime() > beatList.get(beatIndex).time - 1.0f)
+        {
+            comboList.remove().launch();
+            beatIndex++;
         }
 
         launcher.draw(delta);

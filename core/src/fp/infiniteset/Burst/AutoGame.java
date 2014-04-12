@@ -49,22 +49,6 @@ public class AutoGame extends GameController
     @Override
     public void render(float delta)
     {
-        camera.update();
-
-        while (beatMap.getNextBeat() != null &&
-               timer.getTime() > beatMap.getNextBeat().time - 1.0f)
-        {
-            /* System.out.println(timer.getTime() + ", " + music.getPosition() + ", " + beatMap.getNextBeat().time); */
-
-            Vector2 position    = new Vector2(rng.nextFloat() * 200 + 140, 320.0f);
-            Vector2 destination = new Vector2(rng.nextFloat() * 200 + 140,
-                    rng.nextFloat() * 80 + 80);
-
-            launcher.fire(position, destination);
-            beatMap.popBeat();
-        }
-
-        launcher.draw(delta);
     }
 
     @Override

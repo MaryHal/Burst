@@ -152,7 +152,8 @@ public class MainMenu implements Screen
             Vector2 position    = new Vector2(rng.nextFloat() * 200 + 140, 320.0f);
             Vector2 destination = new Vector2(rng.nextFloat() * 200 + 140,
                     rng.nextFloat() * 80 + 80);
-            launcher.fire(position, destination);
+            Firework f = launcher.fire(position, destination, null);
+            f.launch();
         }
 
         if (menu.isSelected())

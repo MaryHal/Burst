@@ -13,6 +13,7 @@ public class Firework implements Pool.Poolable
     private Vector2 destination;
     private Vector2 velocity;
     private ShapeRenderer sprite;
+    private Firework next;
 
     private boolean alive;
 
@@ -25,19 +26,27 @@ public class Firework implements Pool.Poolable
     {
         this.position = position;
         this.destination = destination;
-        this.velocity = destination.cpy().sub(position);
+        // this.velocity = destination.cpy().sub(position);
+        this.velocity = Vector2.Zero;
 
         this.sprite = new ShapeRenderer();
         this.alive = false;
     }
 
-    public void set(Vector2 position, Vector2 destination)
+    public void set(Vector2 position, Vector2 destination, Firework next)
     {
         this.position = position;
         this.destination = destination;
-        this.velocity = destination.cpy().sub(position);
+        // this.velocity = destination.cpy().sub(position);
+        this.velocity = Vector2.Zero;
+        this.next = next;
 
         this.alive = true;
+    }
+
+    public void launch()
+    {
+        this.velocity = destination.cpy().sub(position);
     }
 
     @Override
@@ -75,7 +84,8 @@ public class Firework implements Pool.Poolable
 
     public void update(float delta)
     {
-        position.add(velocity.cpy().scl(delta));
+        if (alive)
+            position.add(velocity.cpy().scl(delta));
     }
 
     // Returns true if inside window, false if outside
@@ -99,7 +109,23 @@ public class Firework implements Pool.Poolable
 
     public void draw(SpriteBatch batch)
     {
+        if (!alive)
+            return;
+
         sprite.setProjectionMatrix(batch.getProjectionMatrix());
+
+        // Connecting line
+        if (next != null)
+        {
+            Gdx.gl20.glLineWidth(2.0f);
+            sprite.begin(ShapeType.Line);
+            {
+                sprite.setColor(0.5f, 0.5f, 0.0f, 1.0f);
+                sprite.line(destination.x, destination.y,
+                            next.getDestination().x, next.getDestination().y);
+            }
+            sprite.end();
+        }
 
         sprite.begin(ShapeType.Filled);
         {
@@ -111,16 +137,17 @@ public class Firework implements Pool.Poolable
         }
         sprite.end();
 
-        if (position.y > destination.y)
-        {
-            Gdx.gl20.glLineWidth(2.0f);
-            sprite.begin(ShapeType.Line);
-            {
-                sprite.setColor(0.15f, 0.15f, 0.15f, 1.0f);
-                sprite.circle(destination.x, destination.y, position.dst(destination));
-            }
-            sprite.end();
-        }
+        // // Bounding Circle
+        // if (position.y > destination.y)
+        // {
+        //     Gdx.gl20.glLineWidth(2.0f);
+        //     sprite.begin(ShapeType.Line);
+        //     {
+        //         sprite.setColor(0.15f, 0.15f, 0.15f, 1.0f);
+        //         sprite.circle(destination.x, destination.y, position.dst(destination));
+        //     }
+        //     sprite.end();
+        // }
     }
 }
 
