@@ -31,7 +31,8 @@ public class SimpleGame extends GameController
             {
                 f.update(delta);
 
-                if (f.getPosition().y < 0.0f)
+                if (f.getPosition().y < f.getDestination().y &&
+                    f.getPosition().dst2(f.getDestination()) > 400.0f)
                 {
                     f.setAlive(false);
                     remove(f);
