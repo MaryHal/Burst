@@ -103,7 +103,7 @@ public class Menu implements Disposable
     public boolean handleKeyDown(int keycode)
     {
         int accumulator = 0;
-        if (keycode == Keys.W)
+        if (keycode == Keys.W || keycode == Keys.UP)
         {
             do
             {
@@ -112,7 +112,7 @@ public class Menu implements Disposable
                     index = items.size() - 1;
             } while (++accumulator < items.size() && !items.get(index).selectable);
         }
-        else if (keycode == Keys.S)
+        else if (keycode == Keys.S || keycode == Keys.DOWN)
         {
             do
             {
