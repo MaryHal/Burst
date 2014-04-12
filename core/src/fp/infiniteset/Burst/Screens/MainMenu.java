@@ -46,7 +46,7 @@ public class MainMenu implements Screen
     {
         FreeTypeFontGenerator generator = assets.get("fonts/DroidSansFallback.ttf", FreeTypeFontGenerator.class);
         FreeTypeFontParameter parameters = new FreeTypeFontParameter();
-        parameters.size = 16;
+        parameters.size = 11;
         parameters.flip = true;
         font = generator.generateFont(parameters);
 
@@ -66,7 +66,7 @@ public class MainMenu implements Screen
         };
 
         // Generate Menu
-        menu = new Menu(game.camera, font, 100.0f, 100.0f);
+        menu = new Menu(game.camera, font, 16.0f, 16.0f);
         menu.addItem("Song List:", false);
 
         // Get beatfiles and sort 'em

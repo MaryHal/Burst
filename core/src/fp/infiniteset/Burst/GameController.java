@@ -23,6 +23,7 @@ public abstract class GameController implements Disposable
 
     protected Random rng;
     protected int score;
+    protected int combo;
 
     protected GameController(FileHandle file, FileHandle beatFile)
     {
@@ -39,6 +40,9 @@ public abstract class GameController implements Disposable
         music.setLooping(false);
 
         rng = new Random();
+
+        score = 0;
+        combo = 0;
     }
 
     @Override
@@ -54,6 +58,9 @@ public abstract class GameController implements Disposable
         music.play();
         timer.stop();
         timer.start();
+
+        score = 0;
+        combo = 0;
     }
 
     // More explicit method to enforce that launcher is overridden
@@ -66,6 +73,11 @@ public abstract class GameController implements Disposable
     public int getScore()
     {
         return score;
+    }
+
+    public int getCombo()
+    {
+        return combo;
     }
 
     public float getSongPosition()

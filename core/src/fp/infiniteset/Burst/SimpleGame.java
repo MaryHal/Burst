@@ -39,6 +39,8 @@ public class SimpleGame extends GameController
                 {
                     f.setAlive(false);
                     remove(f);
+
+                    inputFail();
                 }
             }
         };
@@ -59,8 +61,6 @@ public class SimpleGame extends GameController
     @Override
     public void render(float delta)
     {
-        /* System.out.println(music.getPosition() + ", " + beatMap.getNextBeat().time); */
-
         while (beatMap.getNextBeat() != null &&
                timer.getTime() > beatMap.getNextBeat().time - 1.0f)
         {
@@ -94,15 +94,25 @@ public class SimpleGame extends GameController
             // 20 pixel radius to destination
             if (f.getDistance2() < 400.0f)
             {
-                score += (400.0f - f.getDistance2());
+                combo++;
+                score += (400.0f - f.getDistance2()) * combo / 10.0f;
                 launcher.detonate(f);
+
                 success = true;
             }
         }
 
         if (!success)
-            score -= 1200;
+        {
+            inputFail();
+        }
 
         return true;
+    }
+
+    public void inputFail()
+    {
+        score = (score - 1200 < 0) ? 0 : score - 1200;
+        combo = 0;
     }
 }
