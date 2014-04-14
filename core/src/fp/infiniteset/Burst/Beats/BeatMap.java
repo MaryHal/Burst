@@ -127,8 +127,7 @@ public class BeatMap implements Json.Serializable
         // Throw away the first 20 numbers from the HaltonSequence
         // and also introduce some randomness./
         Random rng = new Random();
-        int index = rng.nextInt(10) + 20;
-        HaltonSequence dist = new HaltonSequence(new int[] {2, 3});
+        HaltonSequence dist = new HaltonSequence(2);
 
         // Converting to an array is recommended for ordered traveral of a
         // PriorityQueue.
@@ -140,33 +139,26 @@ public class BeatMap implements Json.Serializable
         ArrayList<Beat> comboList = new ArrayList<Beat>();
         for (Beat beat : beatArray)
         {
-            comboList.add(beat);
-
             // 5 and 6 finalize a string of beats, so place them
             if (beat.type == 5 || beat.type == 6)
             {
-                double[] v = dist.getHaltonNumber(index);
-                index++;
+                double[] v = dist.getHaltonNumber();
 
-                placeCircle(comboList, (float)v[0] * 200 + 140, (float)v[1] * 80 + 80, rng.nextInt(20) + 20);
+                placeCircle(comboList, (float)v[0] * 200 + 140, (float)v[1] * 80 + 80, rng.nextInt(20) + 20, rng.nextFloat() * 6.28f);
                 comboList.get(0).comboSize = comboList.size();
 
                 // Start our combo over again
                 comboList.clear();
             }
+
+            comboList.add(beat);
         }
 
         // If the last beat isn't a finalizer, we gotta finish it up.
-        double[] v = dist.getHaltonNumber(index);
-        index++;
+        double[] v = dist.getHaltonNumber();
 
-        placeCircle(comboList, (float)v[0] * 200 + 140, (float)v[1] * 80 + 80, rng.nextInt(20) + 20);
+        placeCircle(comboList, (float)v[0] * 200 + 140, (float)v[1] * 80 + 80, rng.nextInt(20) + 20, rng.nextFloat() * 6.28f);
         comboList.get(0).comboSize = comboList.size();
-    }
-
-    public void placeCombo()
-    {
-
     }
 
     public void placeLine(ArrayList<Beat> comboList)
@@ -174,11 +166,11 @@ public class BeatMap implements Json.Serializable
 
     }
 
-    public void placeCircle(ArrayList<Beat> comboList, float x, float y, int radius)
+    public void placeCircle(ArrayList<Beat> comboList, float x, float y, int radius, float offset)
     {
         for (int i = 0; i < comboList.size(); i++)
         {
-            float radians = i * 3.14159f * 2 / comboList.size();
+            float radians = offset + i * 3.14159f * 2 / comboList.size();
             comboList.get(i).x = (float)(x + Math.cos(radians) * radius);
             comboList.get(i).y = (float)(y + Math.sin(radians) * radius);
         }

@@ -12,7 +12,8 @@ public class HaltonSequence
             149, 151, 157, 163, 167, 173
     };
 
-    int[] baseVector;
+    private int[] baseVector;
+    private int index;
 
     // public HaltonSequence(int base)
     // {
@@ -43,9 +44,11 @@ public class HaltonSequence
         {
             baseVector[i] = uniqueBases[i];
         }
+
+        this.index = rng.nextInt(10) + 20;
     }
 
-    public HaltonSequence(int[] baseVector)
+    public HaltonSequence(int[] baseVector, int index)
     {
         for(int base : baseVector)
         {
@@ -54,14 +57,26 @@ public class HaltonSequence
         }
 
         this.baseVector = baseVector;
+        this.index = index;
     }
 
-    public double[] getHaltonNumber(int index)
+    public double[] getHaltonNumber()
     {
         double[] x = new double[baseVector.length];
         for (int i = 0; i < baseVector.length; i++) 
         {
             x[i] = getHaltonNumber(index, baseVector[i]);
+        }
+        index++;
+        return x;
+    }
+
+    public double[] getHaltonNumber(int specIndex)
+    {
+        double[] x = new double[baseVector.length];
+        for (int i = 0; i < baseVector.length; i++) 
+        {
+            x[i] = getHaltonNumber(specIndex, baseVector[i]);
         }
         return x;
     }
