@@ -1,105 +1,78 @@
 package fp.infiniteset.Burst.Utils;
 
 import java.util.Random;
-import java.util.TreeSet;
 
 public class HaltonSequence
 {
-    private static final int[] PRIMES = new int[] 
+    private static final int[] PRIMES = new int[]
     {
         2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67,
             71, 73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 127, 131, 137, 139,
             149, 151, 157, 163, 167, 173
     };
 
-    private int[] baseVector;
+    private static final int[] WEIGHTS = new int[]
+    {
+        1, 2, 3, 3, 8, 11, 12, 14, 7, 18, 12, 13, 17, 18, 29, 14, 18, 43, 41,
+            44, 40, 30, 47, 65, 71, 28, 40, 60, 79, 89, 56, 50, 52, 61, 108, 56,
+            66, 63, 60, 66
+    };
+
+    private int dimension;
+    private int[] base;
+    private int[] weight;
     private int index;
-
-    // public HaltonSequence(int base)
-    // {
-    //     if(base < 2)
-    //         throw new RuntimeException("Cannot create Halton sequence with base less than two.");
-
-    //     this.baseVector = new int[] { base };
-    // }
 
     public HaltonSequence(int dimension)
     {
-        Random rng = new Random();
-        TreeSet<Integer> bases = new TreeSet<Integer>();
+        this(dimension, PRIMES, WEIGHTS);
+    }
 
-        while (bases.size() < dimension)
+    public HaltonSequence(int dimension, int[] bases, int[] weights)
+    {
+        this.dimension = dimension;
+        this.base = bases.clone();
+        this.weight = weights == null ? null : weights.clone();
+
+        Random rng = new Random();
+        index = rng.nextInt(30) + 20;
+    }
+
+    public double[] nextVector()
+    {
+        final double[] v = new double[dimension];
+        for (int i = 0; i < dimension; i++)
         {
-            for (int i = 0; i < dimension; i++)
+            int count = index;
+            double f = 1.0 / base[i];
+
+            int j = 0;
+            while (count > 0)
             {
-                bases.add(PRIMES[rng.nextInt(PRIMES.length)]);
+                final int digit = scramble(i, j, base[i], count % base[i]);
+                v[i] += f * digit;
+                count /= base[i]; // floor( index / base )
+                f /= base[i];
             }
         }
-
-        // Let's not work with Integers
-        Integer[] uniqueBases = new Integer[dimension];
-        uniqueBases = bases.toArray(uniqueBases);
-        baseVector = new int[dimension];
-        for (int i = 0; i < uniqueBases.length; i++)
-        {
-            baseVector[i] = uniqueBases[i];
-        }
-
-        this.index = rng.nextInt(10) + 20;
+        index++;
+        return v;
     }
 
-    public HaltonSequence(int[] baseVector, int index)
+    protected int scramble(final int i, final int j, final int b, final int digit)
     {
-        for(int base : baseVector)
-        {
-            if(base < 2)
-                throw new RuntimeException("Cannot create Halton sequence with base less than two.");
-        }
+        return weight != null ? (weight[i] * digit) % b : digit;
+    }
 
-        this.baseVector = baseVector;
+    public double[] skipTo(final int index)
+    {
         this.index = index;
+        return nextVector();
     }
 
-    public double[] getHaltonNumber()
+    public int getNextIndex()
     {
-        double[] x = new double[baseVector.length];
-        for (int i = 0; i < baseVector.length; i++) 
-        {
-            x[i] = getHaltonNumber(index, baseVector[i]);
-        }
-        index++;
-        return x;
-    }
-
-    public double[] getHaltonNumber(int specIndex)
-    {
-        double[] x = new double[baseVector.length];
-        for (int i = 0; i < baseVector.length; i++) 
-        {
-            x[i] = getHaltonNumber(specIndex, baseVector[i]);
-        }
-        return x;
-    }
-
-    static double getHaltonNumber(int index, int base)
-    {
-        // Check base
-        if(base < 2) throw new RuntimeException("Cannot create Halton number with base less than two.");
-        if(index < 0) throw new RuntimeException("Cannot create Halton number with index less than zero.");
-
-        // Index shift: counting of the function start at 0, algorithm below start at 1.
-        index++;
-
-        // Calculate Halton number x
-        double x = 0;
-        double factor = 1.0/base;
-        while(index > 0)
-        {
-            x += (index % base) * factor;
-            factor /= base;
-            index /= base;
-        }
-        return x;
+        return index;
     }
 }
 

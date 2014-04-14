@@ -2,6 +2,7 @@ package fp.infiniteset.Burst.Fireworks;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -14,6 +15,7 @@ public class Firework implements Pool.Poolable
     private Vector2 velocity;
     private ShapeRenderer sprite;
     private Firework next;
+    private float[] lineColor;
 
     private boolean alive;
 
@@ -40,6 +42,7 @@ public class Firework implements Pool.Poolable
         // this.velocity = destination.cpy().sub(position);
         this.velocity = Vector2.Zero;
         this.next = next;
+        this.lineColor = new float[] {0.0f, 0.0f, 0.0f, 0.0f};
 
         this.alive = true;
     }
@@ -85,7 +88,17 @@ public class Firework implements Pool.Poolable
     public void update(float delta)
     {
         if (alive)
+        {
             position.add(velocity.cpy().scl(delta));
+
+            if (velocity.len2() > 0.0f)
+            {
+                lineColor[0] += delta;
+                lineColor[1] += delta;
+                lineColor[2] += delta;
+                lineColor[3] += delta;
+            }
+        }
     }
 
     // Returns true if inside window, false if outside
@@ -114,13 +127,17 @@ public class Firework implements Pool.Poolable
 
         sprite.setProjectionMatrix(batch.getProjectionMatrix());
 
+        Gdx.gl20.glEnable(GL20.GL_BLEND);
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+
         // Connecting line
         if (next != null)
         {
             Gdx.gl20.glLineWidth(2.0f);
+
             sprite.begin(ShapeType.Line);
             {
-                sprite.setColor(0.5f, 0.5f, 0.0f, 1.0f);
+                sprite.setColor(1.0f, 1.0f, 1.0f, lineColor[3]);
                 sprite.line(destination.x, destination.y,
                             next.getDestination().x, next.getDestination().y);
             }
@@ -136,6 +153,8 @@ public class Firework implements Pool.Poolable
             sprite.rect(destination.x - 2, destination.y - 2, 4, 4);
         }
         sprite.end();
+
+        Gdx.gl20.glDisable(GL20.GL_BLEND);
 
         // // Bounding Circle
         // if (position.y > destination.y)

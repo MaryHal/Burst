@@ -142,7 +142,7 @@ public class BeatMap implements Json.Serializable
             // 5 and 6 finalize a string of beats, so place them
             if (beat.type == 5 || beat.type == 6)
             {
-                double[] v = dist.getHaltonNumber();
+                double[] v = dist.nextVector();
 
                 placeCircle(comboList, (float)v[0] * 200 + 140, (float)v[1] * 80 + 80, rng.nextInt(20) + 20, rng.nextFloat() * 6.28f);
                 comboList.get(0).comboSize = comboList.size();
@@ -155,7 +155,7 @@ public class BeatMap implements Json.Serializable
         }
 
         // If the last beat isn't a finalizer, we gotta finish it up.
-        double[] v = dist.getHaltonNumber();
+        double[] v = dist.nextVector();
 
         placeCircle(comboList, (float)v[0] * 200 + 140, (float)v[1] * 80 + 80, rng.nextInt(20) + 20, rng.nextFloat() * 6.28f);
         comboList.get(0).comboSize = comboList.size();
