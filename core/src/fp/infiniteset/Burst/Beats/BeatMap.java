@@ -5,13 +5,17 @@ import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.JsonReader;
 
+import com.badlogic.gdx.math.Vector2;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.PriorityQueue;
 import java.util.Comparator;
 
 import java.util.Random;
+
 import fp.infiniteset.Burst.Utils.HaltonSequence;
+import fp.infiniteset.Burst.MainGame;
 
 public class BeatMap implements Json.Serializable
 {
@@ -105,7 +109,7 @@ public class BeatMap implements Json.Serializable
         beatQueue.add(b);
     }
 
-    public void placeBeats()
+    private void placeBeats()
     {
         /* Description of "type" from Osu-sdk
          *
@@ -142,9 +146,27 @@ public class BeatMap implements Json.Serializable
             // 5 and 6 finalize a string of beats, so place them
             if (beat.type == 5 || beat.type == 6)
             {
-                double[] v = dist.nextVector();
+                if (rng.nextInt(2) == 0)
+                {
+                    double[] v = dist.nextVector();
+                    placeCircle(comboList, (float)v[0] * 200 + 140, (float)v[1] * 80 + 80, rng.nextInt(20) + 20, rng.nextFloat() * 6.28f, rng.nextInt(2) == 1 ? 1 : -1);
+                }
+                else
+                {
+                    Vector2 a;
+                    Vector2 b;
 
-                placeCircle(comboList, (float)v[0] * 200 + 140, (float)v[1] * 80 + 80, rng.nextInt(20) + 20, rng.nextFloat() * 6.28f);
+                    do
+                    {
+                        double[] v1 = dist.nextVector();
+                        double[] v2 = dist.nextVector();
+                        a = new Vector2((float)v1[0] * 200 + 140, (float)v1[1] * 80 + 80);
+                        b = new Vector2((float)v2[0] * 200 + 140, (float)v2[1] * 80 + 80);
+                    } while (a.dst(b) < 80.0f);
+
+                    placeLine(comboList, a.x, a.y, b.x, b.y);
+                }
+
                 comboList.get(0).comboSize = comboList.size();
 
                 // Start our combo over again
@@ -157,20 +179,26 @@ public class BeatMap implements Json.Serializable
         // If the last beat isn't a finalizer, we gotta finish it up.
         double[] v = dist.nextVector();
 
-        placeCircle(comboList, (float)v[0] * 200 + 140, (float)v[1] * 80 + 80, rng.nextInt(20) + 20, rng.nextFloat() * 6.28f);
+        placeCircle(comboList, (float)v[0] * 200 + 140, (float)v[1] * 80 + 80, rng.nextInt(20) + 20, rng.nextFloat() * 6.28f, rng.nextInt(2) == 1 ? 1 : -1);
         comboList.get(0).comboSize = comboList.size();
     }
 
-    public void placeLine(ArrayList<Beat> comboList)
+    private void placeLine(ArrayList<Beat> comboList, float x1, float y1, float x2, float y2)
     {
-
+        float slopex = (x2 - x1) / comboList.size();
+        float slopey = (y2 - y1) / comboList.size();
+        for (int i = 0; i < comboList.size(); i++)
+        {
+            comboList.get(i).x = x1 + slopex * i;
+            comboList.get(i).y = y1 + slopey * i;
+        }
     }
 
-    public void placeCircle(ArrayList<Beat> comboList, float x, float y, int radius, float offset)
+    private void placeCircle(ArrayList<Beat> comboList, float x, float y, int radius, float offset, int dir)
     {
         for (int i = 0; i < comboList.size(); i++)
         {
-            float radians = offset + i * 3.14159f * 2 / comboList.size();
+            float radians = offset + dir * i * 3.14159f * 2 / comboList.size();
             comboList.get(i).x = (float)(x + Math.cos(radians) * radius);
             comboList.get(i).y = (float)(y + Math.sin(radians) * radius);
         }
