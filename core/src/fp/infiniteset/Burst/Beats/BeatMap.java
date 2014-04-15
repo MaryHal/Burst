@@ -6,6 +6,7 @@ import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.JsonReader;
 
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Rectangle;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -111,6 +112,11 @@ public class BeatMap implements Json.Serializable
 
     private void placeBeats()
     {
+        // Get viewport rectangle and calculate an area for possible burst points.
+        Rectangle viewport = MainGame.viewport;
+        Rectangle area = new Rectangle(100.0f, 80.0f, viewport.width - 200.0f, 80.0f);
+
+
         /* Description of "type" from Osu-sdk
          *
          * [Flags]
@@ -146,26 +152,13 @@ public class BeatMap implements Json.Serializable
             // 5 and 6 finalize a string of beats, so place them
             if (beat.type == 5 || beat.type == 6)
             {
-                if (rng.nextInt(2) == 0)
-                {
-                    double[] v = dist.nextVector();
-                    placeCircle(comboList, (float)v[0] * 200 + 140, (float)v[1] * 80 + 80, rng.nextInt(20) + 20, rng.nextFloat() * 6.28f, rng.nextInt(2) == 1 ? 1 : -1);
-                }
-                else
-                {
-                    Vector2 a;
-                    Vector2 b;
-
-                    do
-                    {
-                        double[] v1 = dist.nextVector();
-                        double[] v2 = dist.nextVector();
-                        a = new Vector2((float)v1[0] * 200 + 140, (float)v1[1] * 80 + 80);
-                        b = new Vector2((float)v2[0] * 200 + 140, (float)v2[1] * 80 + 80);
-                    } while (a.dst(b) < 80.0f);
-
-                    placeLine(comboList, a.x, a.y, b.x, b.y);
-                }
+                Vector2 v = dist.nextFloat2d();
+                placeCircle(comboList,
+                        v.x * area.width + area.x,
+                        v.y * area.height + area.y,
+                        rng.nextInt(20) + 20,
+                        rng.nextFloat() * 6.28f,
+                        rng.nextInt(2) == 1 ? 1 : -1);
 
                 comboList.get(0).comboSize = comboList.size();
 
@@ -177,9 +170,14 @@ public class BeatMap implements Json.Serializable
         }
 
         // If the last beat isn't a finalizer, we gotta finish it up.
-        double[] v = dist.nextVector();
+        Vector2 v = dist.nextFloat2d();
+        placeCircle(comboList,
+                v.x * area.width + area.x,
+                v.y * area.height + area.y,
+                rng.nextInt(20) + 20,
+                rng.nextFloat() * 6.28f,
+                rng.nextInt(2) == 1 ? 1 : -1);
 
-        placeCircle(comboList, (float)v[0] * 200 + 140, (float)v[1] * 80 + 80, rng.nextInt(20) + 20, rng.nextFloat() * 6.28f, rng.nextInt(2) == 1 ? 1 : -1);
         comboList.get(0).comboSize = comboList.size();
     }
 

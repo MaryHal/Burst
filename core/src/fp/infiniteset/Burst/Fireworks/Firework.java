@@ -10,6 +10,8 @@ import com.badlogic.gdx.utils.Pool;
 
 public class Firework implements Pool.Poolable
 {
+    private static final int pointRadius = 3;
+
     private Vector2 position;
     private Vector2 destination;
     private Vector2 velocity;
@@ -42,7 +44,7 @@ public class Firework implements Pool.Poolable
         // this.velocity = destination.cpy().sub(position);
         this.velocity = Vector2.Zero;
         this.next = next;
-        this.lineColor = new float[] {0.0f, 0.0f, 0.0f, 0.0f};
+        this.lineColor = new float[] {0.0f, 0.0f, 0.0f, 0.05f};
 
         this.alive = true;
     }
@@ -133,7 +135,7 @@ public class Firework implements Pool.Poolable
         // Connecting line
         if (next != null)
         {
-            Gdx.gl20.glLineWidth(2.0f);
+            Gdx.gl20.glLineWidth(pointRadius);
 
             sprite.begin(ShapeType.Line);
             {
@@ -147,10 +149,10 @@ public class Firework implements Pool.Poolable
         sprite.begin(ShapeType.Filled);
         {
             sprite.setColor(1.0f, 1.0f, 1.0f, 1.0f);
-            sprite.rect(position.x - 2, position.y - 2, 4, 4);
+            sprite.rect(position.x - pointRadius, position.y - pointRadius, 2*pointRadius, 2*pointRadius);
 
             sprite.setColor(0.3f, 0.3f, 0.3f, 1.0f);
-            sprite.rect(destination.x - 2, destination.y - 2, 4, 4);
+            sprite.rect(destination.x - pointRadius, destination.y - pointRadius, 2*pointRadius, 2*pointRadius);
         }
         sprite.end();
 
