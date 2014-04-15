@@ -5,6 +5,7 @@ import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.JsonReader;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Rectangle;
 
@@ -12,8 +13,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.PriorityQueue;
 import java.util.Comparator;
-
-import java.util.Random;
 
 import fp.infiniteset.Burst.Utils.HaltonSequence;
 import fp.infiniteset.Burst.MainGame;
@@ -116,7 +115,6 @@ public class BeatMap implements Json.Serializable
         Rectangle viewport = MainGame.viewport;
         Rectangle area = new Rectangle(100.0f, 80.0f, viewport.width - 200.0f, 80.0f);
 
-
         /* Description of "type" from Osu-sdk
          *
          * [Flags]
@@ -136,7 +134,6 @@ public class BeatMap implements Json.Serializable
 
         // Throw away the first 20 numbers from the HaltonSequence
         // and also introduce some randomness./
-        Random rng = new Random();
         HaltonSequence dist = new HaltonSequence(2);
 
         // Converting to an array is recommended for ordered traveral of a
@@ -156,9 +153,9 @@ public class BeatMap implements Json.Serializable
                 placeCircle(comboList,
                         v.x * area.width + area.x,
                         v.y * area.height + area.y,
-                        rng.nextInt(20) + 20,
-                        rng.nextFloat() * 6.28f,
-                        rng.nextInt(2) == 1 ? 1 : -1);
+                        MathUtils.random(30, 50),
+                        MathUtils.random(MathUtils.PI2),
+                        MathUtils.randomBoolean() == true ? 1 : -1);
 
                 comboList.get(0).comboSize = comboList.size();
 
@@ -174,9 +171,9 @@ public class BeatMap implements Json.Serializable
         placeCircle(comboList,
                 v.x * area.width + area.x,
                 v.y * area.height + area.y,
-                rng.nextInt(20) + 20,
-                rng.nextFloat() * 6.28f,
-                rng.nextInt(2) == 1 ? 1 : -1);
+                MathUtils.random(20, 40),
+                MathUtils.random(MathUtils.PI2),
+                MathUtils.randomBoolean() == true ? 1 : -1);
 
         comboList.get(0).comboSize = comboList.size();
     }

@@ -4,6 +4,7 @@ import fp.infiniteset.Burst.Fireworks.FireworkLauncher;
 import fp.infiniteset.Burst.Fireworks.Firework;
 
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
 import java.util.LinkedList;
@@ -63,7 +64,7 @@ public class SimpleGame extends GameController
             int comboSize = beatList.get(beatIndex).comboSize;
 
             // Fixed starting position for a set of beats
-            Vector2 position = new Vector2(rng.nextFloat() * 200 + 140, 320.0f);
+            Vector2 position = new Vector2(MathUtils.random() * 200 + 140, 320.0f);
             for (int i = comboSize; i > 0; i--)
             {
                 Vector2 destination = new Vector2(beatList.get(beatIndex + i - 1).x,

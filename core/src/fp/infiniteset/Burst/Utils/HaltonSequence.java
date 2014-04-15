@@ -1,7 +1,7 @@
 package fp.infiniteset.Burst.Utils;
 
 import com.badlogic.gdx.math.Vector2;
-import java.util.Random;
+import com.badlogic.gdx.math.MathUtils;
 
 public class HaltonSequence
 {
@@ -35,8 +35,7 @@ public class HaltonSequence
         this.base = bases.clone();
         this.weight = weights == null ? null : weights.clone();
 
-        Random rng = new Random();
-        index = rng.nextInt(30) + 20;
+        index = MathUtils.random(20, 40);
     }
 
     public Vector2 nextFloat2d()

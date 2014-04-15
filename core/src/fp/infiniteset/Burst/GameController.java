@@ -11,7 +11,6 @@ import fp.infiniteset.Burst.Fireworks.FireworkLauncher;
 import fp.infiniteset.Burst.Beats.BeatMap;
 import fp.infiniteset.Burst.Utils.Stopwatch;
 
-import java.util.Random;
 import java.util.ArrayList;
 
 public abstract class GameController implements Disposable
@@ -27,7 +26,6 @@ public abstract class GameController implements Disposable
     protected Stopwatch timer;
     protected Music music;
 
-    protected Random rng;
     protected int score;
     protected int combo;
 
@@ -48,8 +46,6 @@ public abstract class GameController implements Disposable
 
         music = Gdx.audio.newMusic(file);
         music.setLooping(false);
-
-        rng = new Random();
 
         score = 0;
         combo = 0;

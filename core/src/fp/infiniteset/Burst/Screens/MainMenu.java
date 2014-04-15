@@ -15,14 +15,13 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.MathUtils;
 
 import com.badlogic.gdx.assets.AssetManager;
 
 import fp.infiniteset.Burst.Fireworks.Firework;
 import fp.infiniteset.Burst.Fireworks.FireworkLauncher;
 import fp.infiniteset.Burst.Utils.Menu;
-
-import java.util.Random;
 
 public class MainMenu implements Screen
 {
@@ -33,7 +32,6 @@ public class MainMenu implements Screen
 
     private FireworkLauncher launcher;
     private Menu menu;
-    private Random rng;
 
     public MainMenu(MainGame game, AssetManager assets)
     {
@@ -85,8 +83,6 @@ public class MainMenu implements Screen
         {
             menu.addItem(file.nameWithoutExtension());
         }
-
-        rng = new Random();
 
         InputAdapter adapter = new InputAdapter()
         {
@@ -147,11 +143,11 @@ public class MainMenu implements Screen
 
         launcher.draw(delta);
 
-        if (rng.nextInt(45) == 0)
+        if (MathUtils.random(45) == 0)
         {
-            Vector2 position    = new Vector2(rng.nextFloat() * 200 + 140, 320.0f);
-            Vector2 destination = new Vector2(rng.nextFloat() * 200 + 140,
-                    rng.nextFloat() * 80 + 80);
+            Vector2 position    = new Vector2(MathUtils.random() * 200 + 140, 320.0f);
+            Vector2 destination = new Vector2(MathUtils.random() * 200 + 140,
+                    MathUtils.random() * 80 + 80);
             Firework f = launcher.fire(position, destination, null);
             f.launch();
         }
