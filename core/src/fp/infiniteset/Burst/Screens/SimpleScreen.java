@@ -115,7 +115,10 @@ public class SimpleScreen implements Screen
         hudBatch.begin();
         {
             font.draw(hudBatch, String.format("Time: %.2f", simpleGame.getSongPosition()), 4.0f, 4.0f);
-            font.draw(hudBatch, "Score: " + simpleGame.getScore(), 4.0f, 18.0f);
+            font.draw(hudBatch, String.format("Score: %d (%+d)", 
+                                              simpleGame.getScore(), 
+                                              simpleGame.getScoreDifference()), 
+                                              4.0f, 18.0f);
             font.draw(hudBatch, "Combo: " + simpleGame.getCombo(), 4.0f, 32.0f);
         }
         hudBatch.end();

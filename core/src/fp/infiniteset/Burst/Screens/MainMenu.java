@@ -145,9 +145,10 @@ public class MainMenu implements Screen
 
         if (MathUtils.random(45) == 0)
         {
-            Vector2 position    = new Vector2(MathUtils.random() * 200 + 140, 320.0f);
-            Vector2 destination = new Vector2(MathUtils.random() * 200 + 140,
-                    MathUtils.random() * 80 + 80);
+            Vector2 position = new Vector2(MathUtils.random() * (MainGame.VIRTUAL_WIDTH - 200) + 100,
+                    MainGame.VIRTUAL_HEIGHT);
+            Vector2 destination = new Vector2(MathUtils.random() * (MainGame.VIRTUAL_WIDTH - 200) + 100,
+                    MathUtils.random() * 200 + 80);
             Firework f = launcher.fire(position, destination, null);
             f.launch();
         }

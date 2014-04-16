@@ -27,6 +27,7 @@ public abstract class GameController implements Disposable
     protected Music music;
 
     protected int score;
+    protected int scoreDiff;
     protected int combo;
 
     protected GameController(FileHandle file, FileHandle beatFile)
@@ -79,6 +80,11 @@ public abstract class GameController implements Disposable
     public abstract boolean handleKeyDown(int keycode);
     public abstract boolean handleTouchDown(int x, int y, int pointer, int button);
     public abstract void render(float delta);
+
+    public int getScoreDifference()
+    {
+        return scoreDiff;
+    }
 
     public int getScore()
     {

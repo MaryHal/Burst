@@ -113,7 +113,7 @@ public class BeatMap implements Json.Serializable
     {
         // Get viewport rectangle and calculate an area for possible burst points.
         Rectangle viewport = MainGame.viewport;
-        Rectangle area = new Rectangle(100.0f, 80.0f, viewport.width - 200.0f, 80.0f);
+        Rectangle area = new Rectangle(100.0f, 120.0f, viewport.width - 200.0f, 140.0f);
 
         /* Description of "type" from Osu-sdk
          *
@@ -150,13 +150,13 @@ public class BeatMap implements Json.Serializable
             if (beat.type == 5 || beat.type == 6)
             {
                 Vector2 v = dist.nextFloat2d();
-                placeRandom(comboList, v.x * area.width + area.x, v.y * area.height + area.y);
-                // placeCircle(comboList,
-                //         v.x * area.width + area.x,
-                //         v.y * area.height + area.y,
-                //         MathUtils.random(30, 50),
-                //         MathUtils.random(MathUtils.PI2),
-                //         MathUtils.randomBoolean() == true ? 1 : -1);
+                // placeRandom(comboList, v.x * area.width + area.x, v.y * area.height + area.y);
+                placeCircle(comboList,
+                        v.x * area.width + area.x,
+                        v.y * area.height + area.y,
+                        MathUtils.random(40 + comboList.size() * 2, 60 + comboList.size() * 2),
+                        MathUtils.random(MathUtils.PI2),
+                        MathUtils.randomBoolean() == true ? 1 : -1);
 
                 comboList.get(0).comboSize = comboList.size();
 
@@ -169,13 +169,13 @@ public class BeatMap implements Json.Serializable
 
         // If the last beat isn't a finalizer, we gotta finish it up.
         Vector2 v = dist.nextFloat2d();
-        placeRandom(comboList, v.x, v.y);
-        // placeCircle(comboList,
-        //         v.x * area.width + area.x,
-        //         v.y * area.height + area.y,
-        //         MathUtils.random(20, 40),
-        //         MathUtils.random(MathUtils.PI2),
-        //         MathUtils.randomBoolean() == true ? 1 : -1);
+        // placeRandom(comboList, v.x, v.y);
+        placeCircle(comboList,
+                v.x * area.width + area.x,
+                v.y * area.height + area.y,
+                MathUtils.random(40 + comboList.size() * 2, 60 + comboList.size() * 2),
+                MathUtils.random(MathUtils.PI2),
+                MathUtils.randomBoolean() == true ? 1 : -1);
 
         comboList.get(0).comboSize = comboList.size();
     }
