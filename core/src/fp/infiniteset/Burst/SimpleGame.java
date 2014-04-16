@@ -79,7 +79,9 @@ public class SimpleGame extends GameController
         while (beatIndex < beatList.size() &&
                timer.getTime() > beatList.get(beatIndex).time - 1.0f)
         {
-            comboList.remove().launch();
+            Firework f = comboList.remove();
+            f.setActive();
+            f.launch();
             beatIndex++;
         }
 

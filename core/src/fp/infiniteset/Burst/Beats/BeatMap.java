@@ -150,12 +150,13 @@ public class BeatMap implements Json.Serializable
             if (beat.type == 5 || beat.type == 6)
             {
                 Vector2 v = dist.nextFloat2d();
-                placeCircle(comboList,
-                        v.x * area.width + area.x,
-                        v.y * area.height + area.y,
-                        MathUtils.random(30, 50),
-                        MathUtils.random(MathUtils.PI2),
-                        MathUtils.randomBoolean() == true ? 1 : -1);
+                placeRandom(comboList, v.x * area.width + area.x, v.y * area.height + area.y);
+                // placeCircle(comboList,
+                //         v.x * area.width + area.x,
+                //         v.y * area.height + area.y,
+                //         MathUtils.random(30, 50),
+                //         MathUtils.random(MathUtils.PI2),
+                //         MathUtils.randomBoolean() == true ? 1 : -1);
 
                 comboList.get(0).comboSize = comboList.size();
 
@@ -168,15 +169,20 @@ public class BeatMap implements Json.Serializable
 
         // If the last beat isn't a finalizer, we gotta finish it up.
         Vector2 v = dist.nextFloat2d();
-        placeCircle(comboList,
-                v.x * area.width + area.x,
-                v.y * area.height + area.y,
-                MathUtils.random(20, 40),
-                MathUtils.random(MathUtils.PI2),
-                MathUtils.randomBoolean() == true ? 1 : -1);
+        placeRandom(comboList, v.x, v.y);
+        // placeCircle(comboList,
+        //         v.x * area.width + area.x,
+        //         v.y * area.height + area.y,
+        //         MathUtils.random(20, 40),
+        //         MathUtils.random(MathUtils.PI2),
+        //         MathUtils.randomBoolean() == true ? 1 : -1);
 
         comboList.get(0).comboSize = comboList.size();
     }
+
+    // private void placeCombo(ArrayList<Beat> comboList, BoundingBox prev)
+    // {
+    // }
 
     private void placeLine(ArrayList<Beat> comboList, float x1, float y1, float x2, float y2)
     {
@@ -186,6 +192,22 @@ public class BeatMap implements Json.Serializable
         {
             comboList.get(i).x = x1 + slopex * i;
             comboList.get(i).y = y1 + slopey * i;
+        }
+    }
+
+    private void placeRandom(ArrayList<Beat> comboList, float x1, float y1)
+    {
+        comboList.get(0).x = x1;
+        comboList.get(0).y = y1;
+        for (int i = 1; i < comboList.size(); i++)
+        {
+            Vector2 v1;
+            do
+            {
+                v1 = new Vector2(MathUtils.random(80, 400), MathUtils.random(80, 180));
+                comboList.get(i).x = v1.x;
+                comboList.get(i).y = v1.y;
+            } while (v1.dst(new Vector2(comboList.get(i-1).x, comboList.get(i-1).y)) < 40.0f);
         }
     }
 
