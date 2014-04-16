@@ -16,7 +16,9 @@ public class Firework implements Pool.Poolable
     private Vector2 destination;
     private Vector2 velocity;
     private ShapeRenderer sprite;
+
     private Firework next;
+    public Vector2[] path;
     private float[] lineColor;
 
     private boolean active; // Is this beat coming up next?
@@ -34,6 +36,9 @@ public class Firework implements Pool.Poolable
         // this.velocity = destination.cpy().sub(position);
         this.velocity = Vector2.Zero;
 
+        this.next = null;
+        this.path = null;
+
         this.sprite = new ShapeRenderer();
         this.active = false;
         this.alive = false;
@@ -45,7 +50,9 @@ public class Firework implements Pool.Poolable
         this.destination = destination;
         // this.velocity = destination.cpy().sub(position);
         this.velocity = Vector2.Zero;
+
         this.next = next;
+        this.path = new Vector2[100];
         this.lineColor = new float[] {0.0f, 0.0f, 0.0f, 0.05f};
 
         this.active = false;
@@ -148,8 +155,12 @@ public class Firework implements Pool.Poolable
             sprite.begin(ShapeType.Line);
             {
                 sprite.setColor(1.0f, 1.0f, 1.0f, lineColor[3]);
-                sprite.line(destination.x, destination.y,
-                            next.getDestination().x, next.getDestination().y);
+                for (int i = 0; i < path.length - 1; i++)
+                {
+                    Vector2 v1 = path[i];
+                    Vector2 v2 = path[i+1];
+                    sprite.line(v1, v2);
+                }
             }
             sprite.end();
         }

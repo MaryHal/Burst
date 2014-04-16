@@ -6,6 +6,7 @@ import fp.infiniteset.Burst.Fireworks.Firework;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.CatmullRomSpline;
 
 import java.util.LinkedList;
 
@@ -73,6 +74,28 @@ public class SimpleGame extends GameController
                 Firework next = comboList.isEmpty() ? null : comboList.getFirst();
                 Firework f = launcher.fire(position.cpy(), destination, next);
                 comboList.addFirst(f);
+            }
+
+            Vector2[] points = new Vector2[comboList.size()];
+            for (int i = 0; i < comboList.size(); i++)
+            {
+                points[i] = new Vector2(beatList.get(beatIndex + i).x,
+                        beatList.get(beatIndex + i).y);
+            }
+            CatmullRomSpline<Vector2> catmull = new CatmullRomSpline<Vector2>(points, true);
+
+            for (int i = 0; i < comboList.size() - 1; i++)
+            {
+                float t1 = catmull.locate(points[i]);
+                float t2 = catmull.locate(points[i + 1]);
+                float inter = (t2 - t1) / 99;
+
+                for (int j = 0; j < comboList.get(i).path.length; j++)
+                {
+                    comboList.get(i).path[j] = new Vector2();
+                    catmull.valueAt(comboList.get(i).path[j], t1);
+                    t1 += inter;
+                }
             }
         }
 
