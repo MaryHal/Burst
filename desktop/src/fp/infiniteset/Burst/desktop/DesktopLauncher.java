@@ -10,6 +10,7 @@ public class DesktopLauncher {
         config.title = "Burst";
         config.width = 640;
         config.height = 480;
+        config.resizable = false;
         new LwjglApplication(new MainGame(), config);
     }
 }
