@@ -46,7 +46,7 @@ public abstract class GameController implements Disposable
         timer = new Stopwatch();
 
         music = Gdx.audio.newMusic(file);
-        music.setVolume(0.1f);
+        music.setVolume(0.5f);
         music.setLooping(false);
 
         score = 0;

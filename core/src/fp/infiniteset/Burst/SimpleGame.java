@@ -15,7 +15,6 @@ public class SimpleGame extends GameController
 {
     private static final int hitRadius  = 20;
     private static final int hitRadius2 = hitRadius * hitRadius;
-
     private static final int missPenalty = 1200;
 
     private LinkedList<Firework> comboList;

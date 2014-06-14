@@ -143,6 +143,7 @@ public class MainMenu implements Screen
 
         launcher.draw(delta);
 
+        // Background Fireworks
         if (MathUtils.random(45) == 0)
         {
             Vector2 position = new Vector2(MathUtils.random() * (MainGame.VIRTUAL_WIDTH - 200) + 100,

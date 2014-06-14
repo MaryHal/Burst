@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 /* import fp.infiniteset.Burst.Screens.TestScreen; */
 import fp.infiniteset.Burst.Screens.LoadingScreen;
 import fp.infiniteset.Burst.Screens.MainMenu;
-import fp.infiniteset.Burst.Screens.AutoScreen;
 import fp.infiniteset.Burst.Screens.SimpleScreen;
 
 import fp.infiniteset.Burst.Utils.FreeTypeFontLoader;
@@ -28,7 +27,6 @@ public class MainGame extends Game
 
     public LoadingScreen loadingScreen;
     public MainMenu mainMenu;
-    public AutoScreen autoScreen;
     public SimpleScreen simpleScreen;
 
     @Override
@@ -43,7 +41,6 @@ public class MainGame extends Game
 
         loadingScreen = new LoadingScreen(this, assets);
         mainMenu      = new MainMenu(this, assets);
-        autoScreen    = new AutoScreen(this, assets);
         simpleScreen  = new SimpleScreen(this, assets);
 
         this.setScreen(loadingScreen);
@@ -54,8 +51,8 @@ public class MainGame extends Game
     {
         assets.dispose();
 
+        loadingScreen.dispose();
         mainMenu.dispose();
-        autoScreen.dispose();
         simpleScreen.dispose();
     }
 
