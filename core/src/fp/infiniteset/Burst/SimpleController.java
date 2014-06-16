@@ -11,7 +11,7 @@ import com.badlogic.gdx.math.Vector2;
 
 import java.util.LinkedList;
 
-public class SimpleGame extends GameController
+public class SimpleController extends GameController
 {
     private static final int hitRadius  = 20;
     private static final int hitRadius2 = hitRadius * hitRadius;
@@ -19,7 +19,7 @@ public class SimpleGame extends GameController
 
     private LinkedList<Firework> comboList;
 
-    public SimpleGame(FileHandle musicFile, FileHandle beatFile)
+    public SimpleController(FileHandle musicFile, FileHandle beatFile)
     {
         super(musicFile, beatFile);
 
