@@ -77,10 +77,10 @@ public abstract class FireworkLauncher implements Disposable
         /* blurShader.dispose(); */
     }
 
-    public Firework fire(Vector2 position, Vector2 destination, Firework next)
+    public Firework fire(Vector2 position, Vector2 destination)
     {
         Firework f = fireworkPool.obtain();
-        f.set(position, destination, next);
+        f.set(position, destination);
         fireworks.add(f);
 
         return f;

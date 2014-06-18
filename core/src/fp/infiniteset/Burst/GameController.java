@@ -21,7 +21,6 @@ public abstract class GameController implements Disposable
     protected BeatMap beatMap;
     protected ArrayList<BeatMap.Beat> beatList;
     protected int beatIndex;
-    protected int comboSize;
 
     protected Stopwatch timer;
     protected Music music;
@@ -41,7 +40,6 @@ public abstract class GameController implements Disposable
         beatMap = new BeatMap(beatFile);
         beatList = beatMap.getNewBeatList();
         beatIndex = 0;
-        comboSize = 0;
 
         timer = new Stopwatch();
 
@@ -63,7 +61,6 @@ public abstract class GameController implements Disposable
     {
         beatList = beatMap.getNewBeatList();
         beatIndex = 0;
-        comboSize = 0;
 
         music.stop();
         music.play();

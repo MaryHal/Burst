@@ -66,6 +66,7 @@ public class SimpleController extends GameController
     @Override
     public void render(float delta)
     {
+        // Queue up the beat
         if (beatIndex < beatList.size() && comboList.size() == 0)
         {
             int comboSize = beatList.get(beatIndex).comboSize;
@@ -78,12 +79,12 @@ public class SimpleController extends GameController
                 Vector2 destination = new Vector2(beatList.get(beatIndex + i - 1).x,
                         beatList.get(beatIndex + i - 1).y);
 
-                Firework next = comboList.isEmpty() ? null : comboList.getFirst();
-                Firework f = launcher.fire(position.cpy(), destination, next);
+                Firework f = launcher.fire(position.cpy(), destination);
                 comboList.addFirst(f);
             }
         }
 
+        // Launch next beat
         // Only handle one beat at a time (or else this would be a while loop)
         if (beatIndex < beatList.size() &&
                timer.getTime() > beatList.get(beatIndex).time - 1.0f)

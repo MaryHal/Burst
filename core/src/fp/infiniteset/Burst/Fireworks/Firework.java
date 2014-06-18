@@ -17,8 +17,6 @@ public class Firework implements Pool.Poolable
     private Vector2 velocity;
 
     private ShapeRenderer sprite;
-    private Firework next;
-    private float lineAlpha;
 
     private boolean active; // Is this beat coming up next?
     private boolean alive;
@@ -37,21 +35,16 @@ public class Firework implements Pool.Poolable
 
         this.sprite = new ShapeRenderer();
 
-        this.next = null;
-        this.lineAlpha = 0.0f;
-
         this.active = false;
         this.alive = false;
     }
 
-    public void set(Vector2 position, Vector2 destination, Firework next)
+    public void set(Vector2 position, Vector2 destination)
     {
         this.position = position;
         this.destination = destination;
         // this.velocity = destination.cpy().sub(position);
         this.velocity = Vector2.Zero;
-        this.next = next;
-        this.lineAlpha = 0.05f;
 
         this.active = false;
         this.alive = true;
@@ -106,10 +99,10 @@ public class Firework implements Pool.Poolable
         {
             position.add(velocity.cpy().scl(delta));
 
-            if (velocity.len2() > 0.0f)
-            {
-                lineAlpha += delta;
-            }
+            // if (velocity.len2() > 0.0f)
+            // {
+            //     lineAlpha += delta;
+            // }
         }
     }
 
@@ -141,20 +134,6 @@ public class Firework implements Pool.Poolable
 
         Gdx.gl20.glEnable(GL20.GL_BLEND);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-
-        // Connecting line
-        if (next != null)
-        {
-            Gdx.gl20.glLineWidth(pointRadius);
-
-            sprite.begin(ShapeType.Line);
-            {
-                sprite.setColor(1.0f, 1.0f, 1.0f, lineAlpha);
-                sprite.line(destination.x, destination.y,
-                            next.getDestination().x, next.getDestination().y);
-            }
-            sprite.end();
-        }
 
         sprite.begin(ShapeType.Filled);
         {

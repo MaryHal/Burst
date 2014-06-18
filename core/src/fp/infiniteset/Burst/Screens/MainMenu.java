@@ -150,7 +150,7 @@ public class MainMenu implements Screen
                     MainGame.VIRTUAL_HEIGHT);
             Vector2 destination = new Vector2(MathUtils.random() * (MainGame.VIRTUAL_WIDTH - 200) + 100,
                     MathUtils.random() * 200 + 80);
-            Firework f = launcher.fire(position, destination, null);
+            Firework f = launcher.fire(position, destination);
             f.launch();
         }
 
