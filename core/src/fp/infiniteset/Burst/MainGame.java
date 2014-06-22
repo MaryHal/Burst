@@ -10,10 +10,10 @@ import fp.infiniteset.Burst.Screens.LoadingScreen;
 import fp.infiniteset.Burst.Screens.MainMenu;
 import fp.infiniteset.Burst.Screens.SimpleScreen;
 
-import fp.infiniteset.Burst.Utils.FreeTypeFontLoader;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
+import com.badlogic.gdx.assets.AssetManager;
 
 public class MainGame extends Game
 {
@@ -37,7 +37,7 @@ public class MainGame extends Game
         camera.update();
 
         assets = new AssetManager();
-        assets.setLoader(FreeTypeFontGenerator.class, new FreeTypeFontLoader(new InternalFileHandleResolver()));
+        assets.setLoader(FreeTypeFontGenerator.class, new FreeTypeFontGeneratorLoader(new InternalFileHandleResolver()));
 
         loadingScreen = new LoadingScreen(this, assets);
         mainMenu      = new MainMenu(this, assets);
