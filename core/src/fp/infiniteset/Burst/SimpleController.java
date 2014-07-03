@@ -77,7 +77,7 @@ public class SimpleController extends GameController
         }
 
         launcher.draw(delta);
-        launcher.removeFinishedGroups(timer.getTime() + 1.0f);
+        launcher.removeFinishedGroups(timer.getTime());
     }
 
     @Override
