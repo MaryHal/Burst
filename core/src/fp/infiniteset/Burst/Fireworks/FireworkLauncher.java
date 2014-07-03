@@ -6,14 +6,16 @@ import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.ParticleEffectPool;
 import com.badlogic.gdx.graphics.g2d.ParticleEffectPool.PooledEffect;
+
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-/* import com.badlogic.gdx.graphics.glutils.ShaderProgram; */
-/* import com.badlogic.gdx.utils.GdxRuntimeException; */
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+
+import fp.infiniteset.Burst.Beats.BeatMap;
 
 public abstract class FireworkLauncher implements Disposable
 {
@@ -22,14 +24,14 @@ public abstract class FireworkLauncher implements Disposable
     private Array<PooledEffect> effects;
 
     private FireworkPool fireworkPool;
-    private Array<Firework> fireworks;
+    private Array<FireworkGroup> groups;
 
     private Array<float[]> fireworkColors;
 
     private SpriteBatch particleBatch;
     private SpriteBatch fireworkBatch;
 
-    /* private ShaderProgram blurShader; */
+    private ShapeRenderer shapeRenderer;
 
     public FireworkLauncher(Camera camera)
     {
@@ -40,13 +42,13 @@ public abstract class FireworkLauncher implements Disposable
         effectPool = new ParticleEffectPool(prototype, 0, 70);
         effects = new Array<PooledEffect>();
 
-        fireworkPool = new FireworkPool(16, 64);
-        fireworks = new Array<Firework>();
+        fireworkPool = new FireworkPool(16, 128);
+        groups = new Array<FireworkGroup>();
 
         fireworkColors = new Array<float[]>(new float[][]{
-            {0.8f, 0.3f, 0.3f, 1.0f},
-            {0.3f, 0.8f, 0.3f, 1.0f},
-            {0.3f, 0.3f, 0.8f, 1.0f},
+            {0.9f, 0.3f, 0.3f, 1.0f},
+            {0.3f, 0.9f, 0.3f, 1.0f},
+            {0.3f, 0.3f, 0.9f, 1.0f},
 
             {0.3f, 0.9f, 0.9f, 1.0f},
             {0.9f, 0.3f, 0.9f, 1.0f},
@@ -59,13 +61,7 @@ public abstract class FireworkLauncher implements Disposable
         fireworkBatch = new SpriteBatch(64);
         fireworkBatch.setProjectionMatrix(camera.combined);
 
-        /* ShaderProgram.pedantic = false; */
-        /* blurShader = new ShaderProgram(Gdx.files.internal("shaders/blur.vertex"), */
-        /*                                Gdx.files.internal("shaders/blur.fragment")); */
-        /* particleBatch.setShader(blurShader); */
-        /* if (!blurShader.isCompiled()) */
-        /*     throw new GdxRuntimeException(blurShader.getLog()); */
-
+        shapeRenderer = new ShapeRenderer();
     }
 
     @Override
@@ -74,26 +70,98 @@ public abstract class FireworkLauncher implements Disposable
         prototype.dispose();
         particleBatch.dispose();
         fireworkBatch.dispose();
-        /* blurShader.dispose(); */
     }
 
-    public Firework fire(Vector2 position, Vector2 destination)
+    public int enqueueCombo(int count)
     {
-        Firework f = fireworkPool.obtain();
-        f.set(position, destination);
-        fireworks.add(f);
+        FireworkGroup group = new FireworkGroup();
 
-        return f;
+        for (int i = 0; i < count; i++)
+        {
+            Firework f = fireworkPool.obtain();
+            group.addToCombo(0.0f, f);
+        }
+
+        group.placeFireworks();
+        group.launchAll();
+
+        groups.insert(0, group);
+
+        return count;
     }
 
-    public void launch(Firework f)
+    public int enqueueCombo(int queuedIndex, BeatMap.Beat[] beatList)
     {
-        f.launch();
+        if (queuedIndex > beatList.length)
+            return queuedIndex;
+
+        FireworkGroup group = new FireworkGroup();
+
+        // 5 and 6 are beat finalizers
+        do
+        {
+            Firework f = fireworkPool.obtain();
+            group.addToCombo(beatList[queuedIndex].time, f);
+
+            queuedIndex++;
+        }
+        while (queuedIndex < beatList.length &&
+                beatList[queuedIndex].type != 5 &&
+                beatList[queuedIndex].type != 6);
+
+        group.placeFireworks();
+        groups.insert(0, group);
+
+        return queuedIndex;
+    }
+
+    public Firework getNextFirework()
+    {
+        for (int i = groups.size - 1; i > 0; i--)
+        {
+            if (!groups.get(i).isCompleted())
+                return groups.get(i).getCurrentFirework();
+        }
+        return null;
+    }
+
+    // Get the current firework, but move the firework index along as well.
+    public Firework yieldNextFirework()
+    {
+        for (int i = groups.size - 1; i > 0; i--)
+        {
+            if (!groups.get(i).isCompleted())
+            {
+                Firework f = groups.get(i).getCurrentFirework();
+                groups.get(i).pushComboIndex();
+
+                return f;
+            }
+        }
+        return null;
+    }
+
+    public void removeFinishedGroups(float time)
+    {
+        while (groups.size > 0)
+        {
+            if (groups.peek().getTailTime() < time)
+            {
+                groups.pop();
+            }
+            else
+                break;
+        }
+    }
+
+    public Array<FireworkGroup> getFireworkGroups()
+    {
+        return groups;
     }
 
     public void detonate(Firework f)
     {
-        fireworks.removeValue(f, true);
+        // fireworks.removeValue(f, true);
         Vector2 effectPosition = f.getPosition();
 
         PooledEffect effect = effectPool.obtain();
@@ -101,16 +169,6 @@ public abstract class FireworkLauncher implements Disposable
         effect.getEmitters().peek().getTint().setColors(color);
         effect.setPosition(effectPosition.x, effectPosition.y);
         effects.add(effect);
-    }
-
-    public void remove(Firework f)
-    {
-        fireworks.removeValue(f, true);
-    }
-
-    public Array<Firework> getFireworks()
-    {
-        return fireworks;
     }
 
     public abstract void updateFirework(Firework f, float delta);
@@ -130,11 +188,14 @@ public abstract class FireworkLauncher implements Disposable
     {
         fireworkBatch.begin();
         {
-            for (Firework f : fireworks)
+            for (FireworkGroup g : groups)
             {
-                updateFirework(f, delta);
+                for (Firework f : g.getComboList())
+                {
+                    updateFirework(f, delta);
 
-                f.draw(fireworkBatch);
+                    f.draw(fireworkBatch, shapeRenderer);
+                }
             }
         }
         fireworkBatch.end();

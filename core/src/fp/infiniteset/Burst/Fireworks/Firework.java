@@ -16,10 +16,9 @@ public class Firework implements Pool.Poolable
     private Vector2 destination;
     private Vector2 velocity;
 
-    private ShapeRenderer sprite;
-
-    private boolean active; // Is this beat coming up next?
+    private boolean active; // Is this beat coming up soon?
     private boolean alive;
+    public boolean detonated;
 
     public Firework()
     {
@@ -33,10 +32,9 @@ public class Firework implements Pool.Poolable
         // this.velocity = destination.cpy().sub(position);
         this.velocity = Vector2.Zero;
 
-        this.sprite = new ShapeRenderer();
-
         this.active = false;
         this.alive = false;
+        this.detonated = false;
     }
 
     public void set(Vector2 position, Vector2 destination)
@@ -48,6 +46,7 @@ public class Firework implements Pool.Poolable
 
         this.active = false;
         this.alive = true;
+        this.detonated = false;
     }
 
     public void setActive()
@@ -58,6 +57,7 @@ public class Firework implements Pool.Poolable
     public void launch()
     {
         this.velocity = destination.cpy().sub(position);
+        this.active = true;
     }
 
     @Override
@@ -125,32 +125,32 @@ public class Firework implements Pool.Poolable
         return !position.epsilonEquals(destination, 5.0f);
     }
 
-    public void draw(SpriteBatch batch)
+    public void draw(SpriteBatch batch, ShapeRenderer renderer)
     {
         if (!alive)
             return;
 
-        sprite.setProjectionMatrix(batch.getProjectionMatrix());
+        renderer.setProjectionMatrix(batch.getProjectionMatrix());
 
         Gdx.gl20.glEnable(GL20.GL_BLEND);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
-        sprite.begin(ShapeType.Filled);
+        renderer.begin(ShapeType.Filled);
         {
-            sprite.setColor(1.0f, 1.0f, 1.0f, 1.0f);
-            sprite.rect(position.x - pointRadius,
+            renderer.setColor(1.0f, 1.0f, 1.0f, 1.0f);
+            renderer.rect(position.x - pointRadius,
                         position.y - pointRadius,
                         2*pointRadius, 2*pointRadius);
 
             if (active)
-                sprite.setColor(1.0f, 1.0f, 0.0f, 0.8f);
+                renderer.setColor(1.0f, 1.0f, 0.0f, 0.8f);
             else
-                sprite.setColor(0.3f, 0.3f, 0.3f, 1.0f);
-            sprite.rect(destination.x - pointRadius,
+                renderer.setColor(0.3f, 0.3f, 0.3f, 1.0f);
+            renderer.rect(destination.x - pointRadius,
                         destination.y - pointRadius,
                         2*pointRadius, 2*pointRadius);
         }
-        sprite.end();
+        renderer.end();
 
         Gdx.gl20.glDisable(GL20.GL_BLEND);
 

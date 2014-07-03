@@ -42,6 +42,7 @@ public class MainGame extends Game
         loadingScreen = new LoadingScreen(this, assets);
         mainMenu      = new MainMenu(this, assets);
         simpleScreen  = new SimpleScreen(this, assets);
+        simpleScreen.getClass();
 
         this.setScreen(loadingScreen);
     }

@@ -1,15 +1,10 @@
 package fp.infiniteset.Burst;
 
-import fp.infiniteset.Burst.MainGame;
-
+import fp.infiniteset.Burst.Fireworks.FireworkGroup;
 import fp.infiniteset.Burst.Fireworks.FireworkLauncher;
 import fp.infiniteset.Burst.Fireworks.Firework;
 
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector2;
-
-import java.util.LinkedList;
 
 public class SimpleController extends GameController
 {
@@ -17,13 +12,10 @@ public class SimpleController extends GameController
     private static final int hitRadius2 = hitRadius * hitRadius;
     private static final int missPenalty = 1200;
 
-    private LinkedList<Firework> comboList;
-
     public SimpleController(FileHandle musicFile, FileHandle beatFile)
     {
         super(musicFile, beatFile);
 
-        comboList = new LinkedList<Firework>();
         scoreDiff = 0;
     }
 
@@ -43,7 +35,6 @@ public class SimpleController extends GameController
                     f.getPosition().dst2(f.getDestination()) > hitRadius2)
                 {
                     f.setAlive(false);
-                    remove(f);
 
                     inputFail();
                 }
@@ -66,36 +57,27 @@ public class SimpleController extends GameController
     @Override
     public void render(float delta)
     {
-        // Queue up the beat
-        if (beatIndex < beatList.size() && comboList.size() == 0)
+        while (queuedIndex < beatList.length &&
+                timer.getTime() + 4.0f > beatList[queuedIndex].time)
         {
-            int comboSize = beatList.get(beatIndex).comboSize;
-
-            // Fixed starting position for a set of beats
-            Vector2 position = new Vector2(beatList.get(beatIndex).x + MathUtils.random(-10, 10),
-                    MainGame.VIRTUAL_HEIGHT);
-            for (int i = comboSize; i > 0; i--)
-            {
-                Vector2 destination = new Vector2(beatList.get(beatIndex + i - 1).x,
-                        beatList.get(beatIndex + i - 1).y);
-
-                Firework f = launcher.fire(position.cpy(), destination);
-                comboList.addFirst(f);
-            }
+            // System.out.println(queuedIndex + " " + beatList.length + " " + beatList[queuedIndex].time);
+            queuedIndex = launcher.enqueueCombo(queuedIndex, beatList);
         }
 
         // Launch next beat
         // Only handle one beat at a time (or else this would be a while loop)
-        if (beatIndex < beatList.size() &&
-               timer.getTime() > beatList.get(beatIndex).time - 1.0f)
+        if (runningIndex < beatList.length &&
+               timer.getTime() + 1.0f > beatList[runningIndex].time)
         {
-            Firework f = comboList.remove();
-            f.setActive();
-            f.launch();
-            beatIndex++;
+            Firework f = launcher.yieldNextFirework();
+            if (f != null)
+                f.launch();
+
+            runningIndex++;
         }
 
         launcher.draw(delta);
+        launcher.removeFinishedGroups(timer.getTime() + 1.0f);
     }
 
     @Override
@@ -108,17 +90,20 @@ public class SimpleController extends GameController
     // This function no longer handles multiple hits per keypress
     public boolean handleInputEvent()
     {
-        for (Firework f : launcher.getFireworks())
+        for (FireworkGroup g : launcher.getFireworkGroups())
         {
-            // 20 pixel radius to destination
-            if (f.getDistance2() < hitRadius2)
+            for (Firework f : g.getComboList())
             {
-                combo++;
-                scoreDiff = (int)((hitRadius2 - f.getDistance2()) * combo / 10.0f);
-                score += scoreDiff;
-                launcher.detonate(f);
+                // 20 pixel radius to destination
+                if (f.getDistance2() < hitRadius2)
+                {
+                    combo++;
+                    scoreDiff = (int)((hitRadius2 - f.getDistance2()) * combo / 10.0f);
+                    score += scoreDiff;
+                    launcher.detonate(f);
 
-                return true;
+                    return true;
+                }
             }
         }
 

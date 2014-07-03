@@ -32,6 +32,12 @@ public class Stopwatch
         paused = false;
     }
 
+    public void reset()
+    {
+        stop();
+        start();
+    }
+
     // Clock actions
     public void pause()
     {

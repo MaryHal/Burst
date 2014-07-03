@@ -14,7 +14,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.MathUtils;
 
 import com.badlogic.gdx.assets.AssetManager;
@@ -44,7 +43,7 @@ public class MainMenu implements Screen
     {
         FreeTypeFontGenerator generator = assets.get("fonts/DroidSansFallback.ttf", FreeTypeFontGenerator.class);
         FreeTypeFontParameter parameters = new FreeTypeFontParameter();
-        parameters.size = 11;
+        parameters.size = 18;
         parameters.flip = true;
         font = generator.generateFont(parameters);
 
@@ -56,9 +55,10 @@ public class MainMenu implements Screen
                 f.update(delta);
                 f.setAlive(f.checkBoundary() && f.checkCloseness());
 
-                if (!f.isAlive())
+                if (!f.isAlive() && f.detonated == false)
                 {
                     detonate(f);
+                    f.detonated = true;
                 }
             }
         };
@@ -146,12 +146,7 @@ public class MainMenu implements Screen
         // Background Fireworks
         if (MathUtils.random(45) == 0)
         {
-            Vector2 position = new Vector2(MathUtils.random() * (MainGame.VIRTUAL_WIDTH - 200) + 100,
-                    MainGame.VIRTUAL_HEIGHT);
-            Vector2 destination = new Vector2(MathUtils.random() * (MainGame.VIRTUAL_WIDTH - 200) + 100,
-                    MathUtils.random() * 200 + 80);
-            Firework f = launcher.fire(position, destination);
-            f.launch();
+            launcher.enqueueCombo(2);
         }
 
         if (menu.isSelected())

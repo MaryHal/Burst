@@ -7,14 +7,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.InputAdapter;
-
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
-
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class SimpleScreen implements Screen
@@ -25,6 +25,9 @@ public class SimpleScreen implements Screen
     private SimpleController simpleController;
     private BitmapFont font;
     private SpriteBatch hudBatch;
+
+    private SpriteBatch backgroundBatch;
+    private ShapeRenderer shapeRenderer;
 
     public SimpleScreen(MainGame game, AssetManager assets)
     {
@@ -69,12 +72,16 @@ public class SimpleScreen implements Screen
 
         FreeTypeFontGenerator generator = assets.get("fonts/DroidSansFallback.ttf", FreeTypeFontGenerator.class);
         FreeTypeFontParameter parameters = new FreeTypeFontParameter();
-        parameters.size = 12;
+        parameters.size = 14;
         parameters.flip = true;
         font = generator.generateFont(parameters);
 
         hudBatch = new SpriteBatch(64);
         hudBatch.setProjectionMatrix(game.camera.combined);
+
+        backgroundBatch = new SpriteBatch(64);
+        backgroundBatch.setProjectionMatrix(game.camera.combined);
+        shapeRenderer = new ShapeRenderer();
     }
 
     @Override
@@ -110,6 +117,20 @@ public class SimpleScreen implements Screen
         Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        backgroundBatch.begin();
+        {
+            shapeRenderer.begin(ShapeType.Filled);
+            {
+                Color magenta = new Color(0.25f, 0.20f, 0.25f, 1.0f);
+                shapeRenderer.rect(0.0f, 0.0f,
+                        MainGame.viewport.width, MainGame.viewport.height,
+                        magenta, magenta, Color.BLACK, Color.BLACK);
+            }
+            shapeRenderer.end();
+        }
+        backgroundBatch.end();
+
+        // Render Fireworks
         simpleController.render(delta);
 
         hudBatch.begin();

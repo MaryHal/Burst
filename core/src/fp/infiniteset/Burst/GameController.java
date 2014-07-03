@@ -11,16 +11,15 @@ import fp.infiniteset.Burst.Fireworks.FireworkLauncher;
 import fp.infiniteset.Burst.Beats.BeatMap;
 import fp.infiniteset.Burst.Utils.Stopwatch;
 
-import java.util.ArrayList;
-
 public abstract class GameController implements Disposable
 {
     protected OrthographicCamera camera;
 
     protected FireworkLauncher launcher;
     protected BeatMap beatMap;
-    protected ArrayList<BeatMap.Beat> beatList;
-    protected int beatIndex;
+    protected BeatMap.Beat[] beatList;
+    protected int runningIndex;
+    protected int queuedIndex;
 
     protected Stopwatch timer;
     protected Music music;
@@ -38,8 +37,9 @@ public abstract class GameController implements Disposable
         initializeLauncher();
 
         beatMap = new BeatMap(beatFile);
-        beatList = beatMap.getNewBeatList();
-        beatIndex = 0;
+        beatList = beatMap.getBeatArray();
+        runningIndex = 0;
+        queuedIndex = 0;
 
         timer = new Stopwatch();
 
@@ -59,13 +59,12 @@ public abstract class GameController implements Disposable
 
     public void reset()
     {
-        beatList = beatMap.getNewBeatList();
-        beatIndex = 0;
+        // beatList = beatMap.getNewBeatList();
+        runningIndex = 0;
 
         music.stop();
         music.play();
-        timer.stop();
-        timer.start();
+        timer.reset();
 
         score = 0;
         combo = 0;
