@@ -159,17 +159,13 @@ public class Firework implements Pool.Poolable
         sprite.begin(ShapeType.Filled);
         {
             sprite.setColor(1.0f, 1.0f, 1.0f, 1.0f);
-            sprite.rect(position.x - pointRadius,
-                        position.y - pointRadius,
-                        2*pointRadius, 2*pointRadius);
+            sprite.rect(position.x - pointRadius, position.y - pointRadius, 2*pointRadius, 2*pointRadius);
 
             if (active)
                 sprite.setColor(1.0f, 1.0f, 0.0f, 0.8f);
             else
                 sprite.setColor(0.3f, 0.3f, 0.3f, 1.0f);
-            sprite.rect(destination.x - pointRadius,
-                        destination.y - pointRadius,
-                        2*pointRadius, 2*pointRadius);
+            sprite.rect(destination.x - pointRadius, destination.y - pointRadius, 2*pointRadius, 2*pointRadius);
         }
         sprite.end();
 
