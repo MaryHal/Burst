@@ -58,7 +58,7 @@ public class SimpleController extends GameController
     public void render(float delta)
     {
         while (queuedIndex < beatList.length &&
-                timer.getTime() + 4.0f > beatList[queuedIndex].time)
+                timer.getTime() + 2.0f > beatList[queuedIndex].time)
         {
             // System.out.println(queuedIndex + " " + beatList.length + " " + beatList[queuedIndex].time);
             queuedIndex = launcher.enqueueCombo(queuedIndex, beatList);
@@ -77,7 +77,7 @@ public class SimpleController extends GameController
         }
 
         launcher.draw(delta);
-        launcher.removeFinishedGroups(timer.getTime() + 1.0f);
+        launcher.removeFinishedGroups(timer.getTime());
     }
 
     @Override

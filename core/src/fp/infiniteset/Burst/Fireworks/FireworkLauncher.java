@@ -145,7 +145,7 @@ public abstract class FireworkLauncher implements Disposable
     {
         while (groups.size > 0)
         {
-            if (groups.peek().getTailTime() < time)
+            if (groups.peek().getTailTime() < time - 10.0f)
             {
                 groups.pop();
             }
@@ -186,10 +186,12 @@ public abstract class FireworkLauncher implements Disposable
 
     public void draw(float delta)
     {
+        System.out.println(groups.size);
         fireworkBatch.begin();
         {
             for (FireworkGroup g : groups)
             {
+                // g.draw(fireworkBatch, shapeRenderer);
                 for (Firework f : g.getComboList())
                 {
                     updateFirework(f, delta);

@@ -1,8 +1,6 @@
 package fp.infiniteset.Burst.Fireworks;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -132,9 +130,6 @@ public class Firework implements Pool.Poolable
 
         renderer.setProjectionMatrix(batch.getProjectionMatrix());
 
-        Gdx.gl20.glEnable(GL20.GL_BLEND);
-        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-
         renderer.begin(ShapeType.Filled);
         {
             renderer.setColor(1.0f, 1.0f, 1.0f, 1.0f);
@@ -151,8 +146,6 @@ public class Firework implements Pool.Poolable
                         2*pointRadius, 2*pointRadius);
         }
         renderer.end();
-
-        Gdx.gl20.glDisable(GL20.GL_BLEND);
 
         // // Bounding Circle
         // if (position.y > destination.y)
